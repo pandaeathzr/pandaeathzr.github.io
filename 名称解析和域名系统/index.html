@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="名称解析和域名系统"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">名称解析和域名系统</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-06-03</span>
+            <span class="time">10:55:16</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>互联网支持使用主机名称来识别包括客户机和服务器在内的主机。<strong>主机名称通过名称解析的过程转换成IP地址</strong></p>
+<p>DNS是一个分布式的客户机/服务器网络数据库，TCP/IP应用程序使用它来完成主机名称和IP地址之间的映射。</p>
+<hr>
+<h2 id="DNS协议"><a href="#DNS协议" class="headerlink" title="DNS协议"></a>DNS协议</h2><p>DNS协议由两部分组成：</p>
+<ul>
+<li>用于执行对DNS特定名称查询的查询/响应协议</li>
+<li>名称服务器用于交换数据库记录的协议（<strong>区域传输</strong>）</li>
+</ul>
+<p>过程如图所示：</p>
+<p><img src="/名称解析和域名系统/DNS解析过程.jpg" alt=""></p>
+<ol>
+<li>A.HOEM上的解析软件首先向本地名称服务器GW.HOME发送请求，请求将某域名如<code>EXAMPLE.COM</code>转化成一个IP地址</li>
+<li>很遗憾GW.HOME不知道这个IP地址，也不知道哪里有这个域名或是COM TLD的名称服务器，于是它转发到另一个DNS服务器<code>例如ISP提供的服务器</code>//<strong>这个过程称为解析</strong></li>
+<li>ISP提供的服务器也不清楚，所以它联系根服务器//<strong>根服务器不是递归的</strong></li>
+<li>因为根服务器不是递归的，所以其返回需要联系的COM TLD的名称服务器的信息，例如<code>返回名称A.GTLD-SERVERS.NET以及一个或者多个它的IP地址</code>。</li>
+<li>根据根服务器提供的信息，ISP服务器就找到了gTLD服务器。</li>
+<li>gTLD服务器给出了域名<code>EXAMPLE.COM</code>的名称服务器和服务器的IP地址，例如<code>A.IANA-SERVERS.NET</code></li>
+<li>基于6，ISP联系适当的服务器</li>
+<li>该服务器返回请求的地址</li>
+<li>ISP服务器把地址返回给GW.HOME</li>
+<li>GW.HOME再返回查询请求</li>
+</ol>
+<hr>
+<h3 id="DNS消息格式"><a href="#DNS消息格式" class="headerlink" title="DNS消息格式"></a>DNS消息格式</h3><p>基本的DNS消息格式用于所有的DNS操作（<strong>查询，响应，区域传输，通知和动态更新</strong>）</p>
+<p>如图所示：</p>
+<p><img src="/名称解析和域名系统/DNS消息格式.jpg" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事务ID</td>
+<td>客户端设置，服务器返回，在客户端用于匹配响应和查询</td>
+</tr>
+<tr>
+<td>QR</td>
+<td>查询（0），响应（1）</td>
+</tr>
+<tr>
+<td>OpCode</td>
+<td>操作吗，0表示查询，4表示通知，5表示更新，其他值无效</td>
+</tr>
+<tr>
+<td>AA</td>
+<td>表示授权回答</td>
+</tr>
+<tr>
+<td>TC</td>
+<td>表示截断回答，使用UDP时，当应答的长度超过512字节时，只返回前512个字节</td>
+</tr>
+<tr>
+<td>RD</td>
+<td>期望递归，设置表示支持递归查询，但是对不支持递归的服务器没有效果，例如<code>根服务器</code></td>
+</tr>
+<tr>
+<td>Z</td>
+<td>置0，为将来保留</td>
+</tr>
+<tr>
+<td>AD</td>
+<td>设真表示信息是已授权的</td>
+</tr>
+<tr>
+<td>CD</td>
+<td>设真表示禁用安全检查</td>
+</tr>
+<tr>
+<td>RECODE</td>
+<td>响应码，具体见P370</td>
+</tr>
+</tbody>
+</table>
+<p><strong>随后的四个字段表示组成DNS消息的问题、回答、授权和额外信息区段中的条目的数目</strong></p>
+<hr>
+<h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p>数据标签以一字节的计数开始，该计数指定其后的字节数目。 名称以值为0结束。如图所示：</p>
+<p><img src="/名称解析和域名系统/数据标签.jpg" alt=""></p>
+<p><strong>注意，每个标签的长度必须在0和63之间</strong></p>
+<p>压缩标签，如图所示：</p>
+<p><img src="/名称解析和域名系统/压缩标签.jpg" alt=""></p>
+<p>首字节偏移量为0，如果出现了重复的标签既可以压缩。在重复出现的某个位置的字节两个高位置1，然后其后的14个字节组成一个偏移量。<strong>例如图中重复出现的edu，偏移量为4，两个高位置1后，其余为0则为192+后面置为4</strong></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
