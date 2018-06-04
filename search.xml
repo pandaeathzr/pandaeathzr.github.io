@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[life]]></title>
+    <url>%2FLIFE%2F</url>
+    <content type="text"><![CDATA[nothing]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[RYU，Chapter 1. 交换机（Switching Hub)]]></title>
+    <url>%2FRYU_Switching%20Hub%2F</url>
+    <content type="text"><![CDATA[前期准备RYU的安装在拥有一系列组件的前提下：pip install ryu 接下来会面临一些问题就是，找不到RYU的目录在何方？ 输入ryu-manager *** 在报错的后面就有ryu的目录地址 RYU各个文件的内容：这些目录的主要内容在SDNLAB网站上有记录来自李呈，你也可以在RYU的官方文档上学习到。 而这次博客的内容主要是记录我在学习RYUBOOK上的一些感想。如果你想获得RYUBOOK这本书，请点击 交换机（Switching Hub）关于交换机交换数据包的原理： 学习源主机的入端口，MAC地址 查找MAC表，若不存在目的主机的MAC地址，则按照生成树协议执行转发所有端口；若存在，则按照端口执行转发 这一块相信学过传统网络知识的同学都基本清楚。 关于OpenFlow交换机的最简单的功能： 修改收到的数据包及传送到对应端口 Packet-in Packet-out 借这些功能，RYU控制器大致通过以下内容实现最简单的交换机转发功能： 利用Packin-in学习端口号及MAC地址 控制器解析Packet-in，得到源主机的接入端口及MAC地址，记录在表 利用Packin-out下发流表到交换机实现转发功能 控制器解析Packet-in，得到目的主机的MAC地址，查询MAC表，若找到对应项，则使用Packet-out传送到先前对应的端口。否则，利用packet-out来达到flooding功能。 注：这边flooding采用的是OFFP-FLOOD(沿最小生成树发送数据包) 此时，在ovs交换机就有来自控制器所学习好了的流表项目，能够告诉交换机接下去的动作。例如优先级最低的流表是FLOOD动作，优先级高一丢丢的是正常的OUTPUT动作 RYU的源码实现：先贴上整个源码 from ryu.base import app_manager from ryu.controller import ofp_event from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER from ryu.controller.handler import set_ev_cls from ryu.ofproto import ofproto_v1_3 from ryu.lib.packet import packet from ryu.lib.packet import ethernet class ExampleSwitch13(app_manager.RyuApp): OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION] def __init__(self, *args, **kwargs): super(ExampleSwitch13, self).__init__(*args, **kwargs) # initialize mac address table. self.mac_to_port = {} @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER) def switch_features_handler(self, ev): datapath = ev.msg.datapath ofproto = datapath.ofproto parser = datapath.ofproto_parser # install the table-miss flow entry. match = parser.OFPMatch() actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER, ofproto.OFPCML_NO_BUFFER)] self.add_flow(datapath, 0, match, actions) def add_flow(self, datapath, priority, match, actions): ofproto = datapath.ofproto parser = datapath.ofproto_parser # construct flow_mod message and send it. inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS, actions)] mod = parser.OFPFlowMod(datapath=datapath, priority=priority, match=match, instructions=inst) datapath.send_msg(mod) @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER) def _packet_in_handler(self, ev): msg = ev.msg datapath = msg.datapath ofproto = datapath.ofproto parser = datapath.ofproto_parser # get Datapath ID to identify OpenFlow switches. dpid = datapath.id self.mac_to_port.setdefault(dpid, {}) # analyse the received packets using the packet library. pkt = packet.Packet(msg.data) eth_pkt = pkt.get_protocol(ethernet.ethernet) dst = eth_pkt.dst src = eth_pkt.src # get the received port number from packet_in message. in_port = msg.match[&#39;in_port&#39;] self.logger.info(&quot;packet in %s %s %s %s &quot;, dpid, src, dst) # learn a mac address to avoid FLOOD next time. self.mac_to_port[dpid][src] = in_port # if the destination mac address is already learned, # decide which port to output the packet, otherwise FLOOD. if dst in self.mac_to_port[dpid]: out_port = self.mac_to_port[dpid][dst] else: out_port = ofproto.OFPP_FLOOD # construct action list. actions = [parser.OFPActionOutput(out_port)] # install a flow to avoid packet_in next time. if out_port != ofproto.OFPP_FLOOD: match = parser.OFPMatch(in_port=in_port, eth_dst=dst) self.add_flow(datapath, 1, match, actions) # construct packet_out message and send it. out = parser.OFPPacketOut(datapath=datapath, buffer_id=ofproto.OFP_NO_BUFFER, in_port=in_port, actions=actions, data=msg.data) datapath.send_msg(out) 接下来是对其的解析： class ExampleSwitch13(app_manager.RyuApp): OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION] def __init__(self, *args, **kwargs): super(ExampleSwitch13, self).__init__(*args, **kwargs) # initialize mac address table. self.mac_to_port = {} 作为控制器的应用程序，需要继承app_manager.RyuApp这个类。该类位于ryu.base.app。在前提部分的链接可以详细了解 首先OFP_VERSIONS指定了OpenFlow的协议版本号 init构造函数似乎没有什么作用 mac_to_port是MAC表，目前等于一个空dict @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER) def switch_features_handler(self, ev): datapath = ev.msg.datapath ofproto = datapath.ofproto parser = datapath.ofproto_parser # install the table-miss flow entry. match = parser.OFPMatch() actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,ofproto.OFPCML_NO_BUFFER)] self.add_flow(datapath, 0, match, actions) set_ev_cls是一个事件的装饰器。位于ryu.controller.handler。 在RYU中，事件管理（Event handler），用来处理OpenFlow信息对应发生的事件。如该控制器接收到SwitchFeatures（由ofp_event.EventOFPSwitchFeatures指明）即Features reply时,就会执行下列函数的内容。执行的状态前提是CONFIG_DISPATCHER（接收SwitchFeatures讯息）。 状态有四种，位于ryu.controller.handler中： HANDSHAKE_DISPATCHER 交换HELLO信息 CONFIG_DISPATCHER 接收SwitchFeatures讯息 MAIN_DISPATCHER 一般状态，指交换机连接成功了 DEAD_DISPATCHER 连接中断 满足上述条件后，执行switch_features_handler函数。其中： ev.msg 为触发讯息的数据报文 msg.datapath 则为该报文下的交换机实体 datapath.ofproto 是一个OpenFlow协议数据结构的对象，成员包含OpenFlow协议的数据结构，如虚拟端口OFPP_FLOOD，OFPP_CONTROLLER。 datapath.ofp_parser 是一个按照OpenFlow解析的数据结构，即动作 parser.OFPMatch() 为匹配项，此时为空，完全匹配 actions 为一个列表，存放动作，动作来自datapath.ofp_parser中解析的数据结构，此例中为OFPActionOutput，其带有两个参数，ofproto.OFPP_CONTROLLER表示发送报文到控制器，ofproto.OFPCML_NO_BUFFER表示表示不应该应用缓冲，并且整个数据包将被发送到控制器。 这个函数完成的内容就是将所有的数据包传给控制器，其中的数据包为优先级为0的流表项匹配到的数据包。def add_flow(self, datapath, priority, match, actions): ofproto = datapath.ofproto parser = datapath.ofproto_parser # construct flow_mod message and send it. inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS, actions)] mod = parser.OFPFlowMod(datapath=datapath, priority=priority, match=match, instructions=inst) datapath.send_msg(mod) OFPInstructionActions 该指令用于写入/应用/清除动作。后文的第一个参数为应用 OFPFlowMod 控制器发送此消息来修改流表。 参数instructions在源码中解释为list of OFPInstruction* instance，*为通配符，此例中为OFPInstructionActions 其有诸多参数，多为OpenFlow协议的数据结构，具体不再解释，源码解释见下图： 此例中，command为默认参数，OFPFC_ADD send_msg 排队一个OpenFlow消息发送到相应的交换机。 如果msg.xid为None，则在排队之前会自动在消息上调用set_xid。 @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER) def _packet_in_handler(self, ev): msg = ev.msg datapath = msg.datapath ofproto = datapath.ofproto parser = datapath.ofproto_parser # get Datapath ID to identify OpenFlow switches. dpid = datapath.id self.mac_to_port.setdefault(dpid, {}) # analyse the received packets using the packet library. pkt = packet.Packet(msg.data) eth_pkt = pkt.get_protocol(ethernet.ethernet) dst = eth_pkt.dst src = eth_pkt.src # get the received port number from packet_in message. in_port = msg.match[&#39;in_port&#39;] self.logger.info(&quot;packet in %s %s %s %s &quot;, dpid, src, dst) # learn a mac address to avoid FLOOD next time. self.mac_to_port[dpid][src] = in_port 根据上面的信息，我们可以很容易的得到， _packet_in_handler这个函数，在满足状态为MAIN_DISPATCHER，接收到的报文为EventOFPPacketIn（即Packet-in报文）的时候被调用，其中： datapath.id 只用于MAIN_DISPATCHER。交换机标识符 setdefault 如果键不存在于字典中，将会添加键并将值设为默认值 pkt = packet.Packet(msg.data) 获取报文数据 get_protocol 返回首次找到的与指定协议匹配的协议 ethernet.ethernet 以太网头编码器/解码器类。Ethernet header encoder/decoder class. dst,src为获取到的MAC msg.match[‘in_port’] 返回匹配到的‘in_port’ mac_to_port[dpid][src] = in_port 记录MAC # if the destination mac address is already learned, # decide which port to output the packet, otherwise FLOOD. if dst in self.mac_to_port[dpid]: out_port = self.mac_to_port[dpid][dst] else: out_port = ofproto.OFPP_FLOOD # construct action list. actions = [parser.OFPActionOutput(out_port)] # install a flow to avoid packet_in next time. if out_port != ofproto.OFPP_FLOOD: match = parser.OFPMatch(in_port=in_port, eth_dst=dst) self.add_flow(datapath, 1, match, actions) # construct packet_out message and send it. out = parser.OFPPacketOut(datapath=datapath, buffer_id=ofproto.OFP_NO_BUFFER, in_port=in_port, actions=actions, data=msg.data) datapath.send_msg(out) 相信经过了上面的阅读，这部分的大部分内容都是能够看懂了。其中： 如果dst在mac_to_port[dpid]，就可以知道转发的out_port端口，否则out_port = ofproto.OFPP_FLOOD OFPMatch 流匹配结构Flow Match Structure, 具体可以阅读RYU源码，位于ryu.ofproto.ofproto_v1_3_parser.py add_flow(datapath, 1, match, actions) 这条语句下发较高优先级（大于刚才的0）的流表，这样新的数据包过来后会先匹配该流表，实现已知端口的转发功能 parser.OFPPacketOut Packet-out报文 RYU程序的执行：完成了一个ryu程序代码是不是很开心，接下来就去实现它吧！ 在Linux终端下运行sudo mn --topo single,3 --mac --switch ovsk --controller remote -x，其中： single ,3 为创建一个三个主机连接一台交换机的拓扑 switch 采用ovs交换机 控制器当然是远端（remote）的RYU -x 开启各个主机、交换机、控制器的终端 如图所示： 根据书本的要求，设置OpenFLow协议为1.3 在s1交换机终端执行： ovs-vsctl set Bridge s1 protocols=OpenFlow13 我们先查看s1的流表，发现其为空： 此时我们所有的前期准备已经都完成了，接下来就是执行控制器应用程序了。我们先到我们写好的控制器程序目录，这里我用一个first.py程序输入ryu-manager first.py 显示界面如下： 控制器应用程序开启后，与交换机建立了连接，Features请求与响应。根据所写的程序，我们会有一个流表添加到OVS交换机上，如图： 这个流表作用就是把未知目的地数据包packet-in到控制器。让控制器进行处理。 接下来我们在mininet中执行pingall操作，同时监控h1端口的数据包，为了方便，我们仅仅使用tupdump。 在h1终端输入tcpdump -en -i h1-eth0开启监控端口功能。在此我们只观察 h1 与 h2。 我们可以看到图中的中部， h1 arp h2, h2 request h1 。紧接着，h1 ping h2，h2 request h1 。实现了通讯。右边的是控制器的日志输出，我在程序中加了个计数的功能，每次收到一个packet-in 技术及就加1。 接着，我们查看s1 的流表。 h1、h2、h3 共有三个端口有六个流表，分别指定了各自的数据包如何发送。很高兴程序没有出现BUG！ 至此，本章节内容结束。 总结：学习RYU有一周了，但是其实看的内容并不多，每天都是有一件一件一件事情被解决，但是就是轮不到RYU。很亢奋用一个下午半个晚上的时间重新阅读第一章的内容。并写下了这篇博客。虽然有些概念随着时间还是会一点一点忘记了，希望通过这篇博客能够尽快找到解决的地方。今天也算是完成了一件很重要的事情了！ 希望在考试月再接再厉！不仅仅为了自己。 还有这个模板下的代码风格各种BUG，找个时间解决它 ……三分钟解决了，把自带的代码高亮置flase。 根目录的_config,yml 中highlight: enable: false 爱你所爱，行你所行。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>SDN</tag>
+        <tag>RYU</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[atom插件]]></title>
+    <url>%2Fatom%E6%8F%92%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[atom下python必备的几个插件 atom-beautify 代码优化 atom-python-run 运行 autocomplete-python 代码不全 file-icons 图标优化 highlight-selected 选择高亮 hyperclick 跳转定义 minimap 小视图]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[数据库实践作业二资料整合]]></title>
+    <url>%2F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E8%B7%B5%E4%BD%9C%E4%B8%9A%E4%BA%8C%2F</url>
+    <content type="text"><![CDATA[根据实验课的题目要求，共需要掌握以下部分： 用户及用户权限管理 存储及触发器使用 数据库的备份与恢复 以下部分将是很基础的数据库操作，存在许多不足需要改正。 用户及用户权限管理前提：熟悉课本第四章内容 我们在ROOT用户下创建普通用户： 12CREATE USER HUZR@localhost IDENTIFIED by &apos;123&apos;;CREATE USER pig@localhost IDENTIFIED by &apos;123&apos;; 然后我们可以在Nvaicat for MySQL客户端用户界面看到我们所创建的用户： 接着可以对用户授权1234567GRANT SELECTON TABLE studentTO HUZR@localhost;GRANT SELECTON TABLE courseTO pig@localhost; 则我们刚才得到的用户分别有了对student、course表查询的权限 那么我们如何登陆我们新建的用户呢？ 在Nvaicat for MySQL客户端新建一个连接： 其中用户名和密码为我们刚才设定的内容。 由于Nvaicat for MySQL客户端密码编码版本与MySQL服务器不同的原因。我们还需要更新该用户在MySQL服务器下的密码及解锁该用户 详情见链接 此后我们用新增用户登陆，可以发现里面存在被我们赋予查询权限的表 回收权限123REVOKE SELECTON TABLE studentFROM HUZR@localhost; 经过此操作后在新建用户的数据库中已经没有相应的表格存在 至此第一部分的基础内容已经完成。 存储及触发器的使用存储相当于对一个函数的封装，创建存储如下：1234567delimiter $ CREATE PROCEDURE select_row ()BEGIN SELECT * FROM student WHERE sname = &apos; &apos;; SELECT * FROM course ;END $delimiter ; 对以上代码进行解析： MySQL默认以”;”为分隔符，如果没有声明分割符，则编译器会把存储过程当成SQL语句进行处理，因此编译过程会报错，所以要事先用“DELIMITER $”声明当前段分隔符，让编译器把两个”$”之间的内容当做存储过程的代码，不会执行这些代码；“DELIMITER ;”的意为把分隔符还原。 CREATE PROCEDURE 后面接的是存储的name（可以理解为函数的名称,可带参数，此处不展开），例子中即为selcet_row() BEGIN 到 EDN 中间为存储的sql语句，可以花样百出 存储调用 1CALL select_row(); 注意尽管没有参数，也需要带上括号 查看存储1show PROCEDURE STATUS WHERE Db = &apos;031602215&apos;; 删除存储1DROP PROCEDURE select_row; 详尽资料链接见下： https://www.cnblogs.com/mark-chan/p/5384139.html https://www.cnblogs.com/geaozhang/p/6797357.html 触发器顾名思义，创建触发器如下： 123456789delimiter $CREATE TRIGGER inset_studentAFTER UPDATE ON xuandao FOR EACH ROWBEGIN INSERT INTO student VALUES(&apos;这里是触发器&apos;,NULL,NULL,NULL,NULL);END $delimiter ; 对以上面代码解析： CREATE TRIGGER 后面接的的触发器名称 AFTER UPDATE 表明在更新操作后触发，其中AFTER的另一个参数为BEFORE; UPDATE亦可改成 INSERT,DELETE ON 后面接表的名称，说明在哪张表建立触发器 FOR EACH ROW 说明是行级触发器，似乎没啥作用 BEGIN END 里面为触发执行的语句 注意，不能对同一张表同时触发又执行 ,否则会报错 查看触发器1SHOW TRIGGERS; 查看触发器效果12345UPDATE xuandaoSET tc = &apos; &apos;WHERE sname = &apos; &apos;;SELECT * FROM student; 通过对xuandao表格的更新，然后通过select查看效果 删除触发器 1DROP TRIGGER inset_student; 详尽资料链接见下： https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html 数据库的备份与恢复完整备份： mysqldump -u root -p database_name &gt; 路径及备份文件名.sql 差异备份： 在windows下我还不会。。。。 日志备份： 同上。。。 备份恢复： source yourbf.sql 前面所讲的内容都只是一个框架，可以精致的展开。 在windows下的MySQL真是难受，找了两天的教程还是没解决，各种教程都是Linux情况的。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python中文编码问题]]></title>
+    <url>%2F%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u printf u’你好’ 遇到的问题： 在做数据库调试报错的时候，存在以下代码： 1234try: tr_money.transfer(sourse_acctid,target_acctid,money) except Exception as e: print u&apos;出现问题 :&apos; +str(e) 其中e 为raise返回的报错字符 然后执行会报错： ‘ascii’ codec can’t encode characters in position 0-1: ordinal not in range(128) 原因大概是对utf-8的字段不能够str 解决方法： 1234try: tr_money.transfer(sourse_acctid,target_acctid,money) except Exception as e: print u&apos;出现问题 :%s&apos; %e]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python与MySQL数据库]]></title>
+    <url>%2FMySQLbd%2F</url>
+    <content type="text"><![CDATA[慕课网连接 我使用的软件：python2.7 + MySQL+ Navicat for MySQL + Atom 注意：你的数据库表格类型的引擎为：InnoDB 字符集：utf8 排序规则：utf8_general_ci Python开发MySQL的思想：图片来自慕课网视频截图: python DB API思想： 由connection建立数据库连接 由cursor执行SQL语句和获取数据 具体操作： 创建connection对象 获取cursor 使用cursor执行SQL语句 使用cursor获取数据，并判断执行状态 提交事务或者回滚事务 关闭cursor ，关闭connection 创建connection对象:通过下面这一行代码进行与数据库的连接。 12345678910import MySQLdbconn = MySQLdb.Connect( host = &apos;127.0.0.1&apos;, port = 3306, user = &apos;your user_name&apos;, passwd = &apos;your passwd&apos;, db = &apos;your db_name&apos;, charset = &apos;utf8&apos; ) 获取cursor：cursor 是一个游标，用于指定数据库的表中的某一行 1cursor = conn.cursor() 使用cursor执行SQL语句：cursor执行SQL语句就相当于在数据库中的查询操作：12sql_sentence = &apos;your sql_sentence&apos; cursor.execute(sql_sentence) 通过上面这行代码既可以对数据库进行增，删，改，查等操作 使用cursor获取数据，并判断执行状态：获取数据有三种方式： 123rs = cursor.fetchall() //获取当前游标往下的所有数据rs = cursor.fetchone() //获取当前游标所在行的数据rs = cursor.fetchmany(x) //获取当前游标往下 x 行的数据 此后即可以通过对rs的操作，输出我们所需要的数据，例如： 12for row in rs: print &quot;userid=%s,username=%s&quot; %row 提交事务或者回滚事务：事务的概念就是一组需要同时完成的事情，例如往a转钱给b，那么就需要有同时判断两个账户是否存在，a是否有足够的钱，若有，a扣款的同时b要存款等。 这是一系列要同时考虑的事情，如果在中间不满足条件，则需要回滚事务，即返回到之前的初始状态。 12conn.commit() //提交事务conn.rollback() //回滚事务 在此，我们通常将某一事务放在一个try的代码块中，当出现错误的时候，在except块中报错以及回滚事务： 123456789101112131415def transfer(self,sourse_acctid,target_acctid,money): // 很普通的一个转钱的函数 try: self.check_acct_available(sourse_acctid) self.check_acct_available(target_acctid) self.has_enough_money(sourse_acctid,money) self.reduce_money(sourse_acctid,money) self.add_money(target_acctid,money) //在此列函数调用中，如果出现错误，会将错误信息给Exception，同时回滚事务；如果顺利执行，则进行下一步：提交事务。 self.conn.commit() //提交事务 except Exception as e: self.conn.rollback() //回滚事务 raise e //报错 关闭cursor，关闭connection：为了防止浪费资源，在每次游标进行完操作后，都要关闭游标，在对数据库完成操作后要关闭数据库连接。 12cursor.close()conn.close() 注意事项： 关于python中文编码的问题 利用try代码块进行SQL操作 每次操作记得返回错误信息]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[关于由于版本号码不同而引起的 Client does not support authentication protocol requested by server 问题]]></title>
+    <url>%2F%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[搜索类似的问题，得到的答案类似于下面 mysql&gt;SET PASSWORD FOR‘root‘@’localhost’ = OLD_PASSWORD(‘newpassword’); 但是这些方法试了之后都是会提示语法的错误，如下： You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘odl_password(‘123456’)’ at line 1 为此东找西找，发现了一个适用的方法： ALTER USER ‘root‘@’localhost’ IDENTIFIED WITH mysql_native_password BY ‘你的密码’;FLUSH PRIVILEGES; 这样之后 ，客户端就突然连接上了服务器 解锁用户 ALTER USER ‘furrywall‘@’localhost’ ACCOUNT UNLOCK; 共勉]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[OpenFlow-Enaling innvation in Campus Networks]]></title>
+    <url>%2FOpenFlow-Enaling%20innvation%20in%20Campus%20Networks%2F</url>
+    <content type="text"><![CDATA[##出现问题 背景 Networks have become part of the critical infrastructureof our businesses, homes and schools. 由于设备和协议巨大的安装基础以及不情愿用生产流量去进行实验，网络创新遇到了极大的瓶颈，人们认为网络已经僵化了。 没有很好的办法尝试和测试自己在网络上的新主意 需求 商业交换机的外部接口太狭窄，内部灵活性被隐藏，可以说商业交换机太笨重了。 而开放交换机端口是几乎不可能的，这涉及到了供应商的利益 出现的解决问题的方式，一个是PC端，存在性能差，资源不足。一个是可编程的硬件FPGA ,但是资源不足 解决问题OpenFlow需要满足： 高性能，低消费 提供广泛研究的能力 实验流量与生产流量分离 符合当前供应商封闭平台的需求 OpenFlow交换机需要满足： 处理带action的流表 转发流表到给定端口 封装转发流表到控制器 丢弃流的数据包 支持交换机的普通处理 有一个连接控制器和交换机的安全通道 OpenFlow协议为控制器与交换机进行通信提供了一种开放和标准的方式。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>SDN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[wireshark登陆显示error]]></title>
+    <url>%2Fwireshark%2F</url>
+    <content type="text"><![CDATA[dpkg-reconfigure wireshark-common “Should non-superusers be able to capture packages?” sudo vim /etc/group Lua: Error during loading: [string “/usr/share/wireshark/init.lua”]:44: dofile has been disabled due to running Wireshark as superuser. See https://wiki.wireshark.org/CaptureSetup/CapturePrivileges for help in running Wireshark as an unprivileged user. cd /usr/share/wiresharkvim init.lua倒数第二行原来为：dofile(DATA_DIR..”console.lua”)改为–dofile(DATA_DIR..”console.lua”)]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[vim相关配置]]></title>
+    <url>%2FVIM%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[sudo vim /etc/vim/vimrc set nu // 在左侧行号 set tabstop //tab 长度设置为 4 set nobackup //覆盖文件时不备份 set cursorline //突出显示当前行 set ruler //在右下角显示光标位置的状态行 set autoindent //自动缩进]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[名称解析和域名系统]]></title>
+    <url>%2F%E5%90%8D%E7%A7%B0%E8%A7%A3%E6%9E%90%E5%92%8C%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%2F</url>
+    <content type="text"><![CDATA[DNS是一个分布式的客户机/服务器网络数据库，TCP/IP应用程序使用它来完成主机名称和IP地址之间的映射。 互联网支持使用主机名称来识别包括客户机和服务器在内的主机。主机名称通过名称解析的过程转换成IP地址 DNS协议DNS协议由两部分组成： 用于执行对DNS特定名称查询的查询/响应协议 名称服务器用于交换数据库记录的协议（区域传输） 过程如图所示： A.HOEM上的解析软件首先向本地名称服务器GW.HOME发送请求，请求将某域名如EXAMPLE.COM转化成一个IP地址 很遗憾GW.HOME不知道这个IP地址，也不知道哪里有这个域名或是COM TLD的名称服务器，于是它转发到另一个DNS服务器例如ISP提供的服务器//这个过程称为解析 ISP提供的服务器也不清楚，所以它联系根服务器//根服务器不是递归的 因为根服务器不是递归的，所以其返回需要联系的COM TLD的名称服务器的信息，例如返回名称A.GTLD-SERVERS.NET以及一个或者多个它的IP地址。 根据根服务器提供的信息，ISP服务器就找到了gTLD服务器。 gTLD服务器给出了域名EXAMPLE.COM的名称服务器和服务器的IP地址，例如A.IANA-SERVERS.NET 基于6，ISP联系适当的服务器 该服务器返回请求的地址 ISP服务器把地址返回给GW.HOME GW.HOME再返回查询请求 DNS消息格式基本的DNS消息格式用于所有的DNS操作（查询，响应，区域传输，通知和动态更新） 如图所示： 名称 解释 事务ID 客户端设置，服务器返回，在客户端用于匹配响应和查询 QR 查询（0），响应（1） OpCode 操作吗，0表示查询，4表示通知，5表示更新，其他值无效 AA 表示授权回答 TC 表示截断回答，使用UDP时，当应答的长度超过512字节时，只返回前512个字节 RD 期望递归，设置表示支持递归查询，但是对不支持递归的服务器没有效果，例如根服务器 Z 置0，为将来保留 AD 设真表示信息是已授权的 CD 设真表示禁用安全检查 RECODE 响应码，具体见P370 随后的四个字段表示组成DNS消息的问题、回答、授权和额外信息区段中的条目的数目 标签数据标签以一字节的计数开始，该计数指定其后的字节数目。 名称以值为0结束。如图所示： 注意，每个标签的长度必须在0和63之间 压缩标签，如图所示： 首字节偏移量为0，如果出现了重复的标签既可以压缩。在重复出现的某个位置的字节两个高位置1，然后其后的14个字节组成一个偏移量。例如图中重复出现的edu，偏移量为4，两个高位置1后，其余为0则为192+后面置为4]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[用户数据报协议和IP分片]]></title>
+    <url>%2F%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%92%8CIP%E5%88%86%E7%89%87%2F</url>
+    <content type="text"><![CDATA[UDP是一种保留消息边界的简单的面向数据报的传输层协议。它仅提供差错检测。只是检测，而不是纠正，它只是把应用程序传给IP层的数据发送出去，但是并不会保证数据能够完好无损的到达目的地。 下图是UDP数据报的封装。 UDP头部端口号就如同邮箱一样，用来辨别发送和接受进程。端口号长16比特。 UDP头部如图所示： 源端口号（可选），如果发送方并不要求回复，则置0 目的端口号，帮助分离IP层进入的数据 长度，UDP数据报的长度（包过头部和数据） 校验和 IP层根据协议头部可以将IP数据报分离到特定的传输协议。正因为如此，不同传输协议是独立的，即可以使用相同的端口号而不会引起冲突。 校验和字段是端到端的，是对包含了IP头部中的源和目的IP地址字段的UDP伪头部计算得到的，伪头部的目的是用于校验和的计算，他不会被发送出去。 UDP伪头部和头部的格式如图： 伪头部包含了IP头部的源和目的地址，以及协议或下一个头部字段。目的是让UDP层验证数据是不是到达真正的目的地，由于有了这样的结构，当该数据报经过一个NAT时候，不仅仅IP层头部的校验和要被修改，并且UDP伪头部的校验和也要被修改。 UDP-Lite背景：有些应用程序可以容忍在发送和接收的数据里引入的比的差错。 为了避免建议连接的开销，或者为了使用广播或组播地址，这类程序会选择使用UDP。而UDP-Lit提供了部分校验和来解决这个问题。 其头部如下表示： 校验和覆盖范围字段表示被校验和覆盖的字节数。值为0表示整个数据包都被覆盖。由于整个头部总是要被覆盖的，所以值位1~7是无效的！ IP分片为了保持IP数据报抽象与链路层细节的一致和分离，IP引入了分片和重组。 IPv4的分片可以在发送主机和端到端路径上的路由器进行 IPv6只允许源主机进行分片 重组只能发生在IP数据报到达最终目的地的时候。原因很显然，不同分片可能会经过不同的路径到达目的地，在路径上的路由器只能看到分片的一个子集，显然无法重组。 分片由IPV4头部中的标识，分片偏移，和更多分片字段控制。 标识，由原始发送方设置，在目的地依据标识区分组 分片偏移，表示分片中数据的第一个字节在原数据报的偏移量（8个字节为单位） 更多分片（MF），0表示最后一个分片，否则为1。 偏移的具体内容如下图所示： 第二个数据报偏移为185*8=1480=第一个分片负载，即在第一个分片零偏移的基础上偏移了185个单位。 当TCP报文段的一个分片丢失了，TCP会重传整个报文段，而重传一个分片是不可能的，因为在路径路由器可以分片数据报，源主机是不清楚数据报如何被分片的。 具有更大偏移量的分片要比第一个分片更优先投递，这样有利于接收主机确定所需的缓存空间最大值 收到任何一个分片，IP层就启动计时器，超时即丢弃数据报。 UDP数据报长度有限，满额数据报并不能很好的被投递 本地协议实现的限制 接受应用程序并没有做好准备接收处理这么大的数据报]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[广播和本地组播（IGMP和MLD）]]></title>
+    <url>%2F%E5%B9%BF%E6%92%AD%E5%92%8C%E6%9C%AC%E5%9C%B0%E7%BB%84%E6%92%AD%EF%BC%88IGMP%E5%92%8CMLD%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。 由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。 并且考虑到最近身体比较虚弱…，应该更加早睡早起! 加油！ 广播和本地组播（IGMP和MLD）在引言中有下面一些比较重要的概念： 广播和组播为应用程序提供了两种服务 数据分组交付至多个目的地 //顾名思义 通过客户端请求/发现服务器 //类似于DHCP 一个广播请求会影响在广播范围内所有可以到达的主机，而组播只影响那些可能对该请求有兴趣的主机 注意，在广播的更高开销和简单性以及组播的效率改善和更多的复杂性之间存在一种平衡。 广播广播是指将报文发送到网络中的所有可能的接收者。很容易的能够理解广播的概念，就像你拿着大喇叭对所有人喊话一样。所以它并不需要ARP请求来确定每个目的地的MAC地址。 一般而言，使用广播的应用程序使用UDP协议，然后调用一组普通的API来发送流量。并且我们在打算发送广播数据报的时候，要加上一些特殊的标志，这样确认后可以防止误操作而产生大量的广播流量，造成网络拥塞。 组播组播的意思就是向一个组发送流量。 组播状态必须由主机和路由器来保持，定期的进行更新和删除操作，这样就能够很好的维护一个组。那他是如何更新的呢？我们下面的协议会讲到~ 主机地址过滤过滤发生在每个主机的网络接口卡（NIC）上， NIC指接收目的地址是接口的硬件地址或者广播地址的那些帧，如果涉及到组播帧，情况会更复杂。它往往被分成两类： 执行基于组播硬件地址的散列值的过滤 //存在散列冲突 侦听组播地址的一张有限表 //超过表所能容纳的更多组播地址时，NIC进入“组播混杂”模式，即所有的流量都会交给主机软件。 组播地址和48位的硬件地址的映射是不唯一的，所以进一步的过滤还是必须的。 这两种类型说到底还是会有一些不必要的数据报被接受，所以还需要设备驱动程序或者高层软件执行检查。 如下图所示： 当NIC接收到帧的时候，它首先会检查是否接收该帧（即检查CRC，MAC地址等)，然后交付给设备驱动程序,设备驱动程序查明该帧的类型，例如IP数据包，他就传递到IP层。IP层过滤完成后，便传到TCP或UDP等。然后就查询端口号。其实就是数据报在Internet主机上分解的过程， 如下图： 互联网组管理协议和组播侦听发现协议两个协议都用于允许组播路由器了解附近主机感兴趣的组，区别在于IPv4使用的是互联网组管理协议（IGMP),而IPV6使用的是组播帧听发现协议（MLD） 如何运作： 组播路由器定期向每个连接的子网发送IGMP(MLD)请求。主机则会响应这个请求，告诉路由器那些组和源是感兴趣的。如果成员资格变动，主机也可以发送主动提供的报告。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Internet控制报文协议]]></title>
+    <url>%2FInternet%E6%8E%A7%E5%88%B6%E6%8A%A5%E6%96%87%E5%8D%8F%E8%AE%AE%2F</url>
+    <content type="text"><![CDATA[首先，我们必须先清楚，IP协议本身没有为终端系统提供直接的方法来发现那些发往目的地址失败的IP数据包，并且IP没有提供直接的方式来获取诊断信息，那么我们的故事来了。 Internet控制报文协议（ICMP）腾空而出，与IP结合使用，提供了与IP协议层配置和IP数据包处置相关的诊断和控制信息，即它负责传递可能需要注意的差错和控制报文。ICMP表明了某些类别的故障和配置信息，但是并不为IP网络提供可靠性。 注意：我们常见的丢包（路由器缓冲区溢出）并不会触发任何的ICMP信息。 在IPv4和IPv6中的封装ICMP报文是在IP数据包内被封装传输的。 如图所示： ICMP报文封装在IPv4和IPv6的内部，即在其头部后面。ICMP头部包含了整个ICMP数据段的校验和。 下图表示了报文的格式 我们可以了解到： 类型字段长8位，ICMPv4为其保留42个值，但是只有8个常用，下文会提到。 代码字段长8位，每个类型有不同的代码，代表不同的含义 校验和长16位，涵盖了整个报文 如果一个ICMP报文校验和错误，显然是要被丢弃的； 同时这边给出中文版一个蹩脚的翻译 ：没有ICMP报文可以表示收到的ICMP报文中的校验和是错误的。 原版本的翻译是： there is no ICMP message to indicate a bad checksum in a received ICMP message，较为顺口的翻译应该是，在收到的ICMP报文中没有指示校验和错误的ICMP报文，即ICMP的报文不会去指错另一个ICMP的报文。 ICMP报文ICMP报文可以分为两大类： 有关IP数据包传递的ICMP报文（差错报文） 有关信息采集和配置的ICMP报文（查询或信息类报文） 信息类报文包括回显请求和回显应答，以及路由器通告和路由器请求。 最常见的差错报文类型包括目的不可达，重定向，超时，和参数问题。 关于类型字段以及类型所使用的代码号表格在书本250页均有，这边不再强调 下面进一步讨论差错报文常用的类型： 目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）目的不可这种类型的报文用来表示数据包无法送达目的地，其主要可细分成： 主机不可达（ICMPv4代码1）和地址不可达（ICMPv6代码3） 由路由器或主机产生，直接交付的时候由于某种原因无法到达目的地，例如主机关闭 目的无路由（ICMPv6代码0） 出现在到达数据包不必采用直接交付的方式来转发，但没有路由条目指定下一跳路由地址 管理禁止通信（ICMPv4代码3）和目的管理禁止通信（ICMPv6代码1） 通常是防火墙故意丢弃流量导致 端口不可达（ICMPv4代码3）和端口不可达（ICMPv6代码4） 当传入数据报的目的应用程序还没有准备好接收，就生成端口不可达报文 数据包太大（PTB）： 如果一个IPv4路由器收到一个数据报大于选定的传出网络接口的MTU， 则其需要分片，但如果IP头部设置了不分片位字段，则其被丢弃。同时，产生ICMPv4目的不可达（PTB）报文，该报文能将下一跳的MTU包含在其中。 而在ICMPv6中，因为IPv6只有数据包的发送者才能执行数据包分片，所以只产生ICMPv6目的不可达（PTB）报文，该报文能将下一跳的MTU包含在其中。 重定向（ICMPv4类型5，ICMPv6类型137）当路由器收到一个来自主机的不是给自己的数据报时，转发数据报到下一跳更好的路由，同时，路由器发送一个重定位报文到主机，使其更新路由表，这样下一次数据报直接就会到新定义的节点上。如图所示： 重定向报文包含了数据报下一跳正确路由器的IPv4地址。如图 超时（ICMPv4类型11，ICMPv6类型3）当由于TTL或跳数限制字段值调小致使路由器丢弃报文时，产生ICMP超时报文 一个工具：traceroute工具，被用于确定发送者到目的地路径上的路由器。 工作方式： TTL置1 发送数据报，接收路由器的ICMP超时报文，如果该路由为最终路由则停止。 TTL+=1 转回第二步 参数问题（ICMPv4类型12，ICMPv6类型4）当一个主机或者路由器接收到一个IP数据报，其IP头部存在不可修复的问题时就会产生一个ICMP参数问题报文。一个特殊的参数报文指针字段只是了错误字段相对于出错的IP头部的偏移值。 下面进一步讨论信息类报文常用的类型： 回显请求/应答（ping）（ICMPv4类型0/8，ICMPv6类型129/128）原理，收到ICMP回显请求报文后，ICMP要求将任何接收到的数据返回给发送方。报文格式如下 其中，标识符字段可以让发送主机利用，借此分离返回的应答。 当一个ping实例运行的时候，序列号从0开始，每发送一个回显请求报文便加1.ping打印出每个返回的数据报的序列号，方便用户查看数据报是否丢失等。 路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）首先定期使用TTL=1，对本地网络的所有主机组播（224.0.0.1）。使用RS报文发送到所有路由器组播地址（224.0.0.2），路由器发现的主要目的是让一台主机学习到它所在本地子网中的所有路由器，这样让他选好出一个默认的路由。 处理ICMP报文传入的信息类请求将被操作系统自动处理，而差错类报文传递给用户进程或传输层协议。 特例：重定向报文将导致主机路由表中的自动更新，目的不可达报文用于路径MTU发现机制（PMTUD）。这一般由传输层协议来实现。 ICMP差错报文限制生成的ICMP差错报文的元婴是限制生成所谓的广播风暴，ICMPv4有以下情况： ICMPv4差错报文 目的地址是IPv4广播或组播地址 作为链路层的广播数据报 不是第一个分片的其他分片 源地址为环回地址，广播或组播地址，零地址。 ICMPv6有以下情况： ICMPv6差错报文 ICMPv6重定向报文 目的地址是IPv6的组播地址数据报（除PTB和参数问题报文） 链路层广播组播的数据包 源地址为未指定或组播地址，或者任意为发送者所致的选播地址。 限制ICMP报文数据的方法是使用令牌桶每个桶保留最大数量的令牌，每个令牌允许一定数量的报文被发送。桶定期被新的令牌填充。每发送一个报文就减一， 一个概念：当发送一个ICMP差错报文的时候，它包含了一个完整的源自“违规”或者“原始”数据包的IP头部副本，再加上原始数据报的IP有效载荷区中的任何其他数据。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Internet协议]]></title>
+    <url>%2FInternet%E5%8D%8F%E8%AE%AE%2F</url>
+    <content type="text"><![CDATA[写在开头： 埋头学习也差不多半个月了，达到了这半个月每天都会去图书馆的目标。确实挺忙的，不管在学习上，部门社团上，党建上。有时候为了多学一些总是会挤掉了其他事情的一些时间。但是自己时刻提醒着自己不要太过激进了，做好自己的本职工作，生活还是要继续的，协调好彼此之间的关系。希望自己还是像以前那样开心就好了。 加油! Internet协议IP是TCP/IP协议族中的核心协议。IP提供了一种尽力而为，无连接的数据报交付服务。 尽力而为的含义是不保证IP数据报能成功到达目的地。任何的可靠性必须靠上层（例如TCP）提供 无连接意味着IP不维护网络单元（即路由器）中数据报相关的任何链接状态，这也就意味着IP数据报可不按照顺序交付，每个数据报可以独立路由，通过不同的路径，并且有可能较靠后发送的数据报提前到达 网络字节序一个32位值的4字节按以下顺序传输：首先是 0 ~ 7 位，然后8~15位，16~23，23~31位。这就是所谓的高位有限字节序，又称网络字节序。它是TCP/IP头部中所有二进制整数在网络中传输时所使用的字节顺序。 下面给出IPv4头部细节 字段 作用 版本 包含IP数据报的版本字段 IHL 长4位，表示IPv4头部中32位的数量，即IHL值为x，头部长度就为32*x DS 区分服务字段 ECN 显式拥塞通知 总长度字段 表示IPv4数据报的总长度，通过它和IHL就可以知道数据报的数据部分的位置 标识 表示IPv4主机发送的数据报，能够避免数据报分片混淆 生存期TTL 用于设定一个数据报可经过的路由器的数量上限 协议 表示数据报有效载荷部分的数据类型。，常见的有17（UDP)\6(TCP) 头部校验和 注意它仅计算IPv4的头部 源IP地址和目的IP地址 通常标识一台计算机的一个接口 TTL：生存期，发送方发送时会将它设位一个值，每次经过一台路由器就会减一，显然当这个值等于0的时候，数据报就会被丢弃。这样就可以避免了数据报有可能在路由器的环路中无限循环下去的问题。 Internet校验和Internet校验和是一个16位的数字和。 IP转发我们知道，IP协议可以接收到一个来自自己主机或者网络接口的数据报。IP层包括了一些位于内存中的信息，通常称为路由表或者转发表 转发数据的时候，IP模块会先检查数据报的地址是不是自己的IP地址（这个地址可以很多，比如组播，广播地址），是的话就给上头（数据报头部指定的协议模块），不是的话： 如果IP层被设置成路由器，就查找转发表，转发到下一跳 否侧就扔了 转发表里有下面几样东西： 目的地 掩码 下一跳：下一个IP的地址~ 接口：即下一跳的网络接口 IP转发只是提供数据报发送的下一跳实体的IP地址，它假设下一跳比执行转发的系统更接近目的地。 附上畅畅酱关于这个章节的地址]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[SND上机作业中出现的一些问题]]></title>
+    <url>%2FSDN%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[首先给出链接 VMware安装 mininet安装 floodlight安装及问题，各个版本Ubuntu SDN第一次上机作业 如果在这些链接的基础上你已经能很好的完成SDN第一次上机作业，那么下面的东西你也就没必要看了~ 我是按照教程的顺序一步一步写下来的~ 我们使用Ubuntu16安装mininet时候出现问题当我执行sudo apt-get update时有以下的错误 解决方法 sudo pkill -KILL appstreamcli wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb sudo apt-get update 参考资料 然后便可以成功运行。 sudo apt-get upgrade在这种情况下仍可能出现一些小瑕疵，我们暂时不管。 第二部分实验内容出现的问题然后我们就会一路顺畅的走下来，在第二个实验作业中，提示我们mininet must run as root如图 显然我们要在root下运行mininet的图形界面。 为此，我们输入su - 及密码，但是并不能进入root。原因是root用户还没有设置密码，所以我们输入以下指令sudo passwd 设置密码。此后我们便很顺利的完成第二部分的实验内容。 floodlight与mininet结合出现的问题我们根据教程一路做下来，如果提示我们什么指令没有安装，就根据提示安装对应的指令，例如 ant`vim指令没有安装，下图为ant`指令没有安装的实例 如果你使用的时14版本，这里给出教程中设置变量的一个拼写错误 接下来就是进行实验的部分了，如果你很惨，没有找到胖树（fattree.py)这个文件，你只好自己去复制粘贴脚本了~在此之前你最好多多了解下vim文本的操作指令。 当你写好脚本的时候，别忘了把它生成可执行文件 chmod +x fattree.py 注意：如果你的脚本里含有中文，可能是会报错的 因为某种原因，我没有采用screen mn …..的操所，而是直接sudo它 并且在执行脚本中不能够连接上控制器，或者连接控制器后pingall依然是没有连接控制的现象的时候（听起来有点绕口，如果你出现这种问题，你可能会大致清楚我要表达的意思） 根据Wasdns的方法，对脚本中的参数做了以下的修改。 最后你就可以欢快的完成你的实验作业了 经历了断断续续安装学习的几天，耐心是很重要的，安装过程的一些毛病不能够忽视，阅读提示很重要，并且根据提示去解决问题。 终于在经历了6台虚拟机的折磨后，在写博客的最后这一台很好的完成了任务。MUA！ 感谢实验室的伙伴们提供的宝贵经验~ 感谢实验室的伙伴们提供的宝贵经验~ 感谢实验室的伙伴们提供的宝贵经验~]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>SDN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[系统配置：DHCP和自动配置]]></title>
+    <url>%2F%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%EF%BC%9ADHCP%E5%92%8C%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[写在开头：今天和导师见了个面，抛给我一堆材料以及论文，感觉自己学业更加繁重。有些知识现阶段我可能没办法掌握，但是至少在我需要进一步理解它的时候，要知道在哪个地方能够找到。努力协调好项目以及导师的安排，课堂的内容尽量都在课堂直接消化了。找到能够一起学习的伙伴们是多门幸运的事情，好好加油~ Yesterday you said tomorrow. 引言我们知道每台主机和路由器都是需要一定的配置的信息的，配置信息用于为系统指定本地名称，以及接口制定标识符（比如IP地址）,而在TCP/IP网络中。每个接口需要： IP地址 子网掩码 广播地址 系统需要一个路由或转发表，用来确定到达不同目的地的系统通讯。 Internet客户端主机中用于建议基本要素的协议和程序：动态主机配置协议（DHCP）以及IPv4和IPv6的无状态地址自动配置。 状态机：状态机由状态寄存器和组合逻辑电路构成，能够根据控制信号按照预先设定的状态进行状态转移，是协调相关信号动作，完成特定操作的控制中心。 动态主机配置协议DHCP是一种流行的客户机/服务器协议，它用于为主机（或路由器）指定配置信息。 DHCP的设计是基于一种早期的协议，Internet引导程序协议（BOOTP），只不过它已经过时了… DHCP由两个主要的部分组成，地址管理和配置数据交付。 地址管理用于IP地址的动态分配，并为客户机提供地址租用。配置数据交付包过DHCP协议的消息格式和状态机 DHCP服务器可配置提供三种地址分配： 自动分配，同动态分配，但是地址不可撤销 动态分配，最常用，客户机从服务器配置的地址池中获得一个可撤销的IP地址 手动分配， 地址池和租用在动态分配中，DHCP客户机请求分配一个IP地址，服务器从可用的地址池中选择一个地址作为响应。 分配给客户机的地址只在一段特定时间内有效，这段时间称为租用期 运作：当发送DHCP请求时，客户机需要向服务器提供信息。这些信息包过客户机的名称、请求的租用期、已使用或最后使用过的地址副本和其他参数。 当服务器接收到这个请求时，它可利用客户机提供的信息（包过MAC地址请求)，结合其他从外部获得的信息（例如一天的时间，接受请求的接口），决定在响应中提供的地址和配置信息。 当服务器向客户机提供租用期时，服务器将租用信息保存在持久性的存储器（非易失性内存或磁盘）中。 DHCP消息格式我们知道 DHCP前身是BOOTP，所以它的消息格式是采用拓展BOOTP的方式 如图所示： 名称 内容及作用 Op 标识消息是请求（1），还是应答（2） htype 基于ARP使用的值，（1）为以太网 hlen 存放硬件（MAC)地址 跳步 用于保存消息传输过程中的中继次数，初始为0，依次增加 事务ID xid 客户机选择的随机数，服务器需要将它复制在应答中，用于匹配应答与请求 秒数 申请地址经过的秒数 标志 广播标志，表示客户机所发请求不能处理单播IP数据报，但能处理广播数据报 客户机IP地址 请求者的IP地址，如果没有就为0 你的IP地址，yiaddr 即服务器地址 下一服务器IP地址 顾名思义客户机可能需要另一个DHCP服务器来完成它的请求 网关IP地址 中继地址，由DHCP中继器填写，在转发时返回自己的地址 客户机硬件地址 客户机唯一标识符 其他字段例如服务器名，引导文件名并不是每次都需要填写的，但是选项字段区分DHCP和传统BOOTP消息。 因此我们可以称DHCP消息是带有一组特殊选项的BOOTP消息，至于选项的细节，我们在这里暂时不提 DHCP协议操作当新客户机连接网络时，它首先发现DHCP服务器们以及服务器们能提供的地址。然后它向中意的服务器发送它中意的请求，同时也向其他服务器发送它的决定。如果该服务器还保留该地址，便通过确认将地址分配给客户机。 他们之间的互相通讯可以由上图反应，数据包中各单位值的修改我暂时没有写在这里。 这里存在一个疑问，DHCP服务器如何向一个没有设置IP地址的客户机传达消息呢？ 还记得数据报中的标志字段吗？设置标志字段表示自己能够接收广播数据报，所以DHCP服务器是采用广播的方式连上客户机的 下图给出DHCP的状态机 DHCP中继在更复杂的网络中，可以通过DHCP中继代理来中继DHCP流量，这样会更方便~ 如图，在网段A\B之间的中继器会转发DHCP消息。通过选项或者填充空白字段使用额外的消息来标识它。 这里有个要注意的地方，中继一般不会参与到客户机与服务器的所有流量交换。它仅中继客户机首次广播的消息，当客户机获得了服务器的IP地址，那就可以直接与服务器单播通讯了。 中继代理信息选项（RAIO）定义了很多子选项，例如几个被ISP用于标识一个请求来自哪个用户、链路或网络的选项 例如：中继代理远程ID子选项和IPv6远程ID选项 用于标识发送请求的DHCP客户机的方法。通俗来说就是采用本地解释的命名方式，例如呼叫方ID、用户名、调制解调器ID、点到点链路的远程IP地址等 DHCP和DNS交互当一台DHCP客户机获得一个IP地址时，它接收的配置信息的重要部分是一台DNS服务器的IP地址。 组合DHCP/DNS服务器或动态DNS用来实现指定DHCP地址与相应的DNS地址的映射更新方法。 组合DHCP/DNS服务器可读取请求中的客户机标识符或域名，在ACK进行响应前，通过映射更新内部DNS数据库，这样在后续的DNS请求中，能够在客户机名称和新分配的IP地址之间转换 以太网上的PPP对于大多苏局域网和一些广域网连接，DHCP提供了最常见的客户机系统配置的方法。对于广域网连接，常用另一种基于PPP的方法替代它。这种方法设计在以太网中携带PPP，因此称为以太网上的PPP（PPPoE） PPPoE用于广域网连接设备（例如图中的DSL调制解调器）作为一个交换机或网桥而不是使用路由器的情况下。 在DSL调制解调器与ISP成功建立一条底层链路后，PC就可以开始PPPoE交换 PPPoE消息交换开始于发现阶段及建立PPP会话阶段。每个消息是一个PAD（主动发现）消息。PADI（初始化）请求来自PPPoE服务器的响应，PADO(提供）提供连接。PADR(请求）表示客户机可以从多个可能的服务器中做出选择。PADS（会话确认）从选中的服务器向客户机提供一个确认。经过PAD交换，一次PPP会话开始。 PPP会话可以由任何一方发送PADT(终止）消息来终止，或在底层链路出现故障时关闭。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[防火墙和网络地址转换]]></title>
+    <url>%2F%E9%98%B2%E7%81%AB%E5%A2%99%E5%92%8C%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2%2F</url>
+    <content type="text"><![CDATA[写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。 所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。 防火墙和网络地址转换防火墙：一种能解决限制所发送的流量类型的路由器 NAT：网络地址转换 防火墙最为常用的两种防火墙是代理防火墙和包过滤防火墙。 他们之间主要区别是所操作的协议栈的层次及由此决定的IP地址和端口号的使用。包过滤防火墙是一个互联网路由器，能够丢弃符合（或者不符合）特定条件的数据包。 包过滤防火墙包过滤防火墙作为互联网路由器，能够过滤（丢弃）一些网络流量，他们一般都可以配置为丢弃或转发数据包头中符合（或者不符合）特定标准的数据包，这些标准称为过滤器。 一个典型的包过滤防火墙有三个网络接口的互联网路由器：一个“内”接口，一个“外”接口和第三个“非军事区”（DMZ）接口。通常情况下，过滤器会全力拦截来自外网的恶意。但是不会限制从内网到外网的流量。 代理防火墙本质上是运行一个或多个应用层网关的主机，它拥有很多网络接口，能够在应用层中连接/关联之间的特定类型的流量。 如上图所示，内部网络外出连接在防火墙上终止，外部Internet进去连接只到运行的委托代理。而在中间这堵墙（代理防火墙）上运行的是每个受支持的服务的应用/服务代理。 这种防火墙的不便之处在于每次使用新服务，都必须安装一个相应的代理，由此来操作发起连接。 两大常见形式： HTTP代理防火墙： 又称作Web代理。根据上面的理解，这种代理防火墙，在内网用户看来是Web服务器，在外部网站看来是Web客户端。同时，这种代理也提供Web缓存功能，顾名思义，就是缓存网页副本，已减少网页延迟，提高用户体验。 SOCKS防火墙：可用于Web之外的服务。例如：第四版为代理传输提供基本支持；第五版增加了强大的认证，UDP传输和IPV6寻址。使用时，应用程序必须先添加SOCKS代理支持功能，同时通过配置应用程序能够获得代理位置及其版本 网络地址转换本质上是一种允许在互联网的不同地方重复使用相同的IP地址集的机制 运作原理：当内部系统所有进出的流量均通过一个单独的NAT设备的受，它就将内部的地址空间与全球互联网地址空间分开，这样内部系统就能够使用自己分配的IP地址访问互联网。 然而，我们知道互联网上的用户是没有办法直接访问具有私有地址的主机的。内部系统要正常的连接上网络就必须要让NAT重写通过路由器的每个数据报包的识别信息，这很复杂，NAT必须跟踪每个连接的状态，贯穿多个协议层，修改IP地址的同时也要修改传输层的校验码。 讲的具体点就是，它必须重写向某一方向传输的数据包的源IP地址，同样的也要重写向另一个方向传输的数据包的目的IP地址。这样外界看来，这个数据包是来自于具有全局路由IP的NAT路由器，而不是其内部的拥有私有地址的主机。如图所示 传统的NAT:基本NAT和NAPT基本NAT只执行IP地址的重写，及改内部的私有地址为公共地址。但是它没有办法助于减少IP地址的数量（多少个内部主机希望访问互联网就必须分配多少个公共地址，如果每个主机都访问这样NAT就没有意义了） NAPT的做法则不同，它使用传输层的标识符，来确定数据包和内部主机的关系。（可以利用相同的公共地址而不同的标识符来区分内部的主机）。内部标识符相同的时候，NAPT也能够重写标识符 注意这里面有一个问题：如果内部地址所用到的地址刚刚好是自己也想连接的公共地址，那就麻烦了。 所以我们保留了10.0.0.0/8,172.13.0.0/12,以及我们最常见的192.168.0.0/16作为私有地址范围来使用。 Yestreday you said tomorrow]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[地址解析协议]]></title>
+    <url>%2FARP%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE%2F</url>
+    <content type="text"><![CDATA[IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。 地址解析是发现两个地址之间的映射关系的过程。地址解析协议ARP是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。 直接交付和ARP下面给出IPv4直接交付的基本操作： 应用程序使用32位的IPv4地址10.0.0.1 应用程序要求TCP协议建立一条到10.0.0.1的连接 通过向10.0.0.1发送一个数据报，TCP尝试向远程主机发送一个连接请求 假设地址该数据报可被直接发送到这个地址，且以太网兼容地址被用于IPv4. 那么，发送的主机就必须将32位的IPv4目的地址转化为48位的以太网地址，这就需要逻辑Internet地址相对应物理硬件地址进行转换，这就是ARP功能。链路层能够将一个消息交付到它连接的所有网路设备，这是ARP运行的一个重要要求 在一个共享的链路层网段，ARP向所有主机发送一个称为ARP请求的以太网帧（链路层广播）。ARP请求包含目的的主机IPv4地址10.0.0.1，并寻找以下答案“如果你将10.0.0.1配置为自己的地址，请向我回应你的MAC地址” 通过ARP，同一广播域中的所有系统都可以接收该请求，如果某系统使用请求中给定的IPv4地址，那么它需要响应一个ARP应答。该应答包含了请求中的IPv4地址和对应的MAC地址。该应答直接发送给请求的发送方。接收ARP请求的主机学习IPv4到MAC地址的映射，并记录在内存中供以后使用 ARP应答被原始请求的发送方接收，现在可以发送引起此次ARP请求/应答的数据报。 发送方可将数据报封装在以太网帧中直接发送到目的主机，应使用由ARP交换学到的以太网作为目的地址。 ARP缓存ARP高效运行的关键是维护每个主机和路由器上的ARP缓存。该缓存使用地址解析为每个接口维护从网络层地址到硬件地址的最新映射。 ARP缓存超时超时通常与ARP缓存中的每个条目相关。在大多数实现中，完整条目的超时为20分钟。 软状态是指在超时到达前没有更新而被丢弃的信息。如果网络条件发生改变，软状态有助于启动自动重新配置。 免费ARPARP的另一个功能被称为免费ARP，它发生在一台主机发送的ARP请求以寻找自己的地址。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[链路层]]></title>
+    <url>%2F%E9%93%BE%E8%B7%AF%E5%B1%82%2F</url>
+    <content type="text"><![CDATA[设计链路层的目的是为了IP模板发送和接收IP数据报 大多数链路层技术都有一个相关的协议，描述由网络硬件传输的相应PDU（Protocol Data Unit，协议数据单元） 格式。我们通常称链路层的PDU为帧 以太网和IEEE 802局域网/城域网标准以太网这个术语通常指一套标准，由DIX(DEC，Inter公司，Xerox公司)在1980年首次发布。 基本的共享以太网包含一个或多个站（例如工作站，超级计算机），他们被连接到一个共享的电缆上。当介质被确认为空闲状态的时候，链路层的PDU就可以从一个站发送到另一个站。当因为信号传播延迟造成碰撞时，可被检测到。其导致了发送站等到一个随机事件，然后重新发送数据。这种方法被叫做带冲突检测的载波侦听多路访问（CSMA/CD），但是其更正式的名称是介质访问控制协议（MAC） MAC协议有很多类型，有些基于每个站尝试独立使用网络（例如CSMA/CD的基于竞争协议），有些预先安排的协调（例如依据为每个站分配的时段发送） 岁月匆匆，随着以太网的发展，基于竞争的MAC协议已经变得不流行。相反，局域网中每个站之间的线路通常不共享，而是提供了一个专用的星型拓扑结构。这可以通过以太网交换机来实现 交换机为以太网中的每个站提供同时发送和接收数据的能力（全双工以太网） 以太网的帧格式（ 以太网帧开始是一个前导字段，接收器电路用它确定一个帧的到达时间。 帧格式包过48位的目的地址（DST）和源地址（SRC）。这些地址又称MAC地址 帧校验序列/循环冗余校验循环冗余校验CRC：被检查的消息首先需要追加n位0形成一个扩展消息，然后除以一个约定的n+1位的值，得到一个余数。将该余数的反码（放置在帧校验序列FCS）追加在被检查的消息后面。 在接受到数据后，接受方执行相同的除法计算余数，并判断该值与FCS是否匹配 网桥和交换机网桥或交换机用于链接多个物理的链路层网络，或成组的站 交换机的本质是高性能的网桥 无线局域网——IEEE 802.11（Wi-Fi）无线保真（Wi-Fi）是访问Internet的最流行技术之一 下面了解几个概念 站（STA） 接入点（AP） 一个AP和相关的STA被称为一个基本服务集（BSS） AP之间通常使用一种有线的分布式服务（DS）连接，形成一个扩展服务集（ESS）即基础设施模式。 RTS/CTS和ACK802.11网络支持可选的请求发送/明确发送（RTS/CTS），通过放缓传输来进行流量控制：当RST/CTS启用时，一个站在发送数据帧之前，会发送一个RTS帧，当接收方愿意接收额外的流量时，他会响应一个CTS帧。在RTS/CTS交换后，这个站开启一个时间窗口，用于向确认接收的站发送数据帧。 在有限的以太网中，冲突较少意味着正确接收帧的概率较高。在无线网络中更多的因素导致帧交付可能出错，例如信号不够强或受到干扰。为此，802.11采用一种重传/确认（ACK）方法。 确认是对预期在一定时间内接收的一个单播帧或一组帧的响应。在指定时间内没有接收到对应的ACK会导致帧的重传 点到点协议PPP表示点到点协议，这是一种在串行链路上传输IP数据报的 PPP实际上是一个协议集合，而不是一个单一的协议。它支持建立链接的基本方法，称之为链路控制协议（LCP）以及一系列网络控制协议（NCP）。 链路控制协议LCP用于在点到点链路上建立和维护底层的双方通讯路径。因此，PPP操作只需关注一条链路的两端。不需要像以太网和WiFi的MAC层协议那样处理共享资源访问的问题 MTU和路径MTU很多链路层网络中，携带高层协议PDU的帧大小是有限制的，以太网有效载荷的字节数通常被限制为1500，PPP通常采用相同大小以保持与以太网兼容，这种特征被称为最大传输单元（MTU） 在包含所有链路的整个网络路径上，最小的MTU称为路径MTU。注意，路径通常不对称，路径MTU不需要在两个方向上相同 隧道基础在某些情况下，两台计算机通过Internet或其他网络建立一条虚拟链路是有用的。虚拟专用网络（VPN）提供这样的服务。实现这类服务的最常用方法称为隧道。 隧道是在高层或同层分组中携带底层数据，其转变了在头部中严格分层的思想，允许形成覆盖网络。]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Internet 地址结构]]></title>
+    <url>%2FInternet%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84%2F</url>
+    <content type="text"><![CDATA[连接到Internet的每个设备至少要有一个IP地址。基于TCP/IP协议的专用网络中使用的设备也需要IP地址。 表示IP地址IPv4地址：32bit采用点分四组或者点分十进制表示。例如165.195.130.105 IPv6地址：128bit采用块或字段的四个十六位进制数表示。例如5f05:2000:80ad:5800:0058:0800:2023:1d71 该表示方法有以下共识： 块前导0必须省略，如上面的地址可以写成5f05:2000:80ad:5800:58:800:2023:1d71 全零的块可以用::省略，但为了避免歧义，仅能使用一次且使用在省略块长度最长的地方（当多个省略块长度相同时，省略较高位的块）。例如2001：0：0：0：2：0：0：1可以写成2001::2:0:0:1 基本的IP地址结构IP地址可以根据类型和大小分组，那些用于识别连接Internet或某些专用的内联网的计算机网络接口称为单播地址。此外还有广播、组播和任播地址。但是，IPv6并没有任播地址 分类寻址IPv4地址空间最初分成五大类如下图所示 A，B，C类用于单播地址，D用于组播而E地址保留。 其地址空间划为如下图所示 我们很容易可以看出，A，B类的网络号浪费了太多的主机号，而C类则不能为很多站点提供足够的主机号。就如同学校中有的教室大，有的教室很小。教务处按上面的方法分配教室的时候，就会出现有的教室只有少部分座位被利用，而有的教室却有很多人没有座位。所以可能有人就建议要建更大的教室，于是就有了IPv6。也有人提出了更加优化的分配方案，这些都是我们之后要谈的。 子网寻址子网寻址的想法是，给站点分配A，B，C类的网络号，保留下一些剩余的主机号，让站点自行分配。这种方法使得站点管理员能够在子网数和每个子网预期的主机数中折中，减少了与其他站点的协调。 这就好比学校再不给每个班级分配教室了，而是把这个任务扔给了学院去处理。学院的灵活折中处理稍微的解决下了这个苦恼的问题。 那么什么是子网寻址呢？它是如何工作的呢？在上图的这个例子中，我们再给定网络号的基础上，选定了8位子网号，剩下的8位为主机号。这样就有256个子网，每个子网可以包含254（256-2，其中子网的第一个和最后一个地址无效）台主机。注意：只有划分子网的网络中的主机和路由器知道子网的结构，Internet的其他部分仍将它作为站点相关的地址看待。 那么问题来了，如何知道网络号之后的子码和主机号码是怎么划分的？ 子网掩码子网掩码的长度和其IP地址相同。在数值上，子网掩码在对应主机位上均置0，其余位置均置1。于是有255.255.254.0（可以简写成/23）表示前面23位以后才是代表主机号码。 将地址与掩码按位与运算得到路由的地址的网络与子网标识符（前缀）。这样便可以知晓该地址的子网。 在对同一站点的不同部分，将不同长度的子网掩码应用于相同的网络号，就形成了可变长度子网掩码（VLSM）。 广播地址广播地址是该IP地址与掩码取反进行或运算的结果。 当目的地址为某广播地址，如上图的128.32.1.255时，数据报将发送给目标站点的所有主机 CIDR和聚合无类别域间路由（CIDR）和聚合为解决下列原因而出现 B类地址耗尽 路由表的条目数增加 前缀使用CIDR，未经过预定义的任何地址范围都可以作为一个类的一部分，但是需要一个类似子网掩码的掩码，称之为CIDR掩码。CIDR掩码不再局限于一个站点，而对全球性路由系统都是可见的 除了网络号之外，核心Internet路由器必须能解释和处理掩码，这样的数字组合称为网络前缀 消除IP地址中网络和主机号的预定义分隔，将使更细粒度的IP地址分配范围成为可能。 例如192.125.3.0 写成前缀形式：192.125.3.0/24。A 类和 B 类网络号用前缀 /8 和 /16 表示 聚合减少路由表的条目数也很重要，就好比你在十字路口碰到了无数多的道路指向牌，你也会蒙蔽的。所以人们就想出了一些方法。 我们想到，路由表的条目数利用网络拓扑排列成一棵树，如果这棵树的上一层能够和目的IP地址的较高位吻合，接下的每一层依次匹配下来，就可以节省大量的时间。 做到这样的树，就要通过路由聚合这个过程来实现，即： 将相邻的多个IP前缀合并成一个短前缀，这样就可以覆盖更多的地址空间。而合并的方法便是进行按位与运算。 特殊用途地址 这里暂时不举例 ###组播地址 一个IP组播地址标识一组主机接口，而不是单个接口。 站点管理员可将路由器配置为管理范围边界，这意味着相关组的组播流量不会被路由器转发]]></content>
+      <categories>
+        <category>Study</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+</search>
