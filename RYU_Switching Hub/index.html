@@ -108,7 +108,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-04</span>
-            <span class="time">20:25:29</span>
+            <span class="time">20:28:38</span>
           </span>
           
           <!--  Categories  -->
@@ -246,13 +246,14 @@
 <p>接下来我们在mininet中执行<code>pingall</code>操作，同时监控h1端口的数据包，为了方便，我们仅仅使用tupdump。</p>
 <p>在h1终端输入<code>tcpdump -en -i h1-eth0</code>开启监控端口功能。在此我们只观察 h1 与 h2。</p>
 <p><img src="https://i.imgur.com/wPCmnnK.jpg" alt=""></p>
-<p>我们可以看到图中的中部， h1 arp h2,  h2回应h1 。紧接着，h1 ping h2，h2 request h1 。实现了通讯。右边的是控制器的日志输出，我在程序中加了个计数的功能，每次收到一个packet-in 技术及就加1。</p>
+<p>我们可以看到图中的中部， h1 arp h2,  h2 request h1 。紧接着，h1 ping h2，h2 request h1 。实现了通讯。右边的是控制器的日志输出，我在程序中加了个计数的功能，每次收到一个packet-in 技术及就加1。</p>
 <p>接着，我们查看s1 的流表。<br><img src="https://i.imgur.com/TuzUc5R.jpg" alt=""></p>
 <p>h1、h2、h3 共有三个端口有六个流表，分别指定了各自的数据包如何发送。很高兴程序没有出现BUG！</p>
 <p>至此，本章节内容结束。</p>
 <hr>
 <h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>学习RYU有一周了，但是其实看的内容并不多，每天都是有一件一件一件事情被解决，但是就是轮不到RYU。很亢奋用一个下午半个晚上的时间重新阅读第一章的内容。并写下了这篇博客。虽然有些概念随着时间还是会一点一点忘记了，希望通过这篇博客能够尽快找到解决的地方。今天也算是完成了一件很重要的事情了！</p>
 <p>希望在考试月再接再厉！不仅仅为了自己。</p>
+<p>还有这个模板下的代码风格各种BUG，找个时间解决它</p>
 <hr>
 <h3 id="爱你所爱，行你所行。"><a href="#爱你所爱，行你所行。" class="headerlink" title="爱你所爱，行你所行。"></a>爱你所爱，行你所行。</h3>
         </div>
