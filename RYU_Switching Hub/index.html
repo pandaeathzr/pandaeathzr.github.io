@@ -108,7 +108,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-04</span>
-            <span class="time">17:30:23</span>
+            <span class="time">18:28:20</span>
           </span>
           
           <!--  Categories  -->
@@ -192,7 +192,12 @@
 <li>datapath.ofp_parser 是一个按照OpenFlow解析的数据结构，即动作</li>
 <li>parser.OFPMatch() 为匹配项，此时为空，完全匹配</li>
 <li>actions 为一个列表，存放动作，动作来自datapath.ofp_parser中解析的数据结构，此例中为OFPActionOutput，其带有两个参数，ofproto.OFPP_CONTROLLER表示发送报文到控制器，ofproto.OFPCML_NO_BUFFER表示表示不应该应用缓冲，并且整个数据包将被发送到控制器。</li>
-<li>add_flow(datapath, 0, match, actions)就容易理解了，其中0表示优先级</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_flow</span><span class="params">(self, datapath, priority, match, actions)</span>:</span></span><br><span class="line">        ofproto = datapath.ofproto</span><br><span class="line">        parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">        <span class="comment"># construct flow_mod message and send it.</span></span><br><span class="line">        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,</span><br><span class="line">                                             actions)]</span><br><span class="line">        mod = parser.OFPFlowMod(datapath=datapath, priority=priority,</span><br><span class="line">                                match=match, instructions=inst)</span><br><span class="line">        datapath.send_msg(mod)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>OFPInstructionActions 该指令用于写入/应用/清除动作。</li>
+<li>OFPFlowMod 控制器发送此消息来修改流表。 参数instructions在源码中解释为list of <code>OFPInstruction*</code> instance，*为通配符，此例中为OFPInstructionActions</li>
+<li>send_msg 排队一个OpenFlow消息发送到相应的交换机。 如果msg.xid为None，则在排队之前会自动在消息上调用set_xid。</li>
 </ul>
 <p><strong>这个函数完成的内容就是将所有的数据包传给控制器</strong>，其中的数据包为优先级为0的流表项匹配到的数据包。</p>
 
