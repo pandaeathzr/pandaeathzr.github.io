@@ -108,7 +108,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-04</span>
-            <span class="time">21:28:19</span>
+            <span class="time">21:39:58</span>
           </span>
           
           <!--  Categories  -->
@@ -297,7 +297,9 @@ class ExampleSwitch13(app_manager.RyuApp):
 <li>parser.OFPMatch() 为匹配项，此时为空，完全匹配</li>
 <li>actions 为一个列表，存放动作，动作来自datapath.ofp_parser中解析的数据结构，此例中为OFPActionOutput，其带有两个参数，ofproto.OFPP_CONTROLLER表示发送报文到控制器，ofproto.OFPCML_NO_BUFFER表示表示不应该应用缓冲，并且整个数据包将被发送到控制器。</li>
 </ul>
-<h2 id="这个函数完成的内容就是将所有的数据包传给控制器，其中的数据包为优先级为0的流表项匹配到的数据包。"><a href="#这个函数完成的内容就是将所有的数据包传给控制器，其中的数据包为优先级为0的流表项匹配到的数据包。" class="headerlink" title="这个函数完成的内容就是将所有的数据包传给控制器，其中的数据包为优先级为0的流表项匹配到的数据包。"></a><strong>这个函数完成的内容就是将所有的数据包传给控制器</strong>，其中的数据包为优先级为0的流表项匹配到的数据包。</h2><pre><code class="python">def add_flow(self, datapath, priority, match, actions):
+<p><strong>这个函数完成的内容就是将所有的数据包传给控制器</strong>，其中的数据包为优先级为0的流表项匹配到的数据包。</p>
+<hr>
+<pre><code class="python">def add_flow(self, datapath, priority, match, actions):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
 
