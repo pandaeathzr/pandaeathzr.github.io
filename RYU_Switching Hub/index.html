@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="RYU，Chapter 1. 交换机（Switching Hub)"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">RYU，Chapter 1. 交换机（Switching Hub)</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-06-04</span>
+            <span class="time">16:32:48</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/SDN/">#SDN</a> <a class="tag" href="/tags/RYU/">#RYU</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><h2 id="RYU的安装"><a href="#RYU的安装" class="headerlink" title="RYU的安装"></a>RYU的安装</h2><p>在拥有一系列组件的前提下：<code>pip install ryu</code></p>
+<p>接下来会面临一些问题就是，找不到RYU的目录在何方？</p>
+<p><img src="https://i.imgur.com/71EF0zG.jpg" alt=""></p>
+<p>输入<code>ryu-manager ***</code> 在报错的后面就有ryu的目录地址</p>
+<h2 id="RYU各个文件的内容："><a href="#RYU各个文件的内容：" class="headerlink" title="RYU各个文件的内容："></a>RYU各个文件的内容：</h2><p>这些目录的主要内容在SDNLAB网站上有记录<a href="https://www.sdnlab.com/1785.html" target="_blank" rel="noopener">来自李呈</a>，你也可以在<a href="http://ryu.readthedocs.io/en/latest/getting_started.html" target="_blank" rel="noopener">RYU的官方文档</a>上学习到。</p>
+<p>而这次博客的内容主要是记录我在学习RYUBOOK上的一些感想。如果你想获得RYUBOOK这本书，<a href="https://github.com/Emil-501/The-Road-to-SDN/tree/master/RYU" target="_blank" rel="noopener">请点击</a></p>
+<hr>
+<h1 id="交换机（Switching-Hub）"><a href="#交换机（Switching-Hub）" class="headerlink" title="交换机（Switching Hub）"></a>交换机（Switching Hub）</h1><p>关于交换机交换数据包的原理：</p>
+<ul>
+<li>学习源主机的入端口，MAC地址</li>
+<li>查找MAC表，若不存在目的主机的MAC地址，则按照生成树协议执行转发所有端口；若存在，则按照端口执行转发</li>
+</ul>
+<p><strong>这一块相信学过传统网络知识的同学都基本清楚。</strong></p>
+<p>关于OpenFlow交换机的最简单的功能：</p>
+<ul>
+<li>修改收到的数据包及传送到对应端口</li>
+<li>Packet-in</li>
+<li>Packet-out</li>
+</ul>
+<p>借这些功能，RYU控制器大致通过以下内容实现最简单的交换机转发功能：</p>
+<ul>
+<li>利用Packin-in学习端口号及MAC地址<ul>
+<li>控制器解析Packet-in，得到源主机的接入端口及MAC地址，记录在表</li>
+</ul>
+</li>
+<li>利用Packin-out下发流表到交换机实现转发功能<ul>
+<li>控制器解析Packet-in，得到目的主机的MAC地址，查询MAC表，若找到对应项，则使用Packet-out传送到先前对应的端口。否则，利用packet-out来达到flooding功能。</li>
+</ul>
+</li>
+</ul>
+<p><strong>注：</strong>这边flooding采用的是OFFP-FLOOD(沿最小生成树发送数据包)</p>
+<p>此时，在ovs交换机就有来自控制器所学习好了的流表项目，能够告诉交换机接下去的动作。例如优先级最低的流表是FLOOD动作，优先级高一丢丢的是正常的OUTPUT动作</p>
+<hr>
+<h1 id="RYU的源码实现："><a href="#RYU的源码实现：" class="headerlink" title="RYU的源码实现："></a>RYU的源码实现：</h1><p>先贴上整个源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"># Copyright (C) 2016 Nippon Telegraph and Telephone Corporation.</span><br><span class="line">#</span><br><span class="line"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="line"># you may not use this file except in compliance with the License.</span><br><span class="line"># You may obtain a copy of the License at</span><br><span class="line">#</span><br><span class="line">#    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line">#</span><br><span class="line"># Unless required by applicable law or agreed to in writing, software</span><br><span class="line"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or</span><br><span class="line"># implied.</span><br><span class="line"># See the License for the specific language governing permissions and</span><br><span class="line"># limitations under the License.</span><br><span class="line"></span><br><span class="line">from ryu.base import app_manager</span><br><span class="line">from ryu.controller import ofp_event</span><br><span class="line">from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER</span><br><span class="line">from ryu.controller.handler import set_ev_cls</span><br><span class="line">from ryu.ofproto import ofproto_v1_3</span><br><span class="line">from ryu.lib.packet import packet</span><br><span class="line">from ryu.lib.packet import ethernet</span><br><span class="line">import xxxs</span><br><span class="line">class ExampleSwitch13(app_manager.RyuApp):</span><br><span class="line">    OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]</span><br><span class="line"></span><br><span class="line">    def __init__(self, *args, **kwargs):</span><br><span class="line">        super(ExampleSwitch13, self).__init__(*args, **kwargs)</span><br><span class="line">        # initialize mac address table.</span><br><span class="line">        self.mac_to_port = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)</span><br><span class="line">    def switch_features_handler(self, ev):</span><br><span class="line">        datapath = ev.msg.datapath</span><br><span class="line">        ofproto = datapath.ofproto</span><br><span class="line">        parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">        # install the table-miss flow entry.</span><br><span class="line">        match = parser.OFPMatch()</span><br><span class="line">        actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,</span><br><span class="line">                                          ofproto.OFPCML_NO_BUFFER)]</span><br><span class="line">        self.add_flow(datapath, 0, match, actions)</span><br><span class="line"></span><br><span class="line">    def add_flow(self, datapath, priority, match, actions):</span><br><span class="line">        ofproto = datapath.ofproto</span><br><span class="line">        parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">        # construct flow_mod message and send it.</span><br><span class="line">        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,</span><br><span class="line">                                             actions)]</span><br><span class="line">        mod = parser.OFPFlowMod(datapath=datapath, priority=priority,</span><br><span class="line">                                match=match, instructions=inst)</span><br><span class="line">        datapath.send_msg(mod)</span><br><span class="line"></span><br><span class="line">    @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)</span><br><span class="line">    def _packet_in_handler(self, ev):</span><br><span class="line">        msg = ev.msg</span><br><span class="line">        datapath = msg.datapath</span><br><span class="line">        ofproto = datapath.ofproto</span><br><span class="line">        parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">        # get Datapath ID to identify OpenFlow switches.</span><br><span class="line">        dpid = datapath.id</span><br><span class="line">        self.mac_to_port.setdefault(dpid, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">        # analyse the received packets using the packet library.</span><br><span class="line">        pkt = packet.Packet(msg.data)</span><br><span class="line">        eth_pkt = pkt.get_protocol(ethernet.ethernet)</span><br><span class="line">        dst = eth_pkt.dst</span><br><span class="line">        src = eth_pkt.src</span><br><span class="line"></span><br><span class="line">        # get the received port number from packet_in message.</span><br><span class="line">        in_port = msg.match[&apos;in_port&apos;]</span><br><span class="line">        self.logger.info(&quot;packet in %s %s %s %s &quot;, dpid, src, dst)</span><br><span class="line">        #print &apos;%d&apos; %count</span><br><span class="line">        #count = count +1</span><br><span class="line">        # learn a mac address to avoid FLOOD next time.</span><br><span class="line">        self.mac_to_port[dpid][src] = in_port</span><br><span class="line"></span><br><span class="line">        # if the destination mac address is already learned,</span><br><span class="line">        # decide which port to output the packet, otherwise FLOOD.</span><br><span class="line">        if dst in self.mac_to_port[dpid]:</span><br><span class="line">            out_port = self.mac_to_port[dpid][dst]</span><br><span class="line">        else:</span><br><span class="line">            out_port = ofproto.OFPP_FLOOD</span><br><span class="line"></span><br><span class="line">        # construct action list.</span><br><span class="line">        actions = [parser.OFPActionOutput(out_port)]</span><br><span class="line"></span><br><span class="line">        # install a flow to avoid packet_in next time.</span><br><span class="line">        if out_port != ofproto.OFPP_FLOOD:</span><br><span class="line">            match = parser.OFPMatch(in_port=in_port, eth_dst=dst)</span><br><span class="line">            self.add_flow(datapath, 1, match, actions)</span><br><span class="line"></span><br><span class="line">        # construct packet_out message and send it.</span><br><span class="line">        out = parser.OFPPacketOut(datapath=datapath,</span><br><span class="line">                                  buffer_id=ofproto.OFP_NO_BUFFER,</span><br><span class="line">                                  in_port=in_port, actions=actions,</span><br><span class="line">                                  data=msg.data)</span><br><span class="line">        datapath.send_msg(out)</span><br></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
