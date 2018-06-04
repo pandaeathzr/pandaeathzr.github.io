@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Internet协议"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Internet协议</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-07</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>写在开头：</p>
+<p>埋头学习也差不多半个月了，达到了这半个月每天都会去图书馆的目标。确实挺忙的，不管在学习上，部门社团上，党建上。有时候为了多学一些总是会挤掉了其他事情的一些时间。但是自己时刻提醒着自己不要太过激进了，做好自己的本职工作，生活还是要继续的，协调好彼此之间的关系。希望自己还是像以前那样开心就好了。</p>
+<p>加油!</p>
+<h1 id="Internet协议"><a href="#Internet协议" class="headerlink" title="Internet协议"></a>Internet协议</h1><p>IP是TCP/IP协议族中的核心协议。IP提供了一种<strong>尽力而为</strong>，<strong>无连接</strong>的数据报交付服务。</p>
+<p><strong>尽力而为</strong>的含义是不保证IP数据报能成功到达目的地。任何的可靠性必须靠上层（例如TCP）提供</p>
+<p><strong>无连接</strong>意味着IP不维护网络单元（即路由器）中数据报相关的任何链接状态，这也就意味着IP数据报可不按照顺序交付，每个数据报可以独立路由，通过不同的路径，并且有可能较靠后发送的数据报提前到达</p>
+<hr>
+<h2 id="网络字节序"><a href="#网络字节序" class="headerlink" title="网络字节序"></a>网络字节序</h2><p>一个32位值的4字节按以下顺序传输：首先是 0 ~ 7 位，然后8~15位，16~23，23~31位。这就是所谓的高位有限字节序，又称网络字节序。它是TCP/IP头部中所有二进制整数在网络中传输时所使用的字节顺序。</p>
+<hr>
+<p>下面给出IPv4头部细节</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本</td>
+<td>包含IP数据报的版本字段</td>
+</tr>
+<tr>
+<td>IHL</td>
+<td>长4位，表示IPv4头部中32位的数量，即IHL值为x，头部长度就为32*x</td>
+</tr>
+<tr>
+<td>DS</td>
+<td>区分服务字段</td>
+</tr>
+<tr>
+<td>ECN</td>
+<td>显式拥塞通知</td>
+</tr>
+<tr>
+<td>总长度字段</td>
+<td>表示IPv4数据报的总长度，通过它和IHL就可以知道数据报的数据部分的位置</td>
+</tr>
+<tr>
+<td>标识</td>
+<td>表示IPv4主机发送的数据报，能够避免数据报分片混淆</td>
+</tr>
+<tr>
+<td>生存期TTL</td>
+<td>用于设定一个数据报可经过的路由器的数量上限</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>表示数据报有效载荷部分的数据类型。，常见的有17（UDP)\6(TCP)</td>
+</tr>
+<tr>
+<td>头部校验和</td>
+<td>注意它仅计算IPv4的头部</td>
+</tr>
+<tr>
+<td>源IP地址和目的IP地址</td>
+<td>通常标识一台计算机的一个接口</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TTL</strong>：生存期，发送方发送时会将它设位一个值，每次经过一台路由器就会减一，显然当这个值等于0的时候，数据报就会被丢弃。这样就可以避免了数据报有可能在路由器的环路中无限循环下去的问题。</p>
+<hr>
+<h2 id="Internet校验和"><a href="#Internet校验和" class="headerlink" title="Internet校验和"></a>Internet校验和</h2><p>Internet校验和是一个16位的数字和。</p>
+<hr>
+<h2 id="IP转发"><a href="#IP转发" class="headerlink" title="IP转发"></a>IP转发</h2><p>我们知道，IP协议可以接收到一个来自自己主机或者网络接口的数据报。IP层包括了一些位于内存中的信息，通常称为路由表或者<strong>转发表</strong></p>
+<p>转发数据的时候，IP模块会先检查数据报的地址是不是自己的IP地址（这个地址可以很多，比如组播，广播地址），是的话就给上头（数据报头部指定的协议模块），不是的话：</p>
+<ul>
+<li>如果IP层被设置成路由器，就查找转发表，转发到下一跳</li>
+<li>否侧就扔了</li>
+</ul>
+<p>转发表里有下面几样东西：</p>
+<ul>
+<li>目的地</li>
+<li>掩码</li>
+<li>下一跳：下一个IP的地址~</li>
+<li>接口：即下一跳的网络接口</li>
+</ul>
+<p>IP转发只是提供数据报发送的下一跳实体的IP地址，它假设下一跳比执行转发的系统更接近目的地。</p>
+<hr>
+<p>附上<a href="http://www.cnblogs.com/ZCplayground/p/8424916.html" target="_blank" rel="noopener">畅畅酱关于这个章节的地址</a></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

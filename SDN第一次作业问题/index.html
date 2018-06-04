@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="SND上机作业中出现的一些问题"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">SND上机作业中出现的一些问题</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-06</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/SDN/">#SDN</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>首先给出链接</p>
+<ul>
+<li><a href="http://www.zdfans.com/5928.html" target="_blank" rel="noopener">VMware安装</a></li>
+<li><a href="http://www.cnblogs.com/qq952693358/p/5860101.html" target="_blank" rel="noopener">mininet安装</a></li>
+<li><a href="https://www.sdnlab.com/19189.html" target="_blank" rel="noopener"> floodlight安装及问题，各个版本Ubuntu</a></li>
+<li><a href="http://www.cnblogs.com/easteast/p/7920316.html" target="_blank" rel="noopener">SDN第一次上机作业</a></li>
+</ul>
+<p>如果在这些链接的基础上你已经能很好的完成SDN第一次上机作业，那么下面的东西你也就没必要看了~</p>
+<p>我是按照教程的顺序一步一步写下来的~</p>
+<hr>
+<h1 id="我们使用Ubuntu16"><a href="#我们使用Ubuntu16" class="headerlink" title="我们使用Ubuntu16"></a>我们使用Ubuntu16</h1><h2 id="安装mininet时候出现问题"><a href="#安装mininet时候出现问题" class="headerlink" title="安装mininet时候出现问题"></a>安装mininet时候出现问题</h2><p>当我执行<code>sudo apt-get update</code>时有以下的错误</p>
+<p><img src="/SDN第一次作业问题/运行update出现问题.jpg" alt=""></p>
+<p>解决方法</p>
+<p><code>sudo pkill -KILL appstreamcli</code></p>
+<p> <code>wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb</code></p>
+<p><code>sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb</code></p>
+<p><code>sudo apt-get update</code></p>
+<p><a href="https://askubuntu.com/questions/774986/appstreamcli-hanging-with-100-cpu-usage-during-update" target="_blank" rel="noopener">参考资料</a></p>
+<p>然后便可以成功运行。</p>
+<p><code>sudo apt-get upgrade</code>在这种情况下仍可能出现一些小瑕疵，我们暂时不管。</p>
+<hr>
+<h2 id="第二部分实验内容出现的问题"><a href="#第二部分实验内容出现的问题" class="headerlink" title="第二部分实验内容出现的问题"></a>第二部分实验内容出现的问题</h2><p>然后我们就会一路顺畅的走下来，在第二个实验作业中，提示我们<code>mininet must run as root</code>如图</p>
+<p><img src="/SDN第一次作业问题/mininet run as root.jpg" alt=""></p>
+<p>显然我们要在root下运行mininet的图形界面。</p>
+<p>为此，我们输入<code>su -</code> 及密码，但是并不能进入root。原因是root用户还没有设置密码，所以我们输入以下指令<code>sudo passwd</code> 设置密码。此后我们便很顺利的完成第二部分的实验内容。</p>
+<hr>
+<h2 id="floodlight与mininet结合出现的问题"><a href="#floodlight与mininet结合出现的问题" class="headerlink" title="floodlight与mininet结合出现的问题"></a>floodlight与mininet结合出现的问题</h2><p>我们根据教程一路做下来，如果提示我们什么指令没有安装，就根据提示安装对应的指令，例如 <code>ant`</code>vim<code>指令没有安装，下图为</code>ant`指令没有安装的实例</p>
+<p><img src="/SDN第一次作业问题/ant指令没有按照.jpg" alt=""></p>
+<p>如果你使用的时14版本，这里给出教程中设置变量的一个拼写错误</p>
+<p><img src="/SDN第一次作业问题/floodlight教程问题.jpg" alt=""></p>
+<p>接下来就是进行实验的部分了，如果你很惨，没有找到胖树（fattree.py)这个文件，你只好自己去复制粘贴脚本了~<strong>在此之前你最好多多了解下vim文本的操作指令。</strong></p>
+<p>当你写好脚本的时候，别忘了把它生成可执行文件 <code>chmod +x fattree.py</code>  </p>
+<p><strong>注意：如果你的脚本里含有中文，可能是会报错的</strong></p>
+<p><em>因为某种原因，我没有采用screen mn …..的操所，而是直接sudo它</em></p>
+<p>并且在执行脚本中不能够连接上控制器，或者连接控制器后pingall依然是没有连接控制的现象的时候（听起来有点绕口，如果你出现这种问题，你可能会大致清楚我要表达的意思）</p>
+<p>根据<strong><a href="https://home.cnblogs.com/u/qq952693358" target="_blank" rel="noopener">Wasdns</a></strong>的方法，对脚本中的参数做了以下的修改。</p>
+<p><img src="/SDN第一次作业问题/脚本修改.jpg" alt=""></p>
+<p>最后你就可以欢快的完成你的实验作业了</p>
+<p><img src="/SDN第一次作业问题/sdn第二个实验结果.jpg" alt=""><br><img src="/SDN第一次作业问题/fattree.jpg" alt=""></p>
+<hr>
+<p>经历了断断续续安装学习的几天，耐心是很重要的，安装过程的一些毛病不能够忽视，阅读提示很重要，并且根据提示去解决问题。</p>
+<p>终于在经历了6台虚拟机的折磨后，在写博客的最后这一台很好的完成了任务。MUA！</p>
+<p>感谢实验室的伙伴们提供的宝贵经验~</p>
+<p>感谢实验室的伙伴们提供的宝贵经验~</p>
+<p>感谢实验室的伙伴们提供的宝贵经验~</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

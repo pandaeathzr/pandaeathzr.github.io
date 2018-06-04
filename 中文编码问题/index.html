@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="python中文编码问题"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">python中文编码问题</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-05-23</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/python/">#python</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>首先第一行肯定要写：</p>
+<p>/# -<em>- coding: UTF-8 -</em>-</p>
+<p>或者</p>
+<p>/#coding:uft8</p>
+<p>然后在输出的汉字字符前加个u</p>
+<blockquote>
+<p>printf u’你好’</p>
+</blockquote>
+<hr>
+<p>遇到的问题：</p>
+<p>在做数据库调试报错的时候，存在以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
+<p>其中e 为raise返回的报错字符</p>
+<p>然后执行会报错：</p>
+<blockquote>
+<p>‘ascii’ codec can’t encode characters in position 0-1: ordinal not in range(128)</p>
+</blockquote>
+<p>原因大概是对utf-8的字段不能够str</p>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="防火墙和网络地址转换"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">防火墙和网络地址转换</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-03</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。</p>
+<p>所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。</p>
+<h1 id="防火墙和网络地址转换"><a href="#防火墙和网络地址转换" class="headerlink" title="防火墙和网络地址转换"></a>防火墙和网络地址转换</h1><p>防火墙：一种能解决限制所发送的流量类型的路由器</p>
+<p>NAT：网络地址转换</p>
+<hr>
+<h2 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h2><p>最为常用的两种防火墙是代理防火墙和包过滤防火墙。</p>
+<p>他们之间主要区别是所操作的协议栈的层次及由此决定的IP地址和端口号的使用。包过滤防火墙是一个互联网路由器，能够丢弃符合（或者不符合）特定条件的数据包。</p>
+<h3 id="包过滤防火墙"><a href="#包过滤防火墙" class="headerlink" title="包过滤防火墙"></a>包过滤防火墙</h3><p>包过滤防火墙作为互联网路由器，能够过滤（丢弃）一些网络流量，他们一般都可以配置为丢弃或转发数据包头中符合（或者不符合）特定标准的数据包，这些标准称为过滤器。</p>
+<p><img src="https://i.imgur.com/dnSGFy9.jpg" alt=""></p>
+<p>一个典型的包过滤防火墙有三个网络接口的互联网路由器：一个“内”接口，一个“外”接口和第三个“非军事区”（DMZ）接口。通常情况下，过滤器会全力拦截来自外网的恶意。但是不会限制从内网到外网的流量。</p>
+<h3 id="代理防火墙"><a href="#代理防火墙" class="headerlink" title="代理防火墙"></a>代理防火墙</h3><p>本质上是运行一个或多个应用层网关的主机，它拥有很多网络接口，能够在应用层中连接/关联之间的特定类型的流量。</p>
+<p><img src="https://i.imgur.com/I8HVRov.jpg" alt=""></p>
+<p>如上图所示，内部网络外出连接在防火墙上终止，外部Internet进去连接只到运行的委托代理。而在中间这堵墙（代理防火墙）上运行的是每个受支持的服务的应用/服务代理。</p>
+<p>这种防火墙的不便之处在于每次使用新服务，都必须安装一个相应的代理，由此来操作发起连接。</p>
+<p>两大常见形式：</p>
+<p>HTTP代理防火墙： 又称作Web代理。根据上面的理解，这种代理防火墙，在内网用户看来是Web服务器，在外部网站看来是Web客户端。同时，这种代理也提供Web缓存功能，顾名思义，就是缓存网页副本，已减少网页延迟，提高用户体验。</p>
+<p>SOCKS防火墙：可用于Web之外的服务。例如：第四版为代理传输提供基本支持；第五版增加了强大的认证，UDP传输和IPV6寻址。使用时，应用程序必须先添加SOCKS代理支持功能，同时通过配置应用程序能够获得代理位置及其版本</p>
+<hr>
+<h2 id="网络地址转换"><a href="#网络地址转换" class="headerlink" title="网络地址转换"></a>网络地址转换</h2><p>本质上是一种允许在互联网的<strong>不同地方重复使用相同</strong>的IP地址集的机制</p>
+<p>运作原理：当内部系统所有进出的流量均通过一个单独的NAT设备的受，它就将内部的地址空间与全球互联网地址空间分开，这样内部系统就能够使用自己分配的IP地址访问互联网。</p>
+<p>然而，我们知道互联网上的用户是没有办法直接访问具有私有地址的主机的。内部系统要正常的连接上网络就必须要让NAT<strong>重写通过路由器的每个数据报包的识别信息</strong>，这很复杂，NAT必须跟踪每个连接的状态，贯穿多个协议层，修改IP地址的同时也要修改传输层的校验码。</p>
+<p>讲的具体点就是，它必须重写向某一方向传输的数据包的源IP地址，同样的也要重写向另一个方向传输的数据包的目的IP地址。这样外界看来，这个数据包是来自于具有全局路由IP的NAT路由器，而不是其内部的拥有私有地址的主机。如图所示</p>
+<p><img src="https://i.imgur.com/mcIkpKR.jpg" alt=""></p>
+<hr>
+<h2 id="传统的NAT-基本NAT和NAPT"><a href="#传统的NAT-基本NAT和NAPT" class="headerlink" title="传统的NAT:基本NAT和NAPT"></a>传统的NAT:基本NAT和NAPT</h2><p>基本NAT只执行IP地址的重写，及改内部的私有地址为公共地址。但是它没有办法助于减少IP地址的数量（多少个内部主机希望访问互联网就必须分配多少个公共地址，如果每个主机都访问这样NAT就没有意义了）</p>
+<p>NAPT的做法则不同，它使用传输层的标识符，来确定数据包和内部主机的关系。（可以利用相同的公共地址而不同的标识符来区分内部的主机）。内部标识符相同的时候，NAPT也能够重写标识符</p>
+<p><img src="https://i.imgur.com/uWeRrQc.jpg" alt=""></p>
+<p><strong>注意</strong>这里面有一个问题：如果内部地址所用到的地址刚刚好是自己也想连接的公共地址，那就麻烦了。 所以我们保留了<code>10.0.0.0/8</code>,<code>172.13.0.0/12</code>,以及我们最常见的<code>192.168.0.0/16</code>作为私有地址范围来使用。</p>
+<hr>
+<p>Yestreday you said tomorrow</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

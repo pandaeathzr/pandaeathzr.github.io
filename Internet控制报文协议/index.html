@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Internet控制报文协议"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Internet控制报文协议</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-10</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>首先，我们必须先清楚，IP协议本身没有为终端系统提供直接的方法来发现那些<strong>发往目的地址失败的IP数据包</strong>，并且IP没有提供<strong>直接</strong>的方式来获取诊断信息，那么我们的故事来了。</p>
+<p>Internet控制报文协议（ICMP）腾空而出，与IP结合使用，提供了与IP协议层配置和IP数据包处置相关的诊断和控制信息，即<strong>它负责传递可能需要注意的差错和控制报文</strong>。ICMP表明了某些类别的故障和配置信息，但是并不为IP网络提供可靠性。</p>
+<p>注意：我们常见的丢包（<strong>路由器缓冲区溢出</strong>）并不会触发任何的ICMP信息。</p>
+<hr>
+<h2 id="在IPv4和IPv6中的封装"><a href="#在IPv4和IPv6中的封装" class="headerlink" title="在IPv4和IPv6中的封装"></a>在IPv4和IPv6中的封装</h2><p><strong>ICMP报文是在IP数据包内被封装传输的。</strong></p>
+<p>如图所示：</p>
+<p><img src="https://i.imgur.com/e7WLHxu.jpg" alt=""></p>
+<p>ICMP报文封装在IPv4和IPv6的内部，即在其头部后面。ICMP头部包含了<strong>整个</strong>ICMP数据段的校验和。</p>
+<p>下图表示了报文的格式</p>
+<p><img src="https://i.imgur.com/fgyoLuM.jpg" alt=""></p>
+<p>我们可以了解到：</p>
+<ul>
+<li>类型字段长8位，ICMPv4为其保留42个值，但是只有8个常用，下文会提到。</li>
+<li>代码字段长8位，每个类型有不同的代码，代表不同的含义</li>
+<li>校验和长16位，涵盖了整个报文</li>
+</ul>
+<p>如果一个ICMP报文校验和错误，显然是要被丢弃的；</p>
+<p>同时<strong>这边给出中文版一个蹩脚的翻译</strong> ：没有ICMP报文可以表示收到的ICMP报文中的校验和是错误的。 原版本的翻译是： <strong>there is no ICMP message to indicate a bad checksum in a received ICMP message</strong>，较为顺口的翻译应该是，在收到的ICMP报文中没有指示校验和错误的ICMP报文，即ICMP的报文不会去指错另一个ICMP的报文。</p>
+<h2 id="ICMP报文"><a href="#ICMP报文" class="headerlink" title="ICMP报文"></a>ICMP报文</h2><p>ICMP报文可以分为两大类：</p>
+<ul>
+<li>有关IP数据包传递的ICMP报文（<strong>差错报文</strong>）</li>
+<li>有关信息采集和配置的ICMP报文（<strong>查询或信息类报文</strong>）</li>
+</ul>
+<p>信息类报文包括回显请求和回显应答，以及路由器通告和路由器请求。</p>
+<p>最常见的差错报文类型包括目的不可达，重定向，超时，和参数问题。</p>
+<p> <strong>关于类型字段以及类型所使用的代码号表格在书本250页均有，这边不再强调</strong></p>
+<p>下面进一步讨论差错报文常用的类型：</p>
+<h3 id="目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）"><a href="#目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）" class="headerlink" title="目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）"></a>目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）</h3><p>目的不可这种类型的报文用来<strong>表示数据包无法送达目的地</strong>，其<em>主要</em>可细分成：</p>
+<ul>
+<li>主机不可达（ICMPv4代码1）和地址不可达（ICMPv6代码3）<ul>
+<li>由路由器或主机产生，直接交付的时候由于某种原因无法到达目的地，例如主机关闭</li>
+</ul>
+</li>
+<li>目的无路由（ICMPv6代码0）<ul>
+<li>出现在到达数据包不必采用直接交付的方式来转发，但没有路由条目指定下一跳路由地址</li>
+</ul>
+</li>
+<li>管理禁止通信（ICMPv4代码3）和目的管理禁止通信（ICMPv6代码1）<ul>
+<li>通常是防火墙故意丢弃流量导致</li>
+</ul>
+</li>
+<li>端口不可达（ICMPv4代码3）和端口不可达（ICMPv6代码4）<ul>
+<li>当传入数据报的目的应用程序还没有准备好接收，就生成端口不可达报文</li>
+</ul>
+</li>
+</ul>
+<p>数据包太大（<strong>PTB</strong>）：</p>
+<p>如果一个IPv4路由器收到一个数据报大于选定的传出网络接口的<strong>MTU</strong>， 则其需要分片，但如果IP头部设置了不分片位字段，则其被丢弃。同时，产生<strong>ICMPv4目的不可达（PTB）报文</strong>，该报文能将下一跳的MTU包含在其中。</p>
+<p><img src="https://i.imgur.com/FfssSrL.jpg" alt=""></p>
+<p>而在ICMPv6中，因为IPv6只有数据包的发送者才能执行数据包分片，所以只产生<strong>ICMPv6目的不可达（PTB）报文</strong>，该报文能将下一跳的MTU包含在其中。</p>
+<hr>
+<h3 id="重定向（ICMPv4类型5，ICMPv6类型137）"><a href="#重定向（ICMPv4类型5，ICMPv6类型137）" class="headerlink" title="重定向（ICMPv4类型5，ICMPv6类型137）"></a>重定向（ICMPv4类型5，ICMPv6类型137）</h3><p>当路由器收到一个来自主机的不是给自己的数据报时，转发数据报到下一跳更好的路由，同时，<strong>路由器发送一个重定位报文到主机</strong>，使其更新路由表，这样下一次数据报直接就会到新定义的节点上。如图所示：</p>
+<p><img src="https://i.imgur.com/AYg2S5j.jpg" alt=""></p>
+<p>重定向报文包含了数据报下一跳正确路由器的IPv4地址。如图</p>
+<p><img src="https://i.imgur.com/lMhBvzi.jpg" alt=""></p>
+<h3 id="超时（ICMPv4类型11，ICMPv6类型3）"><a href="#超时（ICMPv4类型11，ICMPv6类型3）" class="headerlink" title="超时（ICMPv4类型11，ICMPv6类型3）"></a>超时（ICMPv4类型11，ICMPv6类型3）</h3><p>当由于TTL或跳数限制字段值调小致使路由器丢弃报文时，产生ICMP超时报文</p>
+<p><strong>一个工具</strong>：traceroute工具，被用于确定发送者到目的地路径上的路由器。</p>
+<p>工作方式：</p>
+<ol>
+<li>TTL置1</li>
+<li>发送数据报，接收路由器的ICMP超时报文，如果该路由为最终路由则停止。</li>
+<li>TTL+=1</li>
+<li>转回第二步</li>
+</ol>
+<h3 id="参数问题（ICMPv4类型12，ICMPv6类型4）"><a href="#参数问题（ICMPv4类型12，ICMPv6类型4）" class="headerlink" title="参数问题（ICMPv4类型12，ICMPv6类型4）"></a>参数问题（ICMPv4类型12，ICMPv6类型4）</h3><p>当一个主机或者路由器接收到一个IP数据报，其IP头部存在不可修复的问题时就会产生一个ICMP参数问题报文。一个特殊的参数报文<strong>指针</strong>字段只是了错误字段相对于出错的IP头部的偏移值。</p>
+<hr>
+<p>下面进一步讨论信息类报文常用的类型：</p>
+<h3 id="回显请求-应答（ping）（ICMPv4类型0-8，ICMPv6类型129-128）"><a href="#回显请求-应答（ping）（ICMPv4类型0-8，ICMPv6类型129-128）" class="headerlink" title="回显请求/应答（ping）（ICMPv4类型0/8，ICMPv6类型129/128）"></a>回显请求/应答（<strong>ping</strong>）（ICMPv4类型0/8，ICMPv6类型129/128）</h3><p>原理，收到ICMP回显请求报文后，ICMP要求将任何接收到的数据返回给发送方。报文格式如下</p>
+<p><img src="https://i.imgur.com/VVAfnaA.jpg" alt=""></p>
+<p>其中，<strong>标识符字段</strong>可以让发送主机利用，借此分离返回的应答。</p>
+<p>当一个ping实例运行的时候，序列号从0开始，每发送一个回显请求报文便加1.<br>ping打印出每个返回的数据报的序列号，方便用户查看数据报是否丢失等。</p>
+<h3 id="路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）"><a href="#路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）" class="headerlink" title="路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）"></a>路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）</h3><p>首先<strong>定期</strong>使用TTL=1，对本地网络的所有主机组播（224.0.0.1）。使用RS报文发送到所有路由器组播地址（224.0.0.2），路由器发现的主要目的是让一台主机学习到它所在本地子网中的所有路由器，这样让他选好出一个默认的路由。</p>
+<hr>
+<h2 id="处理ICMP报文"><a href="#处理ICMP报文" class="headerlink" title="处理ICMP报文"></a>处理ICMP报文</h2><p>传入的信息类请求将被<strong>操作系统自动处理</strong>，而差错类报文<strong>传递给用户进程或传输层协议</strong>。</p>
+<p>特例：重定向报文将导致主机路由表中的自动更新，目的不可达报文用于路径MTU发现机制（PMTUD）。这一般由传输层协议来实现。</p>
+<h2 id="ICMP差错报文"><a href="#ICMP差错报文" class="headerlink" title="ICMP差错报文"></a>ICMP差错报文</h2><p>限制生成的ICMP差错报文的元婴是限制生成所谓的广播风暴，ICMPv4有以下情况：</p>
+<ul>
+<li>ICMPv4差错报文</li>
+<li>目的地址是IPv4广播或组播地址</li>
+<li>作为链路层的广播数据报</li>
+<li>不是第一个分片的其他分片</li>
+<li>源地址为环回地址，广播或组播地址，零地址。</li>
+</ul>
+<p>ICMPv6有以下情况：</p>
+<ul>
+<li>ICMPv6差错报文</li>
+<li>ICMPv6重定向报文</li>
+<li>目的地址是IPv6的组播地址数据报（除PTB和参数问题报文）</li>
+<li>链路层广播组播的数据包</li>
+<li>源地址为未指定或组播地址，<em>或者任意为发送者所致的选播地址</em>。</li>
+</ul>
+<p><strong>限制ICMP报文数据的方法是使用令牌桶</strong><br>每个桶保留最大数量的令牌，每个令牌允许一定数量的报文被发送。<strong>桶定期被新的令牌填充</strong>。每发送一个报文就减一，</p>
+<p>一个概念：<strong>当发送一个ICMP差错报文的时候，它包含了一个完整的源自“违规”或者“原始”数据包的IP头部副本，再加上原始数据报的IP有效载荷区中的任何其他数据。</strong></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="地址解析协议"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">地址解析协议</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-03-29</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。</p>
+<p>地址解析是发现两个地址之间的映射关系的过程。<strong>地址解析协议ARP</strong>是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。</p>
+<hr>
+<h2 id="直接交付和ARP"><a href="#直接交付和ARP" class="headerlink" title="直接交付和ARP"></a>直接交付和ARP</h2><p>下面给出IPv4直接交付的基本操作： </p>
+<ol>
+<li>应用程序使用32位的IPv4地址<code>10.0.0.1</code></li>
+<li>应用程序要求TCP协议建立一条到<code>10.0.0.1</code>的连接</li>
+<li>通过向<code>10.0.0.1</code>发送一个数据报，TCP尝试向远程主机发送一个连接请求</li>
+<li>假设地址该数据报可被直接发送到这个地址，且以太网兼容地址被用于IPv4.</li>
+<li>那么，发送的主机就必须将32位的IPv4目的地址转化为48位的以太网地址，这就需要逻辑Internet地址相对应物理硬件地址进行转换，这就是ARP功能。链路层能够将一个消息交付到它连接的所有网路设备，这是ARP运行的一个重要要求</li>
+<li>在一个共享的链路层网段，ARP向所有主机发送一个称为ARP请求的以太网帧（链路层广播）。ARP请求包含目的的主机IPv4地址<code>10.0.0.1</code>，并寻找以下答案“如果你将<code>10.0.0.1</code>配置为自己的地址，请向我回应你的MAC地址”</li>
+<li>通过ARP，同一广播域中的所有系统都可以接收该请求，如果某系统使用请求中给定的IPv4地址，那么它需要响应一个ARP应答。该应答包含了请求中的IPv4地址和对应的MAC地址。该应答直接发送给请求的发送方。接收ARP请求的主机学习IPv4到MAC地址的映射，并记录在内存中供以后使用</li>
+<li>ARP应答被原始请求的发送方接收，现在可以发送引起此次ARP请求/应答的数据报。</li>
+<li>发送方可将数据报封装在以太网帧中直接发送到目的主机，应使用由ARP交换学到的以太网作为目的地址。</li>
+</ol>
+<hr>
+<h2 id="ARP缓存"><a href="#ARP缓存" class="headerlink" title="ARP缓存"></a>ARP缓存</h2><p>ARP高效运行的关键是维护每个主机和路由器上的ARP缓存。该缓存使用地址解析为每个接口维护从网络层地址到硬件地址的最新映射。</p>
+<h3 id="ARP缓存超时"><a href="#ARP缓存超时" class="headerlink" title="ARP缓存超时"></a>ARP缓存超时</h3><p>超时通常与ARP缓存中的每个条目相关。在大多数实现中，完整条目的超时为20分钟。</p>
+<p>软状态是指在超时到达前没有更新而被丢弃的信息。如果网络条件发生改变，软状态有助于启动自动重新配置。</p>
+<hr>
+<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>ARP的另一个功能被称为免费ARP，它发生在一台主机发送的ARP请求以寻找自己的地址。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

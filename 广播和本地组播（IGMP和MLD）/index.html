@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="广播和本地组播（IGMP和MLD）"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">广播和本地组播（IGMP和MLD）</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-12</span>
+            <span class="time">15:15:17</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。</p>
+<p>由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。</p>
+<p>并且考虑到最近身体比较虚弱…，应该更加早睡早起!</p>
+<p>加油！</p>
+<h1 id="广播和本地组播（IGMP和MLD）"><a href="#广播和本地组播（IGMP和MLD）" class="headerlink" title="广播和本地组播（IGMP和MLD）"></a>广播和本地组播（IGMP和MLD）</h1><p>在引言中有下面一些比较重要的概念：</p>
+<p>广播和组播为应用程序提供了两种服务</p>
+<ul>
+<li>数据分组交付至多个目的地 //顾名思义</li>
+<li>通过客户端请求/发现服务器  //类似于DHCP</li>
+</ul>
+<p>一个广播请求会影响在广播范围内所有可以到达的主机，而组播只影响那些可能对该请求有<strong>兴趣</strong>的主机</p>
+<p>注意，在广播的更高开销和简单性以及组播的效率改善和更多的复杂性之间存在一种平衡。</p>
+<hr>
+<h2 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h2><p>广播是指将报文发送到网络中的所有可能的接收者。很容易的能够理解广播的概念，就像你拿着大喇叭对所有人喊话一样。所以它并不需要ARP请求来确定每个目的地的MAC地址。</p>
+<p>一般而言，使用广播的应用程序使用UDP协议，然后调用一组普通的API来发送流量。并且我们在打算发送广播数据报的时候，要加上一些特殊的标志，这样确认后可以防止误操作而产生大量的广播流量，造成网络拥塞。</p>
+<hr>
+<h2 id="组播"><a href="#组播" class="headerlink" title="组播"></a>组播</h2><p>组播的意思就是向一个组发送流量。</p>
+<p>组播状态必须由主机和路由器来保持，定期的进行更新和删除操作，这样就能够很好的维护一个组。那他是如何更新的呢？我们下面的协议会讲到~</p>
+<h2 id="主机地址过滤"><a href="#主机地址过滤" class="headerlink" title="主机地址过滤"></a>主机地址过滤</h2><p>过滤发生在每个主机的网络接口卡（NIC）上，</p>
+<p>NIC指接收目的地址是接口的硬件地址或者广播地址的那些帧，如果涉及到组播帧，情况会更复杂。它往往被分成两类：</p>
+<ul>
+<li>执行基于组播硬件地址的散列值的过滤 //存在散列冲突</li>
+<li>侦听组播地址的一张有限表 //超过表所能容纳的更多组播地址时，NIC进入“组播混杂”模式，即所有的流量都会交给主机软件。</li>
+</ul>
+<p>组播地址和48位的硬件地址的映射是不唯一的，所以进一步的过滤还是必须的。</p>
+<p>这两种类型说到底还是会有一些不必要的数据报被接受，所以还需要设备驱动程序或者高层软件执行检查。</p>
+<p>如下图所示：</p>
+<p><img src="https://i.imgur.com/Lvq25ku.jpg" alt=""></p>
+<p>当NIC接收到帧的时候，它首先会检查是否接收该帧（即检查CRC，MAC地址等)，然后交付给设备驱动程序,设备驱动程序查明该帧的类型，例如IP数据包，他就传递到IP层。IP层过滤完成后，便传到TCP或UDP等。然后就查询端口号。其实就是数据报在Internet主机上分解的过程， 如下图：</p>
+<p><img src="https://i.imgur.com/S2Bb36o.jpg" alt=""></p>
+<hr>
+<h2 id="互联网组管理协议和组播侦听发现协议"><a href="#互联网组管理协议和组播侦听发现协议" class="headerlink" title="互联网组管理协议和组播侦听发现协议"></a>互联网组管理协议和组播侦听发现协议</h2><p>两个协议都用于允许组播路由器了解附近主机感兴趣的组，区别在于IPv4使用的是互联网组管理协议（<strong>IGMP</strong>),而IPV6使用的是组播帧听发现协议（<strong>MLD</strong>）</p>
+<p><strong>如何运作</strong>：</p>
+<p>组播路由器定期向每个连接的子网发送IGMP(MLD)请求。主机则会响应这个请求，告诉路由器那些组和源是感兴趣的。如果成员资格变动，主机也可以发送主动提供的报告。</p>
+<p><img src="https://i.imgur.com/61zmHsM.jpg" alt=""></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+          Love wwuruixxue and <a target="_blank" href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">me.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
