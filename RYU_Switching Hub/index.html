@@ -108,7 +108,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-04</span>
-            <span class="time">19:46:44</span>
+            <span class="time">20:25:29</span>
           </span>
           
           <!--  Categories  -->
@@ -195,7 +195,7 @@
 <ul>
 <li>OFPInstructionActions 该指令用于写入/应用/清除动作。后文的第一个参数为应用</li>
 <li>OFPFlowMod 控制器发送此消息来修改流表。 参数instructions在源码中解释为list of <code>OFPInstruction*</code> instance，*为通配符，此例中为OFPInstructionActions<ul>
-<li>其有诸多参数，多为OpenFlow协议的数据结构，见下图：<br><img src="https://i.imgur.com/jDKuQki.jpg" alt=""></li>
+<li>其有诸多参数，多为OpenFlow协议的数据结构，具体不再解释，源码解释见下图：<br><img src="https://i.imgur.com/jDKuQki.jpg" alt=""></li>
 <li>此例中，command为默认参数，OFPFC_ADD</li>
 </ul>
 </li>
@@ -223,7 +223,38 @@
 <li>add_flow(datapath, 1, match, actions) 这条语句下发较高优先级（大于刚才的0）的流表，这样新的数据包过来后会先匹配该流表，实现已知端口的转发功能</li>
 <li>parser.OFPPacketOut  Packet-out报文</li>
 </ul>
-
+<hr>
+<h1 id="RYU程序的执行："><a href="#RYU程序的执行：" class="headerlink" title="RYU程序的执行："></a>RYU程序的执行：</h1><p>完成了一个ryu程序代码是不是很开心，接下来就去实现它吧！</p>
+<p>在Linux终端下运行<code>sudo mn --topo single,3 --mac --switch ovsk --controller remote -x</code>，其中：</p>
+<ul>
+<li>single ,3 为创建一个三个主机连接一台交换机的拓扑</li>
+<li>switch 采用ovs交换机</li>
+<li>控制器当然是远端（remote）的RYU</li>
+<li>-x 开启各个主机、交换机、控制器的终端</li>
+</ul>
+<p>如图所示：<br><img src="https://i.imgur.com/XZqCRbo.jpg" alt=""></p>
+<p>根据书本的要求，设置OpenFLow协议为1.3</p>
+<p>在s1交换机终端执行：</p>
+<p><code>ovs-vsctl set Bridge s1 protocols=OpenFlow13</code><br><img src="https://i.imgur.com/bdJ1988.jpg" alt=""></p>
+<p>我们先查看s1的流表，发现其为空：</p>
+<p><img src="https://i.imgur.com/UzkMcJ8.jpg" alt=""></p>
+<p>此时我们所有的前期准备已经都完成了，接下来就是执行控制器应用程序了。我们先到我们写好的控制器程序目录，这里我用一个first.py程序<br>输入<code>ryu-manager first.py</code></p>
+<p>显示界面如下：</p>
+<p><img src="https://i.imgur.com/TE8bYmu.jpg" alt=""></p>
+<p>控制器应用程序开启后，与交换机建立了连接，Features请求与响应。根据所写的程序，我们会有一个流表添加到OVS交换机上，如图：<br><img src="https://i.imgur.com/G5J6u8z.jpg" alt=""> </p>
+<p>这个流表作用就是把未知目的地数据包packet-in到控制器。让控制器进行处理。</p>
+<p>接下来我们在mininet中执行<code>pingall</code>操作，同时监控h1端口的数据包，为了方便，我们仅仅使用tupdump。</p>
+<p>在h1终端输入<code>tcpdump -en -i h1-eth0</code>开启监控端口功能。在此我们只观察 h1 与 h2。</p>
+<p><img src="https://i.imgur.com/wPCmnnK.jpg" alt=""></p>
+<p>我们可以看到图中的中部， h1 arp h2,  h2回应h1 。紧接着，h1 ping h2，h2 request h1 。实现了通讯。右边的是控制器的日志输出，我在程序中加了个计数的功能，每次收到一个packet-in 技术及就加1。</p>
+<p>接着，我们查看s1 的流表。<br><img src="https://i.imgur.com/TuzUc5R.jpg" alt=""></p>
+<p>h1、h2、h3 共有三个端口有六个流表，分别指定了各自的数据包如何发送。很高兴程序没有出现BUG！</p>
+<p>至此，本章节内容结束。</p>
+<hr>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>学习RYU有一周了，但是其实看的内容并不多，每天都是有一件一件一件事情被解决，但是就是轮不到RYU。很亢奋用一个下午半个晚上的时间重新阅读第一章的内容。并写下了这篇博客。虽然有些概念随着时间还是会一点一点忘记了，希望通过这篇博客能够尽快找到解决的地方。今天也算是完成了一件很重要的事情了！</p>
+<p>希望在考试月再接再厉！不仅仅为了自己。</p>
+<hr>
+<h3 id="爱你所爱，行你所行。"><a href="#爱你所爱，行你所行。" class="headerlink" title="爱你所爱，行你所行。"></a>爱你所爱，行你所行。</h3>
         </div>
       </div>
     </div>
