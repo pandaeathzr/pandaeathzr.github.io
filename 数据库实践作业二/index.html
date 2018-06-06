@@ -95,6 +95,8 @@
     </div>
   </div>
 </header>
+ 
+
 
 <article>
   <div class="container typo">
@@ -108,7 +110,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-05-25</span>
-            <span class="time">15:52:57</span>
+            <span class="time">11:56:49</span>
           </span>
           
           <!--  Categories  -->
@@ -140,10 +142,18 @@
 <hr>
 <h2 id="用户及用户权限管理"><a href="#用户及用户权限管理" class="headerlink" title="用户及用户权限管理"></a>用户及用户权限管理</h2><p><strong>前提：熟悉课本第四章内容</strong></p>
 <p>我们在ROOT用户下<strong>创建普通用户</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER HUZR@localhost IDENTIFIED by &apos;123&apos;;</span><br><span class="line">CREATE USER pig@localhost IDENTIFIED by &apos;123&apos;;</span><br></pre></td></tr></table></figure>
-<p> 然后我们可以在Nvaicat for MySQL客户端用户界面看到我们所创建的用户：<br><img src="https://i.imgur.com/a0TJUwn.jpg" alt=""></p>
-<p>接着可以对<strong>用户授权</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GRANT SELECT</span><br><span class="line">ON TABLE student</span><br><span class="line">TO HUZR@localhost;</span><br><span class="line"></span><br><span class="line">GRANT SELECT</span><br><span class="line">ON TABLE course</span><br><span class="line">TO pig@localhost;</span><br></pre></td></tr></table></figure></p>
-<p>则我们刚才得到的用户分别有了对student、course表查询的权限</p>
+<pre><code>    CREATE USER HUZR@localhost IDENTIFIED by &#39;123&#39;;
+    CREATE USER pig@localhost IDENTIFIED by &#39;123&#39;;
+</code></pre><p> 然后我们可以在Nvaicat for MySQL客户端用户界面看到我们所创建的用户：<br><img src="https://i.imgur.com/a0TJUwn.jpg" alt=""></p>
+<p>接着可以对<strong>用户授权</strong></p>
+<pre><code>    GRANT SELECT
+    ON TABLE student
+    TO HUZR@localhost;
+
+    GRANT SELECT
+    ON TABLE course
+    TO pig@localhost;
+</code></pre><p>则我们刚才得到的用户分别有了对student、course表查询的权限</p>
 <p>那么我们如何登陆我们新建的用户呢？</p>
 <p>在Nvaicat for MySQL客户端新建一个连接：</p>
 <p><img src="https://i.imgur.com/1djcpPJ.jpg" alt=""></p>
@@ -151,29 +161,49 @@
 <p>由于Nvaicat for MySQL客户端密码编码版本与MySQL服务器不同的原因。我们还需要更新该用户在MySQL服务器下的密码及解锁该用户 <a href="https://www.cnblogs.com/Huzr/p/9005188.html" target="_blank" rel="noopener">详情见链接</a></p>
 <p>此后我们用新增用户登陆，可以发现里面存在被我们赋予查询权限的表</p>
 <p><img src="https://i.imgur.com/XlLXajM.jpg" alt=""></p>
-<p><strong>回收权限</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">REVOKE SELECT</span><br><span class="line">ON TABLE student</span><br><span class="line">FROM HUZR@localhost;</span><br></pre></td></tr></table></figure></p>
-<p>经过此操作后在新建用户的数据库中已经没有相应的表格存在</p>
+<p><strong>回收权限</strong></p>
+<pre><code>    REVOKE SELECT
+    ON TABLE student
+    FROM HUZR@localhost;
+</code></pre><p>经过此操作后在新建用户的数据库中已经没有相应的表格存在</p>
 <p>至此第一部分的基础内容已经完成。</p>
 <hr>
-<h2 id="存储及触发器的使用"><a href="#存储及触发器的使用" class="headerlink" title="存储及触发器的使用"></a>存储及触发器的使用</h2><p>存储相当于对一个函数的封装，<strong>创建存储</strong>如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">delimiter $  </span><br><span class="line">CREATE PROCEDURE select_row ()</span><br><span class="line">BEGIN</span><br><span class="line">	SELECT * FROM student WHERE sname = &apos;   &apos;;</span><br><span class="line">	SELECT * FROM course ;</span><br><span class="line">END $</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure></p>
-<p>对以上代码进行解析：</p>
+<h2 id="存储及触发器的使用"><a href="#存储及触发器的使用" class="headerlink" title="存储及触发器的使用"></a>存储及触发器的使用</h2><p>存储相当于对一个函数的封装，<strong>创建存储</strong>如下：</p>
+<pre><code>    delimiter $  
+    CREATE PROCEDURE select_row ()
+    BEGIN
+        SELECT * FROM student WHERE sname = &#39;   &#39;;
+        SELECT * FROM course ;
+    END $
+    delimiter ;
+</code></pre><p>对以上代码进行解析：</p>
 <ul>
 <li>MySQL默认以”;”为分隔符，如果没有声明分割符，则编译器会把存储过程当成SQL语句进行处理，因此编译过程会报错，所以要事先用“DELIMITER $”声明当前段分隔符，让编译器把两个”$”之间的内容当做存储过程的代码，不会执行这些代码；“DELIMITER ;”的意为把分隔符还原。</li>
 <li>CREATE PROCEDURE 后面接的是存储的name（可以理解为函数的名称,可带参数，此处不展开），例子中即为selcet_row()</li>
 <li>BEGIN 到 EDN 中间为存储的sql语句，可以花样百出</li>
 </ul>
 <p><strong>存储调用</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL select_row();</span><br></pre></td></tr></table></figure>
-<p>注意尽管没有参数，也需要带上括号</p>
-<p><strong>查看存储</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show PROCEDURE STATUS WHERE Db = &apos;031602215&apos;;</span><br></pre></td></tr></table></figure></p>
-<p><strong>删除存储</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP PROCEDURE select_row;</span><br></pre></td></tr></table></figure></p>
-<p>详尽资料链接见下：</p>
+<pre><code>    CALL select_row();
+</code></pre><p>注意尽管没有参数，也需要带上括号</p>
+<p><strong>查看存储</strong></p>
+<pre><code>    show PROCEDURE STATUS WHERE Db = &#39;031602215&#39;;
+</code></pre><p><strong>删除存储</strong></p>
+<pre><code>    DROP PROCEDURE select_row;
+</code></pre><p>详尽资料链接见下：</p>
 <p><a href="https://www.cnblogs.com/mark-chan/p/5384139.html" target="_blank" rel="noopener">https://www.cnblogs.com/mark-chan/p/5384139.html</a></p>
 <p><a href="https://www.cnblogs.com/geaozhang/p/6797357.html" target="_blank" rel="noopener">https://www.cnblogs.com/geaozhang/p/6797357.html</a></p>
 <hr>
 <p>触发器顾名思义，<strong>创建触发器</strong>如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">delimiter $</span><br><span class="line"></span><br><span class="line">CREATE TRIGGER inset_student</span><br><span class="line">AFTER UPDATE ON xuandao FOR EACH ROW</span><br><span class="line">BEGIN</span><br><span class="line">	INSERT INTO student VALUES(&apos;这里是触发器&apos;,NULL,NULL,NULL,NULL);</span><br><span class="line">END $</span><br><span class="line"></span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<p>对以上面代码解析：</p>
+<pre><code>    delimiter $
+
+    CREATE TRIGGER inset_student
+    AFTER UPDATE ON xuandao FOR EACH ROW
+    BEGIN
+        INSERT INTO student VALUES(&#39;这里是触发器&#39;,NULL,NULL,NULL,NULL);
+    END $
+
+    delimiter ;
+</code></pre><p>对以上面代码解析：</p>
 <ul>
 <li>CREATE TRIGGER 后面接的的触发器名称</li>
 <li>AFTER UPDATE 表明在更新操作后触发，其中AFTER的另一个参数为BEFORE; UPDATE亦可改成 INSERT,DELETE</li>
@@ -182,12 +212,18 @@
 <li>BEGIN END 里面为触发执行的语句</li>
 </ul>
 <p><strong>注意，不能对同一张表同时触发又执行</strong> ,否则会报错</p>
-<p><strong>查看触发器</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW TRIGGERS;</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看触发器效果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UPDATE xuandao</span><br><span class="line">SET tc = &apos;   &apos;</span><br><span class="line">WHERE sname = &apos;   &apos;;</span><br><span class="line"></span><br><span class="line">SELECT * FROM student;</span><br></pre></td></tr></table></figure></p>
-<p>通过对xuandao表格的更新，然后通过select查看效果</p>
+<p><strong>查看触发器</strong></p>
+<pre><code>    SHOW TRIGGERS;
+</code></pre><p><strong>查看触发器效果</strong></p>
+<pre><code>    UPDATE xuandao
+    SET tc = &#39;   &#39;
+    WHERE sname = &#39;   &#39;;
+
+    SELECT * FROM student;
+</code></pre><p>通过对xuandao表格的更新，然后通过select查看效果</p>
 <p><strong>删除触发器</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TRIGGER inset_student;</span><br></pre></td></tr></table></figure>
-<p>详尽资料链接见下：</p>
+<pre><code>    DROP TRIGGER inset_student;
+</code></pre><p>详尽资料链接见下：</p>
 <p><a href="https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html" target="_blank" rel="noopener">https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html</a></p>
 <hr>
 <h2 id="数据库的备份与恢复"><a href="#数据库的备份与恢复" class="headerlink" title="数据库的备份与恢复"></a>数据库的备份与恢复</h2><p><strong>完整备份：</strong></p>
