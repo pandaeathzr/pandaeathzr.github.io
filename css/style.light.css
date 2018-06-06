@@ -657,7 +657,7 @@ h6 {
 }
 @media only screen and (max-width: 414px) {
   .archive-item .post-title {
-    font-size: 10.0625rem;
+    font-size: 1rem;
   }
   .archive-item .date {
     font-size: 0.875rem;
@@ -715,7 +715,8 @@ h6 {
   }
 }
 footer {
-  padding: 1.875rem 0;
+  padding: 2.1875rem 0;
+  border-top: 1px solid #e1e1e1;
   font-size: 0.75rem;
   text-align: center;
 }
