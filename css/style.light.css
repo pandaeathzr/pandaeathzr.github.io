@@ -716,7 +716,7 @@ h6 {
 }
 footer {
   padding: 2.1875rem 0;
-  border-top: 1px solid #e1e1e1;
+  border-top: 0px solid #e1e1e1;
   font-size: 0.75rem;
   text-align: center;
 }
