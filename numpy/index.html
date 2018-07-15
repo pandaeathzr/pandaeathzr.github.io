@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Huzr">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="numpy入门"/>
+  <meta property="og:description" content="愿你还是你所期待的样子" />
+  <meta property="og:site_name" content="Pandarui"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://pandarui.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Pandarui" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/panda.png">
+  
+
+  <!-- Site Title -->
+  <title>Pandarui</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">numpy入门</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Study/">
+                  
+                  Study
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Life/">
+                  
+                  Life
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+                  
+                  weibo
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/pandaeathzr">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+ 
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Huzr</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-07-15</span>
+            <span class="time">15:47:41</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Study/">Study</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/python/">#python</a> <a class="tag" href="/tags/numpy/">#numpy</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h1 id="why"><a href="#why" class="headerlink" title="why?"></a>why?</h1><p>应用：</p>
+<ul>
+<li>数据分析</li>
+<li>机器学习</li>
+<li>深度学习</li>
+</ul>
+<p>性能:</p>
+<ul>
+<li>运算速度快——采用C语言编写</li>
+<li>消耗资源少——矩阵运算</li>
+</ul>
+<p>安装：<code>pip3 install numpy</code></p>
+<hr>
+<h1 id="初入门"><a href="#初入门" class="headerlink" title="初入门"></a>初入门</h1><p><strong>属性</strong>：</p>
+<ul>
+<li>ndim 维度</li>
+<li>shape 行、列数</li>
+<li>size 元素个数</li>
+</ul>
+<pre><code class="python">import numpy as np
+array = np.array([[1,2,3]
+                 ,[2,3,4]])
+printf(array)
+printf(array.ndim)
+printf(array.shape)
+printf(array.size)
+</code></pre>
+<p><strong>创建array</strong>:</p>
+<ul>
+<li>array:创建数组</li>
+<li>dtype：指定数据类型</li>
+<li>zeros：创建数据全为0 —–np.zeros((3,4))数据为0，三行四列</li>
+<li>ones：创建数据全为1</li>
+<li>arange:按指定范围创建数据—np.arange(10)</li>
+<li>linspace：创建线段—np.linspace(start,end,num)</li>
+</ul>
+<p>可使用reshape()改变数据的形状。</p>
+<hr>
+<h1 id="基本运算："><a href="#基本运算：" class="headerlink" title="基本运算："></a>基本运算：</h1><h3 id="普通加减乘法、次方运算直接在数组上的操作："><a href="#普通加减乘法、次方运算直接在数组上的操作：" class="headerlink" title="普通加减乘法、次方运算直接在数组上的操作："></a>普通加减乘法、次方运算直接在数组上的操作：</h3><p>c=a+b,c=a-b,c=a*b,c=b**2</p>
+<h3 id="判断逻辑："><a href="#判断逻辑：" class="headerlink" title="判断逻辑："></a>判断逻辑：</h3><p>print(b&lt;3)—–&gt;输出bool矩阵</p>
+<h2 id="调用各类函数："><a href="#调用各类函数：" class="headerlink" title="调用各类函数："></a>调用各类函数：</h2><h3 id="标准矩阵乘法：dot"><a href="#标准矩阵乘法：dot" class="headerlink" title="标准矩阵乘法：dot()"></a>标准矩阵乘法：dot()</h3><p>c = np.dot(a,b) OR c = a.dot(b)</p>
+<h3 id="三角函数等"><a href="#三角函数等" class="headerlink" title="三角函数等:"></a>三角函数等:</h3><p>sin()  </p>
+<h3 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数:"></a>聚集函数:</h3><p>sum(),max(),min()<br>其中可带参数axis，0为查找每列，1为查找每行</p>
+<h3 id="索引："><a href="#索引：" class="headerlink" title="索引："></a>索引：</h3><p>argmin(),argmax()<br>分别对应矩阵最小、最大元素的索引</p>
+<h3 id="平均值："><a href="#平均值：" class="headerlink" title="平均值："></a>平均值：</h3><p>mean() OR average()</p>
+<h3 id="中位数："><a href="#中位数：" class="headerlink" title="中位数："></a>中位数：</h3><p>median()</p>
+<h3 id="累加函数："><a href="#累加函数：" class="headerlink" title="累加函数："></a>累加函数：</h3><p> cumsum()</p>
+<h3 id="累差运算："><a href="#累差运算：" class="headerlink" title="累差运算："></a>累差运算：</h3><p>diff()  每行相邻两数的差</p>
+<h3 id="转置："><a href="#转置：" class="headerlink" title="转置："></a>转置：</h3><p>np.transpose(a) OR a.T</p>
+<h3 id="排序："><a href="#排序：" class="headerlink" title="排序："></a>排序：</h3><p>sort() 对每行排序</p>
+<h3 id="其他："><a href="#其他：" class="headerlink" title="其他："></a>其他：</h3><ul>
+<li>nonzero() 非零元素行、列分开，重构两个关于行、列的矩阵</li>
+<li>clip(​a, a_min, a_max)  <em>类似滤波</em></li>
+</ul>
+<hr>
+<p>今天暂时先看到这边。</p>
+<p>关于numpy的函数还有很多，除了阅读官方文档外，发现了atom的一个好处，内置的autocomplete-python中的Kite可以提供非常详细的解读：如下图所示:<br><img src="https://i.imgur.com/UEg8VFs.jpg" alt=""></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          愿你是你所期待的样子 
+        <p class="copyright text-muted">
+		<br>
+          你不能把这个世界,让给你所鄙视的人
+        </p>
+		        <p class="copyright text-muted">
+          尽管最终,你变成了你讨厌的人
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
