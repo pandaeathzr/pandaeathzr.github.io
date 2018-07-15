@@ -110,7 +110,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-07-15</span>
-            <span class="time">15:48:21</span>
+            <span class="time">15:50:01</span>
           </span>
           
           <!--  Categories  -->
@@ -154,25 +154,25 @@
 <pre><code class="python">import numpy as np
 array = np.array([[1,2,3]
                  ,[2,3,4]])
-printf(array)
-printf(array.ndim)
-printf(array.shape)
-printf(array.size)
+print(array)
+print(array.ndim)
+print(array.shape)
+print(array.size)
 </code></pre>
 <p><strong>创建array</strong>:</p>
 <ul>
-<li>array:创建数组</li>
+<li>array: 创建数组</li>
 <li>dtype：指定数据类型</li>
 <li>zeros：创建数据全为0 —–np.zeros((3,4))数据为0，三行四列</li>
 <li>ones：创建数据全为1</li>
-<li>arange:按指定范围创建数据—np.arange(10)</li>
+<li>arange: 按指定范围创建数据—np.arange(10)</li>
 <li>linspace：创建线段—np.linspace(start,end,num)</li>
 </ul>
 <p>可使用reshape()改变数据的形状。</p>
 <hr>
 <h1 id="基本运算："><a href="#基本运算：" class="headerlink" title="基本运算："></a>基本运算：</h1><h3 id="普通加减乘法、次方运算直接在数组上的操作："><a href="#普通加减乘法、次方运算直接在数组上的操作：" class="headerlink" title="普通加减乘法、次方运算直接在数组上的操作："></a>普通加减乘法、次方运算直接在数组上的操作：</h3><p>c=a+b,c=a-b,c=a*b,c=b**2</p>
 <h3 id="判断逻辑："><a href="#判断逻辑：" class="headerlink" title="判断逻辑："></a>判断逻辑：</h3><p>print(b&lt;3)—–&gt;输出bool矩阵</p>
-<h2 id="调用各类函数："><a href="#调用各类函数：" class="headerlink" title="调用各类函数："></a>调用各类函数：</h2><h3 id="标准矩阵乘法：dot"><a href="#标准矩阵乘法：dot" class="headerlink" title="标准矩阵乘法：dot()"></a>标准矩阵乘法：dot()</h3><p>c = np.dot(a,b) OR c = a.dot(b)</p>
+<h3 id="标准矩阵乘法：dot"><a href="#标准矩阵乘法：dot" class="headerlink" title="标准矩阵乘法：dot()"></a>标准矩阵乘法：dot()</h3><p>c = np.dot(a,b) OR c = a.dot(b)</p>
 <h3 id="三角函数等"><a href="#三角函数等" class="headerlink" title="三角函数等:"></a>三角函数等:</h3><p>sin()  </p>
 <h3 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数:"></a>聚集函数:</h3><p>sum(),max(),min()<br>其中可带参数axis，0为查找每列，1为查找每行</p>
 <h3 id="索引："><a href="#索引：" class="headerlink" title="索引："></a>索引：</h3><p>argmin(),argmax()<br>分别对应矩阵最小、最大元素的索引</p>
