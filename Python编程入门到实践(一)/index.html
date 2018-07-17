@@ -19,16 +19,15 @@
     <meta name="description" content="关于书本的一些知识点的记录，不算全面。
 变量和简单数据类型字符：修改字符串的大小写：
 title() 返回字符串的标题形式，但是会有出乎意料的结果，如下：
-  print "hello world".title()
+  print &quot;hello world&quot;.title()
+
 
 Hello World
 
-  print "they're bill's friends".title()
-
-They’Re Bill’S Friends
+  print &quot;they&#39;re bill&#39;s friends&quot;.title()
 
 
-upper() ...">
+The...">
   
   <title>Python编程：从入门到实践(一)---变量\简单数据类型\列表 [ NEW_LIFE ]</title>
   
@@ -134,12 +133,12 @@ upper() ...">
   <article id="post">
     <h1>Python编程：从入门到实践(一)---变量\简单数据类型\列表</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">撰写于 2018-07-16</span>
+      <span id = "post-title-date">Created at 2018-07-16</span>
       
-        <span id = "post-title-updated">修改于 2018-07-17</span>
+        <span id = "post-title-updated">Updated at 2018-07-17</span>
       
       
-      <span id = "post-title-categories">分类
+      <span id = "post-title-categories">Category
       
       
         
@@ -150,7 +149,7 @@ upper() ...">
       
       
       <span id = "post-title-tags">
-      标签
+      Tag
       
       
         
@@ -164,11 +163,13 @@ upper() ...">
     <p><strong>关于书本的一些知识点的记录，不算全面。</strong></p>
 <h1 id="变量和简单数据类型"><a href="#变量和简单数据类型" class="headerlink" title="变量和简单数据类型"></a>变量和简单数据类型</h1><h2 id="字符："><a href="#字符：" class="headerlink" title="字符："></a>字符：</h2><h3 id="修改字符串的大小写："><a href="#修改字符串的大小写：" class="headerlink" title="修改字符串的大小写："></a>修改字符串的大小写：</h3><ul>
 <li><p><strong>title()</strong> 返回字符串的标题形式，但是会有出乎意料的结果，如下：</p>
-  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"hello world"</span>.title()</span><br></pre></td></tr></table></figure>
+<pre><code class="python">  print &quot;hello world&quot;.title()
+</code></pre>
 <blockquote>
 <p>Hello World</p>
 </blockquote>
-  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"they're bill's friends"</span>.title()</span><br></pre></td></tr></table></figure>
+<pre><code class="python">  print &quot;they&#39;re bill&#39;s friends&quot;.title()
+</code></pre>
 <blockquote>
 <p>They’Re Bill’S Friends</p>
 </blockquote>
@@ -235,8 +236,13 @@ upper() ...">
 </ul>
 <p><strong>使用list()将range转换成列表：</strong> num= list(range(1,6))</p>
 <hr>
-<h3 id="列表解析："><a href="#列表解析：" class="headerlink" title="列表解析："></a>列表解析：</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">squares = [value**<span class="number">2</span> <span class="keyword">for</span> value <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</span><br></pre></td></tr></table></figure>
-<p>等价于<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">squares=[]</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">    squares.append(value**<span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="列表解析："><a href="#列表解析：" class="headerlink" title="列表解析："></a>列表解析：</h3><pre><code class="python">squares = [value**2 for value in range(1,11)]
+</code></pre>
+<p>等价于</p>
+<pre><code class="python">squares=[]
+for value in range(1,11):
+    squares.append(value**2)
+</code></pre>
 <hr>
 <h3 id="切片："><a href="#切片：" class="headerlink" title="切片："></a>切片：</h3><p>a = [‘a’,’b’,’c’,’d’]</p>
 <ul>
@@ -245,12 +251,24 @@ upper() ...">
 <li>[2:]—&gt;[‘c’,’d’]</li>
 </ul>
 <hr>
-<h3 id="复制列表："><a href="#复制列表：" class="headerlink" title="复制列表："></a>复制列表：</h3><p>如果采用单纯相等来处理：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>]</span><br><span class="line">b = a</span><br><span class="line">b.append(<span class="string">'e'</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
+<h3 id="复制列表："><a href="#复制列表：" class="headerlink" title="复制列表："></a>复制列表：</h3><p>如果采用单纯相等来处理：</p>
+<pre><code class="python">a=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]
+b = a
+b.append(&#39;e&#39;)
+print(a)
+print(b)
+</code></pre>
 <p>得到并非我们想要的结果：</p>
 <blockquote>
 <p>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]<br>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]</p>
 </blockquote>
-<p>采用<strong>切片法复制</strong>：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">b.append(<span class="string">'e'</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
+<p>采用<strong>切片法复制</strong>：</p>
+<pre><code class="python">a=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]
+b = a[:]
+b.append(&#39;e&#39;)
+print(a)
+print(b)
+</code></pre>
 <p>得到如下结果：</p>
 <blockquote>
 <p>[‘a’, ‘b’, ‘c’, ‘d’]<br>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]</p>
@@ -262,10 +280,10 @@ upper() ...">
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
-    <h2>目录</h2>
+    <h2>Table of Content</h2>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#变量和简单数据类型"><span class="toc-text">变量和简单数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#字符："><span class="toc-text">字符：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#修改字符串的大小写："><span class="toc-text">修改字符串的大小写：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合并（拼接）字符串："><span class="toc-text">合并（拼接）字符串：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加空白："><span class="toc-text">添加空白：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除空白："><span class="toc-text">删除空白：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数字："><span class="toc-text">数字：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#整数："><span class="toc-text">整数：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pytho3中整数除法结果可为浮点数"><span class="toc-text">pytho3中整数除法结果可为浮点数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#浮点数："><span class="toc-text">浮点数：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字转字符："><span class="toc-text">数字转字符：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表："><span class="toc-text">列表：[ ]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#修改、添加、删除元素："><span class="toc-text">修改、添加、删除元素：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#修改："><span class="toc-text">修改：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加："><span class="toc-text">添加：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除："><span class="toc-text">删除：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组织列表："><span class="toc-text">组织列表：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排序："><span class="toc-text">排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#确定列表长度："><span class="toc-text">确定列表长度：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#len"><span class="toc-text">len()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作列表："><span class="toc-text">操作列表：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#range"><span class="toc-text">range():</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表解析："><span class="toc-text">列表解析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#切片："><span class="toc-text">切片：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制列表："><span class="toc-text">复制列表：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#元组（tuple）："><span class="toc-text">元组（tuple）：</span></a></li></ol></li></ol></li></ol>
   </div>
 </div>
@@ -273,13 +291,13 @@ upper() ...">
   
 <nav id="pagination">
   
-    <a href="/RYU_Traffic Monitor/" class="prev">&larr; 上一篇 </a>
+    <a href="/RYU_Traffic Monitor/" class="prev">&larr; Prev post </a>
   
 
   
 
   
-    <a href="/numpy/" class="next">下一篇  &rarr;</a>
+    <a href="/numpy/" class="next">Next post  &rarr;</a>
   
 </nav>
 
