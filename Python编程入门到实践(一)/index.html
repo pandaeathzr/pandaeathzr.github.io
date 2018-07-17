@@ -19,15 +19,16 @@
     <meta name="description" content="关于书本的一些知识点的记录，不算全面。
 变量和简单数据类型字符：修改字符串的大小写：
 title() 返回字符串的标题形式，但是会有出乎意料的结果，如下：
-  print &quot;hello world&quot;.title()
-
+  1print "hello world".title()
 
 Hello World
 
-  print &quot;they&#39;re bill&#39;s friends&quot;.title()
+  1print "they're bill's friends".title()
+
+They’Re Bill’S Friends
 
 
-The...">
+upper(...">
   
   <title>Python编程：从入门到实践(一)---变量\简单数据类型\列表 [ REMEMBER ]</title>
   
@@ -46,7 +47,28 @@ The...">
 </head>
 
 <body>
-
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/RYU_Traffic Monitor/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        RYU，Chapter 2. 流量监控（Traffic Monitor)
+      </div>
+    </div>
+  
+  
+    <div class="item next">
+      <a href="/numpy/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        numpy入门
+      </div>
+    </div>
+  
+</div>
 <div id="outer-container" class="hide-area">
 <div id="container">
   <div id="menu-outer" class="slide-down">
@@ -142,13 +164,11 @@ The...">
     <p><strong>关于书本的一些知识点的记录，不算全面。</strong></p>
 <h1 id="变量和简单数据类型"><a href="#变量和简单数据类型" class="headerlink" title="变量和简单数据类型"></a>变量和简单数据类型</h1><h2 id="字符："><a href="#字符：" class="headerlink" title="字符："></a>字符：</h2><h3 id="修改字符串的大小写："><a href="#修改字符串的大小写：" class="headerlink" title="修改字符串的大小写："></a>修改字符串的大小写：</h3><ul>
 <li><p><strong>title()</strong> 返回字符串的标题形式，但是会有出乎意料的结果，如下：</p>
-<pre><code class="python">  print &quot;hello world&quot;.title()
-</code></pre>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"hello world"</span>.title()</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Hello World</p>
 </blockquote>
-<pre><code class="python">  print &quot;they&#39;re bill&#39;s friends&quot;.title()
-</code></pre>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"they're bill's friends"</span>.title()</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>They’Re Bill’S Friends</p>
 </blockquote>
@@ -215,13 +235,8 @@ The...">
 </ul>
 <p><strong>使用list()将range转换成列表：</strong> num= list(range(1,6))</p>
 <hr>
-<h3 id="列表解析："><a href="#列表解析：" class="headerlink" title="列表解析："></a>列表解析：</h3><pre><code class="python">squares = [value**2 for value in range(1,11)]
-</code></pre>
-<p>等价于</p>
-<pre><code class="python">squares=[]
-for value in range(1,11):
-    squares.append(value**2)
-</code></pre>
+<h3 id="列表解析："><a href="#列表解析：" class="headerlink" title="列表解析："></a>列表解析：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squares = [value**<span class="number">2</span> <span class="keyword">for</span> value <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</span><br></pre></td></tr></table></figure>
+<p>等价于<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">squares=[]</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">    squares.append(value**<span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="切片："><a href="#切片：" class="headerlink" title="切片："></a>切片：</h3><p>a = [‘a’,’b’,’c’,’d’]</p>
 <ul>
@@ -230,24 +245,12 @@ for value in range(1,11):
 <li>[2:]—&gt;[‘c’,’d’]</li>
 </ul>
 <hr>
-<h3 id="复制列表："><a href="#复制列表：" class="headerlink" title="复制列表："></a>复制列表：</h3><p>如果采用单纯相等来处理：</p>
-<pre><code class="python">a=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]
-b = a
-b.append(&#39;e&#39;)
-print(a)
-print(b)
-</code></pre>
+<h3 id="复制列表："><a href="#复制列表：" class="headerlink" title="复制列表："></a>复制列表：</h3><p>如果采用单纯相等来处理：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>]</span><br><span class="line">b = a</span><br><span class="line">b.append(<span class="string">'e'</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
 <p>得到并非我们想要的结果：</p>
 <blockquote>
 <p>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]<br>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]</p>
 </blockquote>
-<p>采用<strong>切片法复制</strong>：</p>
-<pre><code class="python">a=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]
-b = a[:]
-b.append(&#39;e&#39;)
-print(a)
-print(b)
-</code></pre>
+<p>采用<strong>切片法复制</strong>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">b.append(<span class="string">'e'</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
 <p>得到如下结果：</p>
 <blockquote>
 <p>[‘a’, ‘b’, ‘c’, ‘d’]<br>[‘a’, ‘b’, ‘c’, ‘d’, ‘e’]</p>
