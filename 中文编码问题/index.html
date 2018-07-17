@@ -27,7 +27,9 @@ printf u’你好’
 
 遇到的问题：
 在做数据库调试报错的时候，存在以下代码：
-1234try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception ...">
+    try:
+        tr_money.transfer(sourse_acctid,target_acctid,money)
+    except Except...">
   
   <title>python中文编码问题 [ NEW_LIFE ]</title>
   
@@ -171,15 +173,23 @@ printf u’你好’
 <hr>
 <p>遇到的问题：</p>
 <p>在做数据库调试报错的时候，存在以下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
-<p>其中e 为raise返回的报错字符</p>
+<pre><code>    try:
+        tr_money.transfer(sourse_acctid,target_acctid,money)
+    except Exception as e:
+        print u&#39;出现问题 :&#39; +str(e)
+
+</code></pre><p>其中e 为raise返回的报错字符</p>
 <p>然后执行会报错：</p>
 <blockquote>
 <p>‘ascii’ codec can’t encode characters in position 0-1: ordinal not in range(128)</p>
 </blockquote>
 <p>原因大概是对utf-8的字段不能够str</p>
 <p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
+<pre><code>    try:
+        tr_money.transfer(sourse_acctid,target_acctid,money)
+    except Exception as e:
+        print u&#39;出现问题 :%s&#39; %e
+</code></pre>
   </article>
   <div class="random-toc-area">
   <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
