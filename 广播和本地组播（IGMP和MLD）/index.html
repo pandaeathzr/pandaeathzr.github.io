@@ -1,138 +1,162 @@
-<!DOCTYPE html>
-<html>
-  <!-- Html Head Tag-->
-  <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
+  
   <meta name="author" content="Huzr">
-  <!-- Open Graph Data -->
-  <meta property="og:title" content="广播和本地组播（IGMP和MLD）"/>
-  <meta property="og:description" content="愿你还是你所期待的样子" />
-  <meta property="og:site_name" content="NEW_LIFE"/>
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="http://pandarui.com"/>
-  
-    <link rel="alternate" href="/atom.xml" title="NEW_LIFE" type="application/atom+xml">
   
   
-    <link rel="icon" href="/img/panda.png">
   
+  
+    <meta name="description" content="距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。
+由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。
+并且考虑到最近身体比较虚弱…，应该更加早睡早起!
+加油！
+广播和本地组播（IGMP和MLD）在引言中有下面一些比较重要的概念：
+广播和组播为应用程序提供了两种服务
 
-  <!-- Site Title -->
-  <title>NEW_LIFE</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <!-- Custom CSS -->
+数据分组交...">
   
-  <link rel="stylesheet" href="/css/style.light.css">
-
-  <!-- Google Analytics -->
+  <title>广播和本地组播（IGMP和MLD） [ NEW_LIFE ]</title>
   
-
+  
+    <link rel="shortcut icon" href="/panda.png">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
 </head>
 
-  <body>
-    <!-- Page Header -->
-
-
-<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-title with-background-image">
-          <p class="title">广播和本地组播（IGMP和MLD）</p>
-          <p class="subtitle"></p>
-        </div>
-        <div class="site-menu with-background-image">
-          <ul>
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/用户数据报和IP分片/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        用户数据报协议和IP分片
+      </div>
+    </div>
+  
+  
+    <div class="item next">
+      <a href="/Internet控制报文协议/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        Internet控制报文协议
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://i.imgur.com/A1tEJh4.jpg"/>
+          <div id="homelink">NEW_LIFE</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
             
-              <li>
-                <a href="/">
-                  
-                  Home
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
             
-              <li>
-                <a href="/categories/Study/">
-                  
-                  Study
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
             
-              <li>
-                <a href="/categories/Life/">
-                  
-                  Life
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
             
-              <li>
-                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
-                  
-                  weibo
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
             
-              <li>
-                <a href="https://github.com/pandaeathzr">
-                  
-                  Github
-                  
-                </a>
-              </li>
-            
-          </ul>
-        </div>
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
       </div>
     </div>
   </div>
-</header>
- 
 
-
-<article>
-  <div class="container typo">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-info text-muted">
-          
-            <!-- Author -->
-            <span class="author info">By Huzr</span>
-          
-          <!-- Date -->
-          <span class="date-time info">On
-            <span class="date">2018-04-12</span>
-            <span class="time">15:30:40</span>
-          </span>
-          
-          <!--  Categories  -->
-            <span class="categories info">Under 
-
-<a href="/categories/Study/">Study</a>
-</span>
-          
-        </div>
-        <!-- Tags -->
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>广播和本地组播（IGMP和MLD）</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2018-04-12</span>
+      
+        <span id = "post-title-updated">Updated at 2018-06-04</span>
+      
+      
+      <span id = "post-title-categories">Category
+      
+      
         
-          <div class="post-tags text-muted">
-            Tags: 
-
-<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
-
-
-          </div>
         
-        <!-- Post Main Content -->
-        <div class="post-content">
-          <p>距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。</p>
+        <a href="/categories/Study/">Study</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/TCP-IP/">TCP/IP</a>
+      
+      </span>
+      
+    </p>
+    
+    <p>距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。</p>
 <p>由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。</p>
 <p>并且考虑到最近身体比较虚弱…，应该更加早睡早起!</p>
 <p>加油！</p>
@@ -168,45 +192,184 @@
 <p>组播路由器定期向每个连接的子网发送IGMP(MLD)请求。主机则会响应这个请求，告诉路由器那些组和源是感兴趣的。如果成员资格变动，主机也可以发送主动提供的报告。</p>
 <p><img src="https://i.imgur.com/61zmHsM.jpg" alt=""></p>
 
-        </div>
-      </div>
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#广播和本地组播（IGMP和MLD）"><span class="toc-text">广播和本地组播（IGMP和MLD）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#广播"><span class="toc-text">广播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组播"><span class="toc-text">组播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主机地址过滤"><span class="toc-text">主机地址过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互联网组管理协议和组播侦听发现协议"><span class="toc-text">互联网组管理协议和组播侦听发现协议</span></a></li></ol></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+    <a href="/用户数据报和IP分片/" class="prev">&larr; Prev post 用户数据报协议和IP分片</a>
+  
+
+  
+
+  
+    <a href="/Internet控制报文协议/" class="next">Next post Internet控制报文协议 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
     </div>
   </div>
-</article>
 
-
-
-    <!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <p class="copyright text-muted">
-          愿你是你所期待的样子 
-        <p class="copyright text-muted">
-		<br>
-          你不能把这个世界,让给你所鄙视的人
-        </p>
-		        <p class="copyright text-muted">
-          尽管最终,你变成了你讨厌的人
-        </p>
-      </div>
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      愿你是你所期待的样子
+      <br>
+      
     </div>
   </div>
-</footer>
+</div>
+
+</div>
 
 
-    <!-- After Footer Scripts -->
-<script src="/js/highlight.pack.js"></script>
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://i.imgur.com/A1tEJh4.jpg">
+    <p id="description">愿你还是你所期待的样子</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/pandaeathzr">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
-    codeBlocks.forEach(function(block, index) {
-      hljs.highlightBlock(block);
-    });
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
   });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
 </script>
 
-  </body>
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
 </html>
 

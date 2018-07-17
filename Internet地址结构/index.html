@@ -1,138 +1,160 @@
-<!DOCTYPE html>
-<html>
-  <!-- Html Head Tag-->
-  <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
+  
   <meta name="author" content="Huzr">
-  <!-- Open Graph Data -->
-  <meta property="og:title" content="Internet 地址结构"/>
-  <meta property="og:description" content="愿你还是你所期待的样子" />
-  <meta property="og:site_name" content="NEW_LIFE"/>
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="http://pandarui.com"/>
-  
-    <link rel="alternate" href="/atom.xml" title="NEW_LIFE" type="application/atom+xml">
   
   
-    <link rel="icon" href="/img/panda.png">
   
+  
+    <meta name="description" content="连接到Internet的每个设备至少要有一个IP地址。基于TCP/IP协议的专用网络中使用的设备也需要IP地址。
+表示IP地址IPv4地址：32bit采用点分四组或者点分十进制表示。例如165.195.130.105
+IPv6地址：128bit采用块或字段的四个十六位进制数表示。例如5f05:2000:80ad:5800:0058:0800:2023:1d71
+该表示方法有以下共识：  
 
-  <!-- Site Title -->
-  <title>NEW_LIFE</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <!-- Custom CSS -->
+...">
   
-  <link rel="stylesheet" href="/css/style.light.css">
-
-  <!-- Google Analytics -->
+  <title>Internet 地址结构 [ NEW_LIFE ]</title>
   
-
+  
+    <link rel="shortcut icon" href="/panda.png">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
 </head>
 
-  <body>
-    <!-- Page Header -->
-
-
-<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-title with-background-image">
-          <p class="title">Internet 地址结构</p>
-          <p class="subtitle"></p>
-        </div>
-        <div class="site-menu with-background-image">
-          <ul>
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/ARP地址解析协议/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        地址解析协议
+      </div>
+    </div>
+  
+  
+    <div class="item next">
+      <a href="/链路层/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        链路层
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://i.imgur.com/A1tEJh4.jpg"/>
+          <div id="homelink">NEW_LIFE</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
             
-              <li>
-                <a href="/">
-                  
-                  Home
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
             
-              <li>
-                <a href="/categories/Study/">
-                  
-                  Study
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
             
-              <li>
-                <a href="/categories/Life/">
-                  
-                  Life
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
             
-              <li>
-                <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
-                  
-                  weibo
-                  
-                </a>
-              </li>
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
             
-              <li>
-                <a href="https://github.com/pandaeathzr">
-                  
-                  Github
-                  
-                </a>
-              </li>
-            
-          </ul>
-        </div>
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
       </div>
     </div>
   </div>
-</header>
- 
 
-
-<article>
-  <div class="container typo">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-info text-muted">
-          
-            <!-- Author -->
-            <span class="author info">By Huzr</span>
-          
-          <!-- Date -->
-          <span class="date-time info">On
-            <span class="date">2018-03-28</span>
-            <span class="time">15:30:40</span>
-          </span>
-          
-          <!--  Categories  -->
-            <span class="categories info">Under 
-
-<a href="/categories/Study/">Study</a>
-</span>
-          
-        </div>
-        <!-- Tags -->
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>Internet 地址结构</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2018-03-28</span>
+      
+        <span id = "post-title-updated">Updated at 2018-06-04</span>
+      
+      
+      <span id = "post-title-categories">Category
+      
+      
         
-          <div class="post-tags text-muted">
-            Tags: 
-
-<a class="tag" href="/tags/TCP-IP/">#TCP/IP</a>
-
-
-          </div>
         
-        <!-- Post Main Content -->
-        <div class="post-content">
-          <p>连接到Internet的每个设备至少要有一个IP地址。基于TCP/IP协议的专用网络中使用的设备也需要IP地址。</p>
+        <a href="/categories/Study/">Study</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/TCP-IP/">TCP/IP</a>
+      
+      </span>
+      
+    </p>
+    
+    <p>连接到Internet的每个设备至少要有一个IP地址。基于TCP/IP协议的专用网络中使用的设备也需要IP地址。</p>
 <h2 id="表示IP地址"><a href="#表示IP地址" class="headerlink" title="表示IP地址"></a>表示IP地址</h2><h3 id="IPv4地址："><a href="#IPv4地址：" class="headerlink" title="IPv4地址："></a>IPv4地址：</h3><p>32bit<br>采用点分四组或者<strong>点分十进制</strong>表示。例如165.195.130.105</p>
 <h3 id="IPv6地址："><a href="#IPv6地址：" class="headerlink" title="IPv6地址："></a>IPv6地址：</h3><p>128bit<br>采用块或字段的四个十六位进制数表示。例如<code>5f05:2000:80ad:5800:0058:0800:2023:1d71</code></p>
 <p>该表示方法有以下共识：  </p>
@@ -174,45 +196,184 @@
 <p>一个IP组播地址标识一组主机接口，而不是单个接口。</p>
 <p>站点管理员可将路由器配置为管理范围边界，这意味着相关组的组播流量不会被路由器转发</p>
 
-        </div>
-      </div>
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#表示IP地址"><span class="toc-text">表示IP地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4地址："><span class="toc-text">IPv4地址：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6地址："><span class="toc-text">IPv6地址：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本的IP地址结构"><span class="toc-text">基本的IP地址结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分类寻址"><span class="toc-text">分类寻址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子网寻址"><span class="toc-text">子网寻址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#子网掩码"><span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广播地址"><span class="toc-text">广播地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CIDR和聚合"><span class="toc-text">CIDR和聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前缀"><span class="toc-text">前缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#聚合"><span class="toc-text">聚合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊用途地址"><span class="toc-text">特殊用途地址</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+    <a href="/ARP地址解析协议/" class="prev">&larr; Prev post 地址解析协议</a>
+  
+
+  
+
+  
+    <a href="/链路层/" class="next">Next post 链路层 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
     </div>
   </div>
-</article>
 
-
-
-    <!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <p class="copyright text-muted">
-          愿你是你所期待的样子 
-        <p class="copyright text-muted">
-		<br>
-          你不能把这个世界,让给你所鄙视的人
-        </p>
-		        <p class="copyright text-muted">
-          尽管最终,你变成了你讨厌的人
-        </p>
-      </div>
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      愿你是你所期待的样子
+      <br>
+      
     </div>
   </div>
-</footer>
+</div>
+
+</div>
 
 
-    <!-- After Footer Scripts -->
-<script src="/js/highlight.pack.js"></script>
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://i.imgur.com/A1tEJh4.jpg">
+    <p id="description">愿你还是你所期待的样子</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/pandaeathzr">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
-    codeBlocks.forEach(function(block, index) {
-      hljs.highlightBlock(block);
-    });
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
   });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
 </script>
 
-  </body>
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
 </html>
 
