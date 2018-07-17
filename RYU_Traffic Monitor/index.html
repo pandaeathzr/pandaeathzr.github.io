@@ -18,10 +18,7 @@
   
     <meta name="description" content="在交换机的基础上，加入流量监控的功能
 流量监控为维护网络的安全和业务的正常工作提供了一个基础条件。此章节讲述了如果利用RYU实现流量监控功能。我们仍然对RYU提供的源代码进行初步的解读。
-先贴上全部的源码：from operator import attrgetter
-
-from ryu.app import simple_switch_13
-from ryu.controller impo...">
+先贴上全部的源码：from operator import attrgetterfrom ryu.app import simple_switch_13from ryu.controller import ...">
   
   <title>RYU，Chapter 2. 流量监控（Traffic Monitor) [ NEW_LIFE ]</title>
   
@@ -127,12 +124,12 @@ from ryu.controller impo...">
   <article id="post">
     <h1>RYU，Chapter 2. 流量监控（Traffic Monitor)</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2018-07-16</span>
+      <span id = "post-title-date">撰写于 2018-07-16</span>
       
-        <span id = "post-title-updated">Updated at 2018-07-17</span>
+        <span id = "post-title-updated">修改于 2018-07-17</span>
       
       
-      <span id = "post-title-categories">Category
+      <span id = "post-title-categories">分类
       
       
         
@@ -143,7 +140,7 @@ from ryu.controller impo...">
       
       
       <span id = "post-title-tags">
-      Tag
+      标签
       
       
         
@@ -162,153 +159,31 @@ from ryu.controller impo...">
     
     <p><strong>在交换机的基础上，加入流量监控的功能</strong></p>
 <p>流量监控为维护网络的安全和业务的正常工作提供了一个基础条件。此章节讲述了如果利用RYU实现流量监控功能。我们仍然对RYU提供的源代码进行初步的解读。</p>
-<h1 id="先贴上全部的源码："><a href="#先贴上全部的源码：" class="headerlink" title="先贴上全部的源码："></a>先贴上全部的源码：</h1><pre><code class="python">from operator import attrgetter
-
-from ryu.app import simple_switch_13
-from ryu.controller import ofp_event
-from ryu.controller.handler import MAIN_DISPATCHER, DEAD_DISPATCHER
-from ryu.controller.handler import set_ev_cls
-from ryu.lib import hub
-
-
-class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
-
-    def __init__(self, *args, **kwargs):
-        super(SimpleMonitor13, self).__init__(*args, **kwargs)
-        self.datapaths = {}
-        self.monitor_thread = hub.spawn(self._monitor)
-
-    @set_ev_cls(ofp_event.EventOFPStateChange,
-                [MAIN_DISPATCHER, DEAD_DISPATCHER])
-    def _state_change_handler(self, ev):
-        datapath = ev.datapath
-        if ev.state == MAIN_DISPATCHER:
-            if datapath.id not in self.datapaths:
-                self.logger.debug(&#39;register datapath: %016x&#39;, datapath.id)
-                self.datapaths[datapath.id] = datapath
-        elif ev.state == DEAD_DISPATCHER:
-            if datapath.id in self.datapaths:
-                self.logger.debug(&#39;unregister datapath: %016x&#39;, datapath.id)
-                del self.datapaths[datapath.id]
-
-    def _monitor(self):
-        while True:
-            for dp in self.datapaths.values():
-                self._request_stats(dp)
-            hub.sleep(10)
-
-    def _request_stats(self, datapath):
-        self.logger.debug(&#39;send stats request: %016x&#39;, datapath.id)
-        ofproto = datapath.ofproto
-        parser = datapath.ofproto_parser
-
-        req = parser.OFPFlowStatsRequest(datapath)
-        datapath.send_msg(req)
-
-        req = parser.OFPPortStatsRequest(datapath, 0, ofproto.OFPP_ANY)
-        datapath.send_msg(req)
-
-    @set_ev_cls(ofp_event.EventOFPFlowStatsReply, MAIN_DISPATCHER)
-    def _flow_stats_reply_handler(self, ev):
-        body = ev.msg.body
-
-        self.logger.info(&#39;datapath         &#39;
-                         &#39;in-port  eth-dst           &#39;
-                         &#39;out-port packets  bytes&#39;)
-        self.logger.info(&#39;---------------- &#39;
-                         &#39;-------- ----------------- &#39;
-                         &#39;-------- -------- --------&#39;)
-        for stat in sorted([flow for flow in body if flow.priority == 1],
-                           key=lambda flow: (flow.match[&#39;in_port&#39;],
-                                             flow.match[&#39;eth_dst&#39;])):
-            self.logger.info(&#39;%016x %8x %17s %8x %8d %8d&#39;,
-                             ev.msg.datapath.id,
-                             stat.match[&#39;in_port&#39;], stat.match[&#39;eth_dst&#39;],
-                             stat.instructions[0].actions[0].port,
-                             stat.packet_count, stat.byte_count)
-
-    @set_ev_cls(ofp_event.EventOFPPortStatsReply, MAIN_DISPATCHER)
-    def _port_stats_reply_handler(self, ev):
-        body = ev.msg.body
-
-        self.logger.info(&#39;datapath         port     &#39;
-                         &#39;rx-pkts  rx-bytes rx-error &#39;
-                         &#39;tx-pkts  tx-bytes tx-error&#39;)
-        self.logger.info(&#39;---------------- -------- &#39;
-                         &#39;-------- -------- -------- &#39;
-                         &#39;-------- -------- --------&#39;)
-        for stat in sorted(body, key=attrgetter(&#39;port_no&#39;)):
-            self.logger.info(&#39;%016x %8x %8d %8d %8d %8d %8d %8d&#39;,
-                             ev.msg.datapath.id, stat.port_no,
-                             stat.rx_packets, stat.rx_bytes, stat.rx_errors,
-                             stat.tx_packets, stat.tx_bytes, stat.tx_errors)
-</code></pre>
+<h1 id="先贴上全部的源码："><a href="#先贴上全部的源码：" class="headerlink" title="先贴上全部的源码："></a>先贴上全部的源码：</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> attrgetter</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ryu.app <span class="keyword">import</span> simple_switch_13</span><br><span class="line"><span class="keyword">from</span> ryu.controller <span class="keyword">import</span> ofp_event</span><br><span class="line"><span class="keyword">from</span> ryu.controller.handler <span class="keyword">import</span> MAIN_DISPATCHER, DEAD_DISPATCHER</span><br><span class="line"><span class="keyword">from</span> ryu.controller.handler <span class="keyword">import</span> set_ev_cls</span><br><span class="line"><span class="keyword">from</span> ryu.lib <span class="keyword">import</span> hub</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleMonitor13</span><span class="params">(simple_switch_13.SimpleSwitch13)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        super(SimpleMonitor13, self).__init__(*args, **kwargs)</span><br><span class="line">        self.datapaths = &#123;&#125;</span><br><span class="line">        self.monitor_thread = hub.spawn(self._monitor)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @set_ev_cls(ofp_event.EventOFPStateChange,</span></span><br><span class="line">                [MAIN_DISPATCHER, DEAD_DISPATCHER])</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_state_change_handler</span><span class="params">(self, ev)</span>:</span></span><br><span class="line">        datapath = ev.datapath</span><br><span class="line">        <span class="keyword">if</span> ev.state == MAIN_DISPATCHER:</span><br><span class="line">            <span class="keyword">if</span> datapath.id <span class="keyword">not</span> <span class="keyword">in</span> self.datapaths:</span><br><span class="line">                self.logger.debug(<span class="string">'register datapath: %016x'</span>, datapath.id)</span><br><span class="line">                self.datapaths[datapath.id] = datapath</span><br><span class="line">        <span class="keyword">elif</span> ev.state == DEAD_DISPATCHER:</span><br><span class="line">            <span class="keyword">if</span> datapath.id <span class="keyword">in</span> self.datapaths:</span><br><span class="line">                self.logger.debug(<span class="string">'unregister datapath: %016x'</span>, datapath.id)</span><br><span class="line">                <span class="keyword">del</span> self.datapaths[datapath.id]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_monitor</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            <span class="keyword">for</span> dp <span class="keyword">in</span> self.datapaths.values():</span><br><span class="line">                self._request_stats(dp)</span><br><span class="line">            hub.sleep(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_request_stats</span><span class="params">(self, datapath)</span>:</span></span><br><span class="line">        self.logger.debug(<span class="string">'send stats request: %016x'</span>, datapath.id)</span><br><span class="line">        ofproto = datapath.ofproto</span><br><span class="line">        parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">        req = parser.OFPFlowStatsRequest(datapath)</span><br><span class="line">        datapath.send_msg(req)</span><br><span class="line"></span><br><span class="line">        req = parser.OFPPortStatsRequest(datapath, <span class="number">0</span>, ofproto.OFPP_ANY)</span><br><span class="line">        datapath.send_msg(req)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @set_ev_cls(ofp_event.EventOFPFlowStatsReply, MAIN_DISPATCHER)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_flow_stats_reply_handler</span><span class="params">(self, ev)</span>:</span></span><br><span class="line">        body = ev.msg.body</span><br><span class="line"></span><br><span class="line">        self.logger.info(<span class="string">'datapath         '</span></span><br><span class="line">                         <span class="string">'in-port  eth-dst           '</span></span><br><span class="line">                         <span class="string">'out-port packets  bytes'</span>)</span><br><span class="line">        self.logger.info(<span class="string">'---------------- '</span></span><br><span class="line">                         <span class="string">'-------- ----------------- '</span></span><br><span class="line">                         <span class="string">'-------- -------- --------'</span>)</span><br><span class="line">        <span class="keyword">for</span> stat <span class="keyword">in</span> sorted([flow <span class="keyword">for</span> flow <span class="keyword">in</span> body <span class="keyword">if</span> flow.priority == <span class="number">1</span>],</span><br><span class="line">                           key=<span class="keyword">lambda</span> flow: (flow.match[<span class="string">'in_port'</span>],</span><br><span class="line">                                             flow.match[<span class="string">'eth_dst'</span>])):</span><br><span class="line">            self.logger.info(<span class="string">'%016x %8x %17s %8x %8d %8d'</span>,</span><br><span class="line">                             ev.msg.datapath.id,</span><br><span class="line">                             stat.match[<span class="string">'in_port'</span>], stat.match[<span class="string">'eth_dst'</span>],</span><br><span class="line">                             stat.instructions[<span class="number">0</span>].actions[<span class="number">0</span>].port,</span><br><span class="line">                             stat.packet_count, stat.byte_count)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @set_ev_cls(ofp_event.EventOFPPortStatsReply, MAIN_DISPATCHER)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_port_stats_reply_handler</span><span class="params">(self, ev)</span>:</span></span><br><span class="line">        body = ev.msg.body</span><br><span class="line"></span><br><span class="line">        self.logger.info(<span class="string">'datapath         port     '</span></span><br><span class="line">                         <span class="string">'rx-pkts  rx-bytes rx-error '</span></span><br><span class="line">                         <span class="string">'tx-pkts  tx-bytes tx-error'</span>)</span><br><span class="line">        self.logger.info(<span class="string">'---------------- -------- '</span></span><br><span class="line">                         <span class="string">'-------- -------- -------- '</span></span><br><span class="line">                         <span class="string">'-------- -------- --------'</span>)</span><br><span class="line">        <span class="keyword">for</span> stat <span class="keyword">in</span> sorted(body, key=attrgetter(<span class="string">'port_no'</span>)):</span><br><span class="line">            self.logger.info(<span class="string">'%016x %8x %8d %8d %8d %8d %8d %8d'</span>,</span><br><span class="line">                             ev.msg.datapath.id, stat.port_no,</span><br><span class="line">                             stat.rx_packets, stat.rx_bytes, stat.rx_errors,</span><br><span class="line">                             stat.tx_packets, stat.tx_bytes, stat.tx_errors)</span><br></pre></td></tr></table></figure>
 <p>由于流量监控类继承了SimpleSwitch13类，所以不需要在进行数据报转发的代码编写。</p>
 <hr>
-<h1 id="逐步解析："><a href="#逐步解析：" class="headerlink" title="逐步解析："></a>逐步解析：</h1><pre><code class="python">from operator import attrgetter
-
-from ryu.app import simple_switch_13
-from ryu.controller import ofp_event
-from ryu.controller.handler import MAIN_DISPATCHER, DEAD_DISPATCHER
-from ryu.controller.handler import set_ev_cls
-from ryu.lib import hub
-
-
-class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
-
-    def __init__(self, *args, **kwargs):
-        super(SimpleMonitor13, self).__init__(*args, **kwargs)
-        self.datapaths = {}
-        self.monitor_thread = hub.spawn(self._monitor)
-</code></pre>
+<h1 id="逐步解析："><a href="#逐步解析：" class="headerlink" title="逐步解析："></a>逐步解析：</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> attrgetter</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ryu.app <span class="keyword">import</span> simple_switch_13</span><br><span class="line"><span class="keyword">from</span> ryu.controller <span class="keyword">import</span> ofp_event</span><br><span class="line"><span class="keyword">from</span> ryu.controller.handler <span class="keyword">import</span> MAIN_DISPATCHER, DEAD_DISPATCHER</span><br><span class="line"><span class="keyword">from</span> ryu.controller.handler <span class="keyword">import</span> set_ev_cls</span><br><span class="line"><span class="keyword">from</span> ryu.lib <span class="keyword">import</span> hub</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleMonitor13</span><span class="params">(simple_switch_13.SimpleSwitch13)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        super(SimpleMonitor13, self).__init__(*args, **kwargs)</span><br><span class="line">        self.datapaths = &#123;&#125;</span><br><span class="line">        self.monitor_thread = hub.spawn(self._monitor)</span><br></pre></td></tr></table></figure>
 <p>定义了一个SimpleMonitor13类，该类继承了simple_switch_13这个模块中的SimpleSwitch13类，也就是我们上一次所解析的。<br>然后在<strong>init</strong>下初始化类：</p>
 <ul>
 <li>有一个交换机的字典集</li>
 <li><em>self.monitor_thread = hub.spawn(self._monitor)</em> 这句话暂时没能够理解</li>
 </ul>
 <hr>
-<pre><code class="python">@set_ev_cls(ofp_event.EventOFPStateChange,[MAIN_DISPATCHER, DEAD_DISPATCHER])
-    def _state_change_handler(self, ev):
-        datapath = ev.datapath
-        if ev.state == MAIN_DISPATCHER:
-            if datapath.id not in self.datapaths:
-                self.logger.debug(&#39;register datapath: %016x&#39;, datapath.id)
-                self.datapaths[datapath.id] = datapath
-        elif ev.state == DEAD_DISPATCHER:
-            if datapath.id in self.datapaths:
-                self.logger.debug(&#39;unregister datapath: %016x&#39;, datapath.id)
-                del self.datapaths[datapath.id]
-</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@set_ev_cls(ofp_event.EventOFPStateChange,[MAIN_DISPATCHER, DEAD_DISPATCHER])</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_state_change_handler</span><span class="params">(self, ev)</span>:</span></span><br><span class="line">        datapath = ev.datapath</span><br><span class="line">        <span class="keyword">if</span> ev.state == MAIN_DISPATCHER:</span><br><span class="line">            <span class="keyword">if</span> datapath.id <span class="keyword">not</span> <span class="keyword">in</span> self.datapaths:</span><br><span class="line">                self.logger.debug(<span class="string">'register datapath: %016x'</span>, datapath.id)</span><br><span class="line">                self.datapaths[datapath.id] = datapath</span><br><span class="line">        <span class="keyword">elif</span> ev.state == DEAD_DISPATCHER:</span><br><span class="line">            <span class="keyword">if</span> datapath.id <span class="keyword">in</span> self.datapaths:</span><br><span class="line">                self.logger.debug(<span class="string">'unregister datapath: %016x'</span>, datapath.id)</span><br><span class="line">                <span class="keyword">del</span> self.datapaths[datapath.id]</span><br></pre></td></tr></table></figure>
 <p>当出现EventOFPStateChange改变时，执行_state_change_handler：</p>
 <ul>
 <li>如果在连接状态发现一个新的交换机，则注册该交换机并记录、监控；  </li>
 <li>如果连接断开，则注销该交换机，记录并释放内存。</li>
 </ul>
-<pre><code class="python">    def _monitor(self):
-        while True:
-            for dp in self.datapaths.values():
-                self._request_stats(dp)
-            hub.sleep(10)
-
-    def _request_stats(self, datapath):
-        self.logger.debug(&#39;send stats request: %016x&#39;, datapath.id)
-        ofproto = datapath.ofproto
-        parser = datapath.ofproto_parser
-
-        req = parser.OFPFlowStatsRequest(datapath)
-        datapath.send_msg(req)
-
-        req = parser.OFPPortStatsRequest(datapath, 0, ofproto.OFPP_ANY)
-        datapath.send_msg(req)
-</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_monitor</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="keyword">for</span> dp <span class="keyword">in</span> self.datapaths.values():</span><br><span class="line">            self._request_stats(dp)</span><br><span class="line">        hub.sleep(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_request_stats</span><span class="params">(self, datapath)</span>:</span></span><br><span class="line">    self.logger.debug(<span class="string">'send stats request: %016x'</span>, datapath.id)</span><br><span class="line">    ofproto = datapath.ofproto</span><br><span class="line">    parser = datapath.ofproto_parser</span><br><span class="line"></span><br><span class="line">    req = parser.OFPFlowStatsRequest(datapath)</span><br><span class="line">    datapath.send_msg(req)</span><br><span class="line"></span><br><span class="line">    req = parser.OFPPortStatsRequest(datapath, <span class="number">0</span>, ofproto.OFPP_ANY)</span><br><span class="line">    datapath.send_msg(req)</span><br></pre></td></tr></table></figure>
 <p>在_monitor中每10秒执行一次_request_stats<br>_request_stats的内容是向注册的交换机发送要求，从而统计讯息。<br>OFPFlowStatsRequest：<strong>单个流统计请求消息，控制器使用此消息来查询各个流统计信息。</strong><br>OFPPortStatsRequest：<strong>端口统计请求消息，控制器使用此消息来查询有关端口统计信息的信息</strong><br>OFPPortStatsRequest中ofproto.OFPP_ANY代表读取所有端口的信息。</p>
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
   <div class="random-toc">
-    <h2>Table of Content</h2>
+    <h2>目录</h2>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#先贴上全部的源码："><span class="toc-text">先贴上全部的源码：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#逐步解析："><span class="toc-text">逐步解析：</span></a></li></ol>
   </div>
 </div>
@@ -316,13 +191,13 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
   
 <nav id="pagination">
   
-    <a href="/Python编程入门到实践（二）/" class="prev">&larr; Prev post </a>
+    <a href="/Python编程入门到实践（二）/" class="prev">&larr; 上一篇 </a>
   
 
   
 
   
-    <a href="/Python编程入门到实践(一)/" class="next">Next post  &rarr;</a>
+    <a href="/Python编程入门到实践(一)/" class="next">下一篇  &rarr;</a>
   
 </nav>
 
