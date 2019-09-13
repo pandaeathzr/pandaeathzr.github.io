@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>系统配置：DHCP和自动配置 | Hello</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写在开头：今天和导师见了个面，抛给我一堆材料以及论文，感觉自己学业更加繁重。有些知识现阶段我可能没办法掌握，但是至少在我需要进一步理解它的时候，要知道在哪个地方能够找到。努力协调好项目以及导师的安排，课堂的内容尽量都在课堂直接消化了。找到能够一起学习的伙伴们是多门幸运的事情，好好加油~ Yesterday you said tomorrow.  引言我们知道每台主机和路由器都是需要一定的配置的信息">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统配置：DHCP和自动配置">
+<meta property="og:url" content="http://yoursite.com/2018/04/05/系统配置：DHCP和自动配置/index.html">
+<meta property="og:site_name" content="Hello">
+<meta property="og:description" content="写在开头：今天和导师见了个面，抛给我一堆材料以及论文，感觉自己学业更加繁重。有些知识现阶段我可能没办法掌握，但是至少在我需要进一步理解它的时候，要知道在哪个地方能够找到。努力协调好项目以及导师的安排，课堂的内容尽量都在课堂直接消化了。找到能够一起学习的伙伴们是多门幸运的事情，好好加油~ Yesterday you said tomorrow.  引言我们知道每台主机和路由器都是需要一定的配置的信息">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.imgur.com/4GjVSCd.jpg">
+<meta property="og:image" content="https://i.imgur.com/zXCl1pN.jpg">
+<meta property="og:image" content="https://i.imgur.com/fb6Mgc3.jpg">
+<meta property="og:image" content="https://i.imgur.com/YcjAYZI.jpg">
+<meta property="og:image" content="https://i.imgur.com/7EySPFL.jpg">
+<meta property="og:image" content="https://i.imgur.com/gcxBE3E.jpg">
+<meta property="og:updated_time" content="2018-06-04T07:02:07.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="系统配置：DHCP和自动配置">
+<meta name="twitter:description" content="写在开头：今天和导师见了个面，抛给我一堆材料以及论文，感觉自己学业更加繁重。有些知识现阶段我可能没办法掌握，但是至少在我需要进一步理解它的时候，要知道在哪个地方能够找到。努力协调好项目以及导师的安排，课堂的内容尽量都在课堂直接消化了。找到能够一起学习的伙伴们是多门幸运的事情，好好加油~ Yesterday you said tomorrow.  引言我们知道每台主机和路由器都是需要一定的配置的信息">
+<meta name="twitter:image" content="https://i.imgur.com/4GjVSCd.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">Hello</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-系统配置：DHCP和自动配置" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      系统配置：DHCP和自动配置
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/04/05/系统配置：DHCP和自动配置/" class="article-date"><time datetime="2018-04-05T02:47:47.000Z" itemprop="datePublished">2018-04-05</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写在开头：今天和导师见了个面，抛给我一堆材料以及论文，感觉自己学业更加繁重。有些知识现阶段我可能没办法掌握，但是至少在我需要进一步理解它的时候，要知道在哪个地方能够找到。努力协调好项目以及导师的安排，课堂的内容尽量都在课堂直接消化了。找到能够一起学习的伙伴们是多门幸运的事情，好好加油~</p>
+<p>Yesterday you said tomorrow.</p>
+<hr>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我们知道每台主机和路由器都是需要一定的配置的信息的，配置信息用于为系统指定本地名称，以及接口制定标识符（比如IP地址）,而在TCP/IP网络中。每个接口需要：  </p>
+<ul>
+<li>IP地址</li>
+<li>子网掩码</li>
+<li><p>广播地址</p>
+<p>系统需要一个路由或转发表，用来确定到达不同目的地的系统通讯。</p>
+</li>
+</ul>
+<p>Internet客户端主机中用于建议基本要素的协议和程序：<strong>动态主机配置协议（DHCP）</strong>以及IPv4和IPv6的无状态地址自动配置。</p>
+<p>状态机：状态机由状态寄存器和组合逻辑电路构成，能够根据控制信号按照预先设定的状态进行状态转移，是协调相关信号动作，完成特定操作的控制中心。</p>
+<h2 id="动态主机配置协议"><a href="#动态主机配置协议" class="headerlink" title="动态主机配置协议"></a>动态主机配置协议</h2><p>DHCP是一种流行的客户机/服务器协议，它用于为主机（或路由器）指定配置信息。</p>
+<p><em>DHCP的设计是基于一种早期的协议，Internet引导程序协议（BOOTP），只不过它已经过时了…</em></p>
+<p>DHCP由两个主要的部分组成，地址管理和配置数据交付。</p>
+<p>地址管理用于IP地址的动态分配，并为客户机提供地址租用。<br>配置数据交付包过DHCP协议的消息格式和状态机</p>
+<p>DHCP服务器可配置提供三种地址分配：</p>
+<ul>
+<li>自动分配，同动态分配，但是地址不可撤销</li>
+<li>动态分配，最常用，客户机从服务器配置的地址池中获得一个可撤销的IP地址</li>
+<li>手动分配，</li>
+</ul>
+<hr>
+<h2 id="地址池和租用"><a href="#地址池和租用" class="headerlink" title="地址池和租用"></a>地址池和租用</h2><p>在动态分配中，DHCP客户机请求分配一个IP地址，服务器从可用的地址池中选择一个地址作为响应。</p>
+<p>分配给客户机的地址只在一段特定时间内有效，这段时间称为<strong>租用期</strong></p>
+<p><strong>运作</strong>：<br>当发送DHCP请求时，客户机需要向服务器提供信息。这些信息包过客户机的名称、请求的租用期、已使用或最后使用过的地址副本和其他参数。  </p>
+<p>当服务器接收到这个请求时，它可利用客户机提供的信息（包过MAC地址请求)，结合其他从外部获得的信息（例如一天的时间，接受请求的接口），决定在响应中提供的地址和配置信息。</p>
+<p>当服务器向客户机提供租用期时，服务器将租用信息保存在持久性的存储器（非易失性内存或磁盘）中。</p>
+<hr>
+<h2 id="DHCP消息格式"><a href="#DHCP消息格式" class="headerlink" title="DHCP消息格式"></a>DHCP消息格式</h2><p>我们知道 DHCP前身是BOOTP，所以它的消息格式是采用拓展BOOTP的方式</p>
+<p>如图所示：</p>
+<p><img src="https://i.imgur.com/4GjVSCd.jpg" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>内容及作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Op</td>
+<td>标识消息是请求（1），还是应答（2）</td>
+</tr>
+<tr>
+<td>htype</td>
+<td>基于ARP使用的值，（1）为以太网</td>
+</tr>
+<tr>
+<td>hlen</td>
+<td>存放硬件（MAC)地址</td>
+</tr>
+<tr>
+<td>跳步</td>
+<td>用于保存消息传输过程中的中继次数，初始为0，依次增加</td>
+</tr>
+<tr>
+<td>事务ID <em>xid</em></td>
+<td>客户机选择的随机数，服务器需要将它复制在应答中，用于匹配应答与请求</td>
+</tr>
+<tr>
+<td>秒数</td>
+<td>申请地址经过的秒数</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>广播标志，表示客户机所发请求不能处理单播IP数据报，但能处理广播数据报</td>
+</tr>
+<tr>
+<td>客户机IP地址</td>
+<td>请求者的IP地址，如果没有就为0</td>
+</tr>
+<tr>
+<td>你的IP地址，yiaddr</td>
+<td>即服务器地址</td>
+</tr>
+<tr>
+<td>下一服务器IP地址</td>
+<td>顾名思义客户机可能需要另一个DHCP服务器来完成它的请求</td>
+</tr>
+<tr>
+<td>网关IP地址</td>
+<td>中继地址，由DHCP中继器填写，在转发时返回自己的地址</td>
+</tr>
+<tr>
+<td>客户机硬件地址</td>
+<td>客户机唯一标识符</td>
+</tr>
+</tbody>
+</table>
+<p>其他字段例如<em>服务器名，引导文件名</em>并不是每次都需要填写的，但是<strong>选项字段</strong>区分DHCP和传统BOOTP消息。</p>
+<p>因此我们可以称<strong>DHCP消息是带有一组特殊选项的BOOTP消息</strong>，至于选项的细节，我们在这里暂时不提</p>
+<hr>
+<h2 id="DHCP协议操作"><a href="#DHCP协议操作" class="headerlink" title="DHCP协议操作"></a>DHCP协议操作</h2><p>当新客户机连接网络时，它首先发现DHCP服务器们以及服务器们能提供的地址。然后它向中意的服务器发送它中意的请求，<em>同时也向其他服务器发送它的决定</em>。如果该服务器还保留该地址，便通过确认将地址分配给客户机。</p>
+<p><img src="https://i.imgur.com/zXCl1pN.jpg" alt=""></p>
+<p>他们之间的互相通讯可以由上图反应，数据包中各单位值的修改我暂时没有写在这里。</p>
+<p><strong>这里存在一个疑问</strong>，DHCP服务器如何向一个没有设置IP地址的客户机传达消息呢？</p>
+<p>还记得数据报中的标志字段吗？设置标志字段表示自己能够接收广播数据报，所以DHCP服务器是采用广播的方式连上客户机的</p>
+<p>下图给出DHCP的状态机</p>
+<p><img src="https://i.imgur.com/fb6Mgc3.jpg" alt=""></p>
+<hr>
+<h2 id="DHCP中继"><a href="#DHCP中继" class="headerlink" title="DHCP中继"></a>DHCP中继</h2><p>在更复杂的网络中，可以通过DHCP中继代理来中继DHCP流量，这样会更方便~</p>
+<p><img src="https://i.imgur.com/YcjAYZI.jpg" alt=""></p>
+<p>如图，在网段A\B之间的中继器会转发DHCP消息。通过选项或者填充空白字段使用额外的消息来标识它。</p>
+<p>这里有个要注意的地方，中继一般不会参与到客户机与服务器的所有流量交换。它仅中继客户机首次广播的消息，当客户机获得了服务器的IP地址，那就可以直接与服务器单播通讯了。</p>
+<h3 id="中继代理信息选项（RAIO）"><a href="#中继代理信息选项（RAIO）" class="headerlink" title="中继代理信息选项（RAIO）"></a>中继代理信息选项（RAIO）</h3><p>定义了很多子选项，例如几个被ISP用于标识一个请求来自哪个用户、链路或网络的选项</p>
+<p>例如：中继代理远程ID子选项和IPv6远程ID选项</p>
+<p>用于标识发送请求的DHCP客户机的方法。通俗来说就是采用本地解释的命名方式，例如呼叫方ID、用户名、调制解调器ID、点到点链路的远程IP地址等</p>
+<h2 id="DHCP和DNS交互"><a href="#DHCP和DNS交互" class="headerlink" title="DHCP和DNS交互"></a>DHCP和DNS交互</h2><p>当一台DHCP客户机获得一个IP地址时，它接收的配置信息的重要部分是一台DNS服务器的IP地址。</p>
+<p>组合DHCP/DNS服务器或动态DNS用来实现指定DHCP地址与相应的DNS地址的映射更新方法。</p>
+<p>组合DHCP/DNS服务器可读取请求中的客户机标识符或域名，在ACK进行响应前，通过映射更新内部DNS数据库，这样在后续的DNS请求中，能够在客户机名称和新分配的IP地址之间转换</p>
+<h2 id="以太网上的PPP"><a href="#以太网上的PPP" class="headerlink" title="以太网上的PPP"></a>以太网上的PPP</h2><p>对于大多苏局域网和一些广域网连接，DHCP提供了最常见的客户机系统配置的方法。对于广域网连接，常用另一种基于PPP的方法替代它。这种方法设计在以太网中携带PPP，因此称为以太网上的PPP（<strong>PPPoE</strong>）</p>
+<p>PPPoE用于广域网连接设备（例如图中的DSL调制解调器）作为一个交换机或网桥而不是使用路由器的情况下。</p>
+<p><img src="https://i.imgur.com/7EySPFL.jpg" alt=""></p>
+<p>在DSL调制解调器与ISP成功建立一条底层链路后，PC就可以开始PPPoE交换</p>
+<p>PPPoE消息交换开始于发现阶段及建立PPP会话阶段。每个消息是一个PAD（主动发现）消息。PADI（初始化）请求来自PPPoE服务器的响应，PADO(提供）提供连接。PADR(请求）表示客户机可以从多个可能的服务器中做出选择。PADS（会话确认）从选中的服务器向客户机提供一个确认。经过PAD交换，一次PPP会话开始。</p>
+<p>PPP会话可以由任何一方发送PADT(终止）消息来终止，或在底层链路出现故障时关闭。</p>
+<p><img src="https://i.imgur.com/gcxBE3E.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/05/系统配置：DHCP和自动配置/" data-id="ck0hrxuw5001r6kwi8zq8b6ig" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2018/04/03/防火墙和网络地址转换/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">防火墙和网络地址转换</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/2018/04/06/SDN第一次作业问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">SND上机作业中出现的一些问题</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>Hello.</p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/15/numpy/">numpy入门</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

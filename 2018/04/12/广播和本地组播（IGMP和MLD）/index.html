@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>广播和本地组播（IGMP和MLD） | Hello</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。 由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。 并且考虑到最近身体比较虚弱…，应该更加早睡早起! 加油！ 广播和本地组播（IGMP和MLD）在引言中有下面一些比较重要的概念： 广播和组播为应用程序提供了两种服务  数据分组交付至多">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="广播和本地组播（IGMP和MLD）">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/广播和本地组播（IGMP和MLD）/index.html">
+<meta property="og:site_name" content="Hello">
+<meta property="og:description" content="距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。 由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。 并且考虑到最近身体比较虚弱…，应该更加早睡早起! 加油！ 广播和本地组播（IGMP和MLD）在引言中有下面一些比较重要的概念： 广播和组播为应用程序提供了两种服务  数据分组交付至多">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.imgur.com/Lvq25ku.jpg">
+<meta property="og:image" content="https://i.imgur.com/S2Bb36o.jpg">
+<meta property="og:image" content="https://i.imgur.com/61zmHsM.jpg">
+<meta property="og:updated_time" content="2018-06-04T03:28:46.627Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="广播和本地组播（IGMP和MLD）">
+<meta name="twitter:description" content="距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。 由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。 并且考虑到最近身体比较虚弱…，应该更加早睡早起! 加油！ 广播和本地组播（IGMP和MLD）在引言中有下面一些比较重要的概念： 广播和组播为应用程序提供了两种服务  数据分组交付至多">
+<meta name="twitter:image" content="https://i.imgur.com/Lvq25ku.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">Hello</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-广播和本地组播（IGMP和MLD）" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      广播和本地组播（IGMP和MLD）
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/04/12/广播和本地组播（IGMP和MLD）/" class="article-date"><time datetime="2018-04-12T12:46:25.000Z" itemprop="datePublished">2018-04-12</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。</p>
+<p>由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。</p>
+<p>并且考虑到最近身体比较虚弱…，应该更加早睡早起!</p>
+<p>加油！</p>
+<h1 id="广播和本地组播（IGMP和MLD）"><a href="#广播和本地组播（IGMP和MLD）" class="headerlink" title="广播和本地组播（IGMP和MLD）"></a>广播和本地组播（IGMP和MLD）</h1><p>在引言中有下面一些比较重要的概念：</p>
+<p>广播和组播为应用程序提供了两种服务</p>
+<ul>
+<li>数据分组交付至多个目的地 //顾名思义</li>
+<li>通过客户端请求/发现服务器  //类似于DHCP</li>
+</ul>
+<p>一个广播请求会影响在广播范围内所有可以到达的主机，而组播只影响那些可能对该请求有<strong>兴趣</strong>的主机</p>
+<p>注意，在广播的更高开销和简单性以及组播的效率改善和更多的复杂性之间存在一种平衡。</p>
+<hr>
+<h2 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h2><p>广播是指将报文发送到网络中的所有可能的接收者。很容易的能够理解广播的概念，就像你拿着大喇叭对所有人喊话一样。所以它并不需要ARP请求来确定每个目的地的MAC地址。</p>
+<p>一般而言，使用广播的应用程序使用UDP协议，然后调用一组普通的API来发送流量。并且我们在打算发送广播数据报的时候，要加上一些特殊的标志，这样确认后可以防止误操作而产生大量的广播流量，造成网络拥塞。</p>
+<hr>
+<h2 id="组播"><a href="#组播" class="headerlink" title="组播"></a>组播</h2><p>组播的意思就是向一个组发送流量。</p>
+<p>组播状态必须由主机和路由器来保持，定期的进行更新和删除操作，这样就能够很好的维护一个组。那他是如何更新的呢？我们下面的协议会讲到~</p>
+<h2 id="主机地址过滤"><a href="#主机地址过滤" class="headerlink" title="主机地址过滤"></a>主机地址过滤</h2><p>过滤发生在每个主机的网络接口卡（NIC）上，</p>
+<p>NIC指接收目的地址是接口的硬件地址或者广播地址的那些帧，如果涉及到组播帧，情况会更复杂。它往往被分成两类：</p>
+<ul>
+<li>执行基于组播硬件地址的散列值的过滤 //存在散列冲突</li>
+<li>侦听组播地址的一张有限表 //超过表所能容纳的更多组播地址时，NIC进入“组播混杂”模式，即所有的流量都会交给主机软件。</li>
+</ul>
+<p>组播地址和48位的硬件地址的映射是不唯一的，所以进一步的过滤还是必须的。</p>
+<p>这两种类型说到底还是会有一些不必要的数据报被接受，所以还需要设备驱动程序或者高层软件执行检查。</p>
+<p>如下图所示：</p>
+<p><img src="https://i.imgur.com/Lvq25ku.jpg" alt=""></p>
+<p>当NIC接收到帧的时候，它首先会检查是否接收该帧（即检查CRC，MAC地址等)，然后交付给设备驱动程序,设备驱动程序查明该帧的类型，例如IP数据包，他就传递到IP层。IP层过滤完成后，便传到TCP或UDP等。然后就查询端口号。其实就是数据报在Internet主机上分解的过程， 如下图：</p>
+<p><img src="https://i.imgur.com/S2Bb36o.jpg" alt=""></p>
+<hr>
+<h2 id="互联网组管理协议和组播侦听发现协议"><a href="#互联网组管理协议和组播侦听发现协议" class="headerlink" title="互联网组管理协议和组播侦听发现协议"></a>互联网组管理协议和组播侦听发现协议</h2><p>两个协议都用于允许组播路由器了解附近主机感兴趣的组，区别在于IPv4使用的是互联网组管理协议（<strong>IGMP</strong>),而IPV6使用的是组播帧听发现协议（<strong>MLD</strong>）</p>
+<p><strong>如何运作</strong>：</p>
+<p>组播路由器定期向每个连接的子网发送IGMP(MLD)请求。主机则会响应这个请求，告诉路由器那些组和源是感兴趣的。如果成员资格变动，主机也可以发送主动提供的报告。</p>
+<p><img src="https://i.imgur.com/61zmHsM.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/12/广播和本地组播（IGMP和MLD）/" data-id="ck0hrxuvt001d6kwiuflc7nvv" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2018/04/10/Internet控制报文协议/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">Internet控制报文协议</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/2018/04/13/用户数据报和IP分片/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">用户数据报协议和IP分片</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>Hello.</p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/15/numpy/">numpy入门</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

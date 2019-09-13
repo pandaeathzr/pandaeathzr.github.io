@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>numpy入门_索引、合并、分割、拷贝 | Hello</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="索引 一般用法：   123456789101112131415import numpy as npA = np.arange(12).reshape(3,4)print(A)# [[ 0  1  2  3]#  [ 4  5  6  7]#  [ 8  9 10 11]]print(A[1])     # [4 5 6 7]print(A[1][1])  # 5print(A[1,1])   #">
+<meta name="keywords" content="python,numpy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy入门_索引、合并、分割、拷贝">
+<meta property="og:url" content="http://yoursite.com/2018/07/18/numpy_1/index.html">
+<meta property="og:site_name" content="Hello">
+<meta property="og:description" content="索引 一般用法：   123456789101112131415import numpy as npA = np.arange(12).reshape(3,4)print(A)# [[ 0  1  2  3]#  [ 4  5  6  7]#  [ 8  9 10 11]]print(A[1])     # [4 5 6 7]print(A[1][1])  # 5print(A[1,1])   #">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-18T07:34:49.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="numpy入门_索引、合并、分割、拷贝">
+<meta name="twitter:description" content="索引 一般用法：   123456789101112131415import numpy as npA = np.arange(12).reshape(3,4)print(A)# [[ 0  1  2  3]#  [ 4  5  6  7]#  [ 8  9 10 11]]print(A[1])     # [4 5 6 7]print(A[1][1])  # 5print(A[1,1])   #">
+  
+    <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">Hello</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-numpy_1" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      numpy入门_索引、合并、分割、拷贝
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/07/18/numpy_1/" class="article-date"><time datetime="2018-07-18T06:56:00.000Z" itemprop="datePublished">2018-07-18</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><ul>
+<li><p>一般用法：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">A = np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">print(A)</span><br><span class="line"></span><br><span class="line"><span class="comment"># [[ 0  1  2  3]</span></span><br><span class="line"><span class="comment">#  [ 4  5  6  7]</span></span><br><span class="line"><span class="comment">#  [ 8  9 10 11]]</span></span><br><span class="line"></span><br><span class="line">print(A[<span class="number">1</span>])     <span class="comment"># [4 5 6 7]</span></span><br><span class="line">print(A[<span class="number">1</span>][<span class="number">1</span>])  <span class="comment"># 5</span></span><br><span class="line">print(A[<span class="number">1</span>,<span class="number">1</span>])   <span class="comment"># 5</span></span><br><span class="line">print(A[:,<span class="number">1</span>])   <span class="comment"># [1 5 9]</span></span><br><span class="line">print(A[<span class="number">1</span>,:])   <span class="comment"># [4 5 6 7]</span></span><br><span class="line">print(A[<span class="number">1</span>,<span class="number">1</span>:<span class="number">3</span>]) <span class="comment"># [5 6]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>行输出：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> A:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># [[ 0  1  2  3]</span></span><br><span class="line"><span class="comment">#  [ 4  5  6  7]</span></span><br><span class="line"><span class="comment">#  [ 8  9 10 11]]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果想按照列输出，则先利用A的转置：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> column <span class="keyword">in</span> A.T:</span><br><span class="line">    <span class="keyword">print</span> (column)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># [0 4 8]</span></span><br><span class="line"><span class="comment"># [1 5 9]</span></span><br><span class="line"><span class="comment"># [2 6 10]</span></span><br><span class="line"><span class="comment"># [3 7 11]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>迭代输出：</p>
+<ul>
+<li>faltten() 将A转化为一维</li>
+<li>flat 迭代器：  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">print(A.flatten())</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> A.flat:</span><br><span class="line">    <span class="keyword">print</span> (item)</span><br><span class="line"><span class="comment"># [ 0  1  2  3  4  5  6  7  8  9 10 11]</span></span><br><span class="line"><span class="comment"># 0</span></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="comment"># 2</span></span><br><span class="line"><span class="comment"># 3</span></span><br><span class="line"><span class="comment"># 4</span></span><br><span class="line"><span class="comment"># 5</span></span><br><span class="line"><span class="comment"># 6</span></span><br><span class="line"><span class="comment"># 7</span></span><br><span class="line"><span class="comment"># 8</span></span><br><span class="line"><span class="comment"># 9</span></span><br><span class="line"><span class="comment"># 10</span></span><br><span class="line"><span class="comment"># 11</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="合并："><a href="#合并：" class="headerlink" title="合并："></a>合并：</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">A = np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">B = np.array([<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">print(np.vstack((A,B))) <span class="comment">#上下合并</span></span><br><span class="line">print(np.hstack((A,B))) <span class="comment">#左右合并</span></span><br><span class="line">print(A[:,np.newaxis])  <span class="comment"># 更换维度</span></span><br><span class="line">print(np.concatenate((A,B,A,B),axis =<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="分割："><a href="#分割：" class="headerlink" title="分割："></a>分割：</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">np.split(​ary, indices_or_sections, axis) <span class="comment"># 均等分割</span></span><br><span class="line">np.array_split(​ary, indices_or_sections, axis) <span class="comment"># 不均等分割</span></span><br><span class="line">np.vsplit(​ary, indices_or_sections)  <span class="comment">#按行分割</span></span><br><span class="line">np.hsplit(​ary, indices_or_sections)  <span class="comment">#按列分割</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="拷贝："><a href="#拷贝：" class="headerlink" title="拷贝："></a>拷贝：</h1><p>同一维情况，单纯的相等不能产生新副本。<br>二维下不能使用切片，用<code>b=a.copy #deep copy</code></p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/18/numpy_1/" data-id="ck0hrxuvf00106kwisped5k66" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2018/07/17/Python编程入门到实践（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">Python编程：从入门到实践(二)</span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>Hello.</p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/15/numpy/">numpy入门</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

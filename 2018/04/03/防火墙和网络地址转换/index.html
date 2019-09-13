@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>防火墙和网络地址转换 | Hello</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。 所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。 防火墙和网络地">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="防火墙和网络地址转换">
+<meta property="og:url" content="http://yoursite.com/2018/04/03/防火墙和网络地址转换/index.html">
+<meta property="og:site_name" content="Hello">
+<meta property="og:description" content="写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。 所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。 防火墙和网络地">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.imgur.com/dnSGFy9.jpg">
+<meta property="og:image" content="https://i.imgur.com/I8HVRov.jpg">
+<meta property="og:image" content="https://i.imgur.com/mcIkpKR.jpg">
+<meta property="og:image" content="https://i.imgur.com/uWeRrQc.jpg">
+<meta property="og:updated_time" content="2018-06-04T07:05:07.757Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="防火墙和网络地址转换">
+<meta name="twitter:description" content="写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。 所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。 防火墙和网络地">
+<meta name="twitter:image" content="https://i.imgur.com/dnSGFy9.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">Hello</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-防火墙和网络地址转换" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      防火墙和网络地址转换
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/04/03/防火墙和网络地址转换/" class="article-date"><time datetime="2018-04-03T02:47:47.000Z" itemprop="datePublished">2018-04-03</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写在开头：在我正在打这篇博客的时候，畅畅哥跟我讲了下前面写的博客有些需要懂的地方没有去弄懂。想想这几天看书，确实多了几分急躁，时间还久着，就像畅畅哥说的“我们高屋建瓴地来”。我得沉下心来，完整的弄懂这些个内容，后面才不会慌忙。</p>
+<p>所以清明的时间，我应该先停下进度，回顾一个前面所学的内容，该懂的弄懂了，被忽视的重视了。在写博客的时候，应该给出自己的一些总结，那才是属于自己的真正的东西。</p>
+<h1 id="防火墙和网络地址转换"><a href="#防火墙和网络地址转换" class="headerlink" title="防火墙和网络地址转换"></a>防火墙和网络地址转换</h1><p>防火墙：一种能解决限制所发送的流量类型的路由器</p>
+<p>NAT：网络地址转换</p>
+<hr>
+<h2 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h2><p>最为常用的两种防火墙是代理防火墙和包过滤防火墙。</p>
+<p>他们之间主要区别是所操作的协议栈的层次及由此决定的IP地址和端口号的使用。包过滤防火墙是一个互联网路由器，能够丢弃符合（或者不符合）特定条件的数据包。</p>
+<h3 id="包过滤防火墙"><a href="#包过滤防火墙" class="headerlink" title="包过滤防火墙"></a>包过滤防火墙</h3><p>包过滤防火墙作为互联网路由器，能够过滤（丢弃）一些网络流量，他们一般都可以配置为丢弃或转发数据包头中符合（或者不符合）特定标准的数据包，这些标准称为过滤器。</p>
+<p><img src="https://i.imgur.com/dnSGFy9.jpg" alt=""></p>
+<p>一个典型的包过滤防火墙有三个网络接口的互联网路由器：一个“内”接口，一个“外”接口和第三个“非军事区”（DMZ）接口。通常情况下，过滤器会全力拦截来自外网的恶意。但是不会限制从内网到外网的流量。</p>
+<h3 id="代理防火墙"><a href="#代理防火墙" class="headerlink" title="代理防火墙"></a>代理防火墙</h3><p>本质上是运行一个或多个应用层网关的主机，它拥有很多网络接口，能够在应用层中连接/关联之间的特定类型的流量。</p>
+<p><img src="https://i.imgur.com/I8HVRov.jpg" alt=""></p>
+<p>如上图所示，内部网络外出连接在防火墙上终止，外部Internet进去连接只到运行的委托代理。而在中间这堵墙（代理防火墙）上运行的是每个受支持的服务的应用/服务代理。</p>
+<p>这种防火墙的不便之处在于每次使用新服务，都必须安装一个相应的代理，由此来操作发起连接。</p>
+<p>两大常见形式：</p>
+<p>HTTP代理防火墙： 又称作Web代理。根据上面的理解，这种代理防火墙，在内网用户看来是Web服务器，在外部网站看来是Web客户端。同时，这种代理也提供Web缓存功能，顾名思义，就是缓存网页副本，已减少网页延迟，提高用户体验。</p>
+<p>SOCKS防火墙：可用于Web之外的服务。例如：第四版为代理传输提供基本支持；第五版增加了强大的认证，UDP传输和IPV6寻址。使用时，应用程序必须先添加SOCKS代理支持功能，同时通过配置应用程序能够获得代理位置及其版本</p>
+<hr>
+<h2 id="网络地址转换"><a href="#网络地址转换" class="headerlink" title="网络地址转换"></a>网络地址转换</h2><p>本质上是一种允许在互联网的<strong>不同地方重复使用相同</strong>的IP地址集的机制</p>
+<p>运作原理：当内部系统所有进出的流量均通过一个单独的NAT设备的受，它就将内部的地址空间与全球互联网地址空间分开，这样内部系统就能够使用自己分配的IP地址访问互联网。</p>
+<p>然而，我们知道互联网上的用户是没有办法直接访问具有私有地址的主机的。内部系统要正常的连接上网络就必须要让NAT<strong>重写通过路由器的每个数据报包的识别信息</strong>，这很复杂，NAT必须跟踪每个连接的状态，贯穿多个协议层，修改IP地址的同时也要修改传输层的校验码。</p>
+<p>讲的具体点就是，它必须重写向某一方向传输的数据包的源IP地址，同样的也要重写向另一个方向传输的数据包的目的IP地址。这样外界看来，这个数据包是来自于具有全局路由IP的NAT路由器，而不是其内部的拥有私有地址的主机。如图所示</p>
+<p><img src="https://i.imgur.com/mcIkpKR.jpg" alt=""></p>
+<hr>
+<h2 id="传统的NAT-基本NAT和NAPT"><a href="#传统的NAT-基本NAT和NAPT" class="headerlink" title="传统的NAT:基本NAT和NAPT"></a>传统的NAT:基本NAT和NAPT</h2><p>基本NAT只执行IP地址的重写，及改内部的私有地址为公共地址。但是它没有办法助于减少IP地址的数量（多少个内部主机希望访问互联网就必须分配多少个公共地址，如果每个主机都访问这样NAT就没有意义了）</p>
+<p>NAPT的做法则不同，它使用传输层的标识符，来确定数据包和内部主机的关系。（可以利用相同的公共地址而不同的标识符来区分内部的主机）。内部标识符相同的时候，NAPT也能够重写标识符</p>
+<p><img src="https://i.imgur.com/uWeRrQc.jpg" alt=""></p>
+<p><strong>注意</strong>这里面有一个问题：如果内部地址所用到的地址刚刚好是自己也想连接的公共地址，那就麻烦了。 所以我们保留了<code>10.0.0.0/8</code>,<code>172.13.0.0/12</code>,以及我们最常见的<code>192.168.0.0/16</code>作为私有地址范围来使用。</p>
+<hr>
+<p>Yestreday you said tomorrow</p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/03/防火墙和网络地址转换/" data-id="ck0hrxuw9001y6kwi87tzkukt" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2018/03/29/ARP地址解析协议/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">地址解析协议</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/2018/04/05/系统配置：DHCP和自动配置/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">系统配置：DHCP和自动配置</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>Hello.</p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/15/numpy/">numpy入门</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

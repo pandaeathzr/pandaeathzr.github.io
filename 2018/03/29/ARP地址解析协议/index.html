@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>地址解析协议 | Hello</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。 地址解析是发现两个地址之间的映射关系的过程。地址解析协议ARP是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。  直接交付和ARP下面给出IPv4直接交付的基本操作：   应用程序使用32位的IPv4地址10.0.">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地址解析协议">
+<meta property="og:url" content="http://yoursite.com/2018/03/29/ARP地址解析协议/index.html">
+<meta property="og:site_name" content="Hello">
+<meta property="og:description" content="IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。 地址解析是发现两个地址之间的映射关系的过程。地址解析协议ARP是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。  直接交付和ARP下面给出IPv4直接交付的基本操作：   应用程序使用32位的IPv4地址10.0.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-04T07:06:41.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="地址解析协议">
+<meta name="twitter:description" content="IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。 地址解析是发现两个地址之间的映射关系的过程。地址解析协议ARP是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。  直接交付和ARP下面给出IPv4直接交付的基本操作：   应用程序使用32位的IPv4地址10.0.">
+  
+    <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">Hello</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-ARP地址解析协议" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      地址解析协议
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/03/29/ARP地址解析协议/" class="article-date"><time datetime="2018-03-29T02:47:47.000Z" itemprop="datePublished">2018-03-29</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。</p>
+<p>地址解析是发现两个地址之间的映射关系的过程。<strong>地址解析协议ARP</strong>是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。</p>
+<hr>
+<h2 id="直接交付和ARP"><a href="#直接交付和ARP" class="headerlink" title="直接交付和ARP"></a>直接交付和ARP</h2><p>下面给出IPv4直接交付的基本操作： </p>
+<ol>
+<li>应用程序使用32位的IPv4地址<code>10.0.0.1</code></li>
+<li>应用程序要求TCP协议建立一条到<code>10.0.0.1</code>的连接</li>
+<li>通过向<code>10.0.0.1</code>发送一个数据报，TCP尝试向远程主机发送一个连接请求</li>
+<li>假设地址该数据报可被直接发送到这个地址，且以太网兼容地址被用于IPv4.</li>
+<li>那么，发送的主机就必须将32位的IPv4目的地址转化为48位的以太网地址，这就需要逻辑Internet地址相对应物理硬件地址进行转换，这就是ARP功能。链路层能够将一个消息交付到它连接的所有网路设备，这是ARP运行的一个重要要求</li>
+<li>在一个共享的链路层网段，ARP向所有主机发送一个称为ARP请求的以太网帧（链路层广播）。ARP请求包含目的的主机IPv4地址<code>10.0.0.1</code>，并寻找以下答案“如果你将<code>10.0.0.1</code>配置为自己的地址，请向我回应你的MAC地址”</li>
+<li>通过ARP，同一广播域中的所有系统都可以接收该请求，如果某系统使用请求中给定的IPv4地址，那么它需要响应一个ARP应答。该应答包含了请求中的IPv4地址和对应的MAC地址。该应答直接发送给请求的发送方。接收ARP请求的主机学习IPv4到MAC地址的映射，并记录在内存中供以后使用</li>
+<li>ARP应答被原始请求的发送方接收，现在可以发送引起此次ARP请求/应答的数据报。</li>
+<li>发送方可将数据报封装在以太网帧中直接发送到目的主机，应使用由ARP交换学到的以太网作为目的地址。</li>
+</ol>
+<hr>
+<h2 id="ARP缓存"><a href="#ARP缓存" class="headerlink" title="ARP缓存"></a>ARP缓存</h2><p>ARP高效运行的关键是维护每个主机和路由器上的ARP缓存。该缓存使用地址解析为每个接口维护从网络层地址到硬件地址的最新映射。</p>
+<h3 id="ARP缓存超时"><a href="#ARP缓存超时" class="headerlink" title="ARP缓存超时"></a>ARP缓存超时</h3><p>超时通常与ARP缓存中的每个条目相关。在大多数实现中，完整条目的超时为20分钟。</p>
+<p>软状态是指在超时到达前没有更新而被丢弃的信息。如果网络条件发生改变，软状态有助于启动自动重新配置。</p>
+<hr>
+<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>ARP的另一个功能被称为免费ARP，它发生在一台主机发送的ARP请求以寻找自己的地址。</p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/29/ARP地址解析协议/" data-id="ck0hrxuud00056kwikz35dfcf" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2018/03/28/链路层/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">链路层</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/2018/04/03/防火墙和网络地址转换/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">防火墙和网络地址转换</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>Hello.</p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/15/numpy/">numpy入门</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>
