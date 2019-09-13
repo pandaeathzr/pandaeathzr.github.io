@@ -1,158 +1,97 @@
-
-
-
-
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <meta name="author" content="Huzr">
-  
-  
-  
-  
-    <meta name="description" content="为什么使用RYU？其实理由很简单：
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 
-我喜欢用python
-RYU 用着不卡（辣鸡虚拟机真跑不动ODL）
+    
+      <link rel="icon" href="/favicon.ico" />
+    
 
-然后就尝试的去看了以下RYU的源码，发现真的很简洁，很有意思！瞬间就爱上了。
+    <title>
+        
+          RYU，Chapter 1. 交换机（Switching Hub) - REMEMBER
+        
+    </title>
 
-前期准备RYU的安装在拥有一系列组件的前提下：pip install ryu
-接下来会面临一些问题就是，找不到RYU的目录在何方？
+    <!-- Spectre.css framework (v0.5.8) -->
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 
-输入ryu-manager *** 在报错的后面就有ryu的目录地址
-这...">
-  
-  <title>RYU，Chapter 1. 交换机（Switching Hub) [ REMEMBER ]</title>
-  
-  
-    <link rel="shortcut icon" href="/panda.png">
-  
-  
-  <link rel="stylesheet" href="/css/random.css">
-<link rel="stylesheet" href="/css/vegas.min.css">
-<link rel="stylesheet" href="/css/highlight-railscasts.css">
-<link rel="stylesheet" href="/css/jquery.fancybox.css">
-<link rel="stylesheet" href="/css/iconfont/iconfont.css">
-<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
-  
+    <!-- Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
+    <!-- Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC" rel="stylesheet">
+    <!-- Noto Sans -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+    <!-- theme css & js -->
+    <link rel="stylesheet" href="/css/spectre_custom.css">
+    <link rel="stylesheet" href="/css/book.css">
+    <script src="/js/book.js"></script>
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
 </head>
 
 <body>
-<div class="side-navigate hide-area">
-  
-    
-  
-  
-   
-  
-</div>
-<div id="outer-container" class="hide-area">
-<div id="container">
-  <div id="menu-outer" class="slide-down">
-    <div id="menu-inner">
-      <div id="brand">
-        
-        <a onClick="openUserCard()">
-          <img id="avatar" src="https://i.imgur.com/A1tEJh4.jpg"/>
-          <div id="homelink">REMEMBER</div>
-        </a>
-      </div>
-      <div id="menu-list">
-        <ul>
-        
-        
-          
-            <li>
-          
-            <a href="/index.html">Home</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/archives">Archives</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/tags">Tags</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/categories">Categories</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/about">About</a>
-            
-          </li>
-        
-        </ul>
-      </div>
-      <div id="show-menu">
-        <button>Menu</button>
-      </div>
-    </div>
-  </div>
 
-  <div id="content-outer">
-    <div id="content-inner">
-      
-      
-  <article id="post">
-    <h1>RYU，Chapter 1. 交换机（Switching Hub)</h1>
-    <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2018-06-04</span>
-      
-        <span id = "post-title-updated">Updated at 2018-06-06</span>
-      
-      
-      <span id = "post-title-categories">Category
-      
-      
-        
-        
-        <a href="/categories/Study/">Study</a>
-      
-      </span>
-      
-      
-      <span id = "post-title-tags">
-      Tag
-      
-      
-        
-        
-        <a href="/tags/SDN/">SDN</a>
-      
-        
-          /
-        
-        
-        <a href="/tags/RYU/">RYU</a>
-      
-      </span>
-      
-    </p>
+<div class="container">
+  <div class="book-container">
+    <div class="columns">
+      <div class="column col-2 hide-lg">
+        <div class="book-sidebar">
+  <h4 class="site-meta">
+    <a href="/">REMEMBER</a>
+  </h4>
+  <div class="sidebar-content">
     
-    <h1 id="为什么使用RYU？"><a href="#为什么使用RYU？" class="headerlink" title="为什么使用RYU？"></a>为什么使用RYU？</h1><p>其实理由很简单：</p>
+  </div>
+</div>
+
+<script src="/js/book-sidebar.js"></script>
+      </div>
+
+      <div class="column col-8 col-lg-12">
+        <div class="book-content">
+          <div class="book-navbar">
+  <header class="navbar">
+  <section class="navbar-section">
+    <img class="navbar-icon" src="/favicon.ico">
+  </section>
+  <section class="navbar-center">
+    REMEMBER
+  </section>
+  <section class="navbar-section">
+    <label class="accordion-header c-hand" for="accordion-sidebar">
+      <i class="icon icon-menu"></i>
+    </label>
+  </section>
+</header>
+
+<div class="accordion">
+  <input type="checkbox" id="accordion-sidebar" name="accordion-checkbox" hidden>
+  <div class="accordion-body">
+    
+  </div>
+</div>
+</div>
+
+<div class="book-post">
+  <h1 id="为什么使用RYU？"><a href="#为什么使用RYU？" class="headerlink" title="为什么使用RYU？"></a>为什么使用RYU？</h1><p>其实理由很简单：</p>
 <ul>
 <li>我喜欢用python</li>
 <li>RYU 用着不卡（辣鸡虚拟机真跑不动ODL）</li>
@@ -289,184 +228,82 @@ RYU 用着不卡（辣鸡虚拟机真跑不动ODL）
 <p>……三分钟解决了，把自带的代码高亮置flase。 根目录的_config,yml   中highlight:<br>  enable: false</p>
 <hr>
 <h3 id="爱你所爱，行你所行。"><a href="#爱你所爱，行你所行。" class="headerlink" title="爱你所爱，行你所行。"></a>爱你所爱，行你所行。</h3>
-  </article>
-  <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
-  <div class="random-toc">
-    <h2>Table of Content</h2>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#为什么使用RYU？"><span class="toc-text">为什么使用RYU？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前期准备"><span class="toc-text">前期准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RYU的安装"><span class="toc-text">RYU的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RYU各个文件的内容："><span class="toc-text">RYU各个文件的内容：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#交换机（Switching-Hub）"><span class="toc-text">交换机（Switching Hub）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RYU的源码实现："><span class="toc-text">RYU的源码实现：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RYU程序的执行："><span class="toc-text">RYU程序的执行：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结："><span class="toc-text">总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#爱你所爱，行你所行。"><span class="toc-text">爱你所爱，行你所行。</span></a></li></ol></li></ol></li></ol>
-  </div>
-</div>
-
-  
-<nav id="pagination">
-  
-    <a href="/numpy/" class="prev">&larr; Prev post </a>
-  
-
-  
-
-  
-    <a href="/atom插件/" class="next">Next post  &rarr;</a>
-  
-</nav>
-
-  <!-- JiaThis Button BEGIN -->
-
-<!-- JiaThis Button END -->
-
-
-      
-      
-    </div>
-  </div>
-
-  <div id="bottom-outer">
-    <div id="bottom-inner">
-      愿你是你所期待的样子
-      <br>
-      
-    </div>
-  </div>
-</div>
-
 </div>
 
 
-<div id="user-card">
-  <div class="center-field">
-    <img class="avatar" src="https://i.imgur.com/A1tEJh4.jpg">
-    <p id="description">愿你还是你所期待的样子</p>
-    <ul class="social-icon">
-  
-  
-    <li>
-      <a href="https://github.com/pandaeathzr">
-        
-          <i class="icon iconfont github">&#xe606;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-</ul>
+  <div class="book-comments">
+    
+
+
+  </div>
+
+
+<script src="/js/book-post.js"></script>
+        </div>
+      </div>
+
+      <div class="column col-2 hide-lg">
+        <div class="book-toc">
+  <div class="book-tocbot">
+  </div>
+  <div class="book-tocbot-menu">
+    <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+    <a onclick="go_top()">Back to top</a>
+    <a onclick="go_bottom()">Go to bottom</a>
   </div>
 </div>
-
-
-<div id="btn-view">Hide</div>
 
 <script>
-// is trigger analytics / tongji script
-var isIgnoreHost = false;
+tocbot.init({
+  tocSelector: '.book-tocbot',
+  contentSelector: '.book-post',
+  headingSelector: 'h1, h2, h3, h4, h5',
+  collapseDepth: 2,
+  orderedList: false,
+  scrollSmooth: false,
+});
 
-if(window && window.location && window.location.host) {
-  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
-    return 0 === window.location.host.indexOf(address);
+function expand_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 6,
+    orderedList: false,
+    scrollSmooth: false,
   });
+  b.setAttribute("onclick", "collapse_toc()");
+  b.innerHTML = "Collapse all"
 }
 
-var isTriggerAnalytics = !( true && isIgnoreHost );
-
-</script>
-
-
-
-
-  
-  
-    <script src="/js/jquery-2.2.3.min.js"></script>
-  
-    <script src="/js/vegas.min.js"></script>
-  
-    <script src="/js/random.js"></script>
-  
-    <script src="/js/highlight.pack.js"></script>
-  
-    <script src="/js/jquery.mousewheel.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox-thumbs.js"></script>
-  
-    <script src="/js/plyr.js"></script>
-  
-
-<script>
-
-  // fancybox
-  var backgroundImages = [];
-  
-  $('#post').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
-      var alt = this.alt || this.title;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'post' + i);
-    });
+function collapse_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 2,
+    orderedList: false,
+    scrollSmooth: false,
   });
-  $(".fancybox").fancybox();
+  b.setAttribute("onclick", "expand_toc()");
+  b.innerHTML = "Expand all"
+}
 
-var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
-var unsplashConfig = {"gravity":"north"};
-// is show background images
-var turnoffBackgroundImage = false;
+function go_top() {
+  window.scrollTo(0, 0);
+}
 
+function go_bottom() {
+  window.scrollTo(0, document.body.scrollHeight);
+}
 
-
-  turnoffBackgroundImage = true;
-
-
-var backgroundColor = "34495E";
-
-$(".fancybox-thumb").fancybox({
-  prevEffect: 'none',
-  nextEffect: 'none',
-  helpers: {
-    title: {
-      type: 'outside'
-    },
-    thumbs: {
-      width: 50,
-      height: 50
-    }
-  }
-});
-
-// show video with plyr
-$(".video-container iframe").each(function(i){
-  var url = $(this).attr('src');
-  var id = url.split('/').pop();
-  var plyrContainer = document.createElement('div');
-  plyrContainer.className = 'plyr';
-  var plyrElement = document.createElement('div');
-  plyrElement.dataset.videoId = id;
-  switch(true) {
-    case url.search('youtube.com') >= 0:
-      plyrElement.dataset.type = 'youtube';
-      break;
-    case url.search('vimeo.com') >= 0:
-      plyrElement.dataset.type = 'vimeo';
-      break;
-    default:
-      return;
-  };
-  plyrContainer.appendChild(plyrElement);
-  $(this).parent().html(plyrContainer);
-});
-plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
 </script>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
-

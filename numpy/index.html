@@ -1,166 +1,97 @@
-
-
-
-
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <meta name="author" content="Huzr">
-  
-  
-  
-  
-    <meta name="description" content="why?应用：
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 
-数据分析
-机器学习
-深度学习
+    
+      <link rel="icon" href="/favicon.ico" />
+    
 
-性能:
+    <title>
+        
+          numpy入门 - REMEMBER
+        
+    </title>
 
-运算速度快——采用C语言编写
-消耗资源少——矩阵运算
+    <!-- Spectre.css framework (v0.5.8) -->
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 
-安装：pip3 install numpy
+    <!-- Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
+    <!-- Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC" rel="stylesheet">
+    <!-- Noto Sans -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 
-初入门属性：
+    <!-- theme css & js -->
+    <link rel="stylesheet" href="/css/spectre_custom.css">
+    <link rel="stylesheet" href="/css/book.css">
+    <script src="/js/book.js"></script>
 
-ndim 维度
-shape 行、列数
-size 元素个数
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 
-import numpy as nparray = np.array([[1,2,3]truetruetruetrue ,[2,3,4]])print(ar...">
-  
-  <title>numpy入门 [ REMEMBER ]</title>
-  
-  
-    <link rel="shortcut icon" href="/panda.png">
-  
-  
-  <link rel="stylesheet" href="/css/random.css">
-<link rel="stylesheet" href="/css/vegas.min.css">
-<link rel="stylesheet" href="/css/highlight-railscasts.css">
-<link rel="stylesheet" href="/css/jquery.fancybox.css">
-<link rel="stylesheet" href="/css/iconfont/iconfont.css">
-<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
-  
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
 </head>
 
 <body>
-<div class="side-navigate hide-area">
-  
-    
-  
-  
-   
-  
-</div>
-<div id="outer-container" class="hide-area">
-<div id="container">
-  <div id="menu-outer" class="slide-down">
-    <div id="menu-inner">
-      <div id="brand">
-        
-        <a onClick="openUserCard()">
-          <img id="avatar" src="https://i.imgur.com/A1tEJh4.jpg"/>
-          <div id="homelink">REMEMBER</div>
-        </a>
-      </div>
-      <div id="menu-list">
-        <ul>
-        
-        
-          
-            <li>
-          
-            <a href="/index.html">Home</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/archives">Archives</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/tags">Tags</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/categories">Categories</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/about">About</a>
-            
-          </li>
-        
-        </ul>
-      </div>
-      <div id="show-menu">
-        <button>Menu</button>
-      </div>
-    </div>
-  </div>
 
-  <div id="content-outer">
-    <div id="content-inner">
-      
-      
-  <article id="post">
-    <h1>numpy入门</h1>
-    <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2018-07-15</span>
-      
-        <span id = "post-title-updated">Updated at 2018-07-15</span>
-      
-      
-      <span id = "post-title-categories">Category
-      
-      
-        
-        
-        <a href="/categories/Study/">Study</a>
-      
-      </span>
-      
-      
-      <span id = "post-title-tags">
-      Tag
-      
-      
-        
-        
-        <a href="/tags/python/">python</a>
-      
-        
-          /
-        
-        
-        <a href="/tags/numpy/">numpy</a>
-      
-      </span>
-      
-    </p>
+<div class="container">
+  <div class="book-container">
+    <div class="columns">
+      <div class="column col-2 hide-lg">
+        <div class="book-sidebar">
+  <h4 class="site-meta">
+    <a href="/">REMEMBER</a>
+  </h4>
+  <div class="sidebar-content">
     
-    <h1 id="why"><a href="#why" class="headerlink" title="why?"></a>why?</h1><p>应用：</p>
+  </div>
+</div>
+
+<script src="/js/book-sidebar.js"></script>
+      </div>
+
+      <div class="column col-8 col-lg-12">
+        <div class="book-content">
+          <div class="book-navbar">
+  <header class="navbar">
+  <section class="navbar-section">
+    <img class="navbar-icon" src="/favicon.ico">
+  </section>
+  <section class="navbar-center">
+    REMEMBER
+  </section>
+  <section class="navbar-section">
+    <label class="accordion-header c-hand" for="accordion-sidebar">
+      <i class="icon icon-menu"></i>
+    </label>
+  </section>
+</header>
+
+<div class="accordion">
+  <input type="checkbox" id="accordion-sidebar" name="accordion-checkbox" hidden>
+  <div class="accordion-body">
+    
+  </div>
+</div>
+</div>
+
+<div class="book-post">
+  <h1 id="why"><a href="#why" class="headerlink" title="why?"></a>why?</h1><p>应用：</p>
 <ul>
 <li>数据分析</li>
 <li>机器学习</li>
@@ -211,184 +142,82 @@ import numpy as nparray = np.array([[1,2,3]truetruetruetrue ,[2,3,4]])print(ar..
 <p>今天暂时先看到这边。</p>
 <p>关于numpy的函数还有很多，除了阅读官方文档外，发现了atom的一个好处，内置的autocomplete-python中的Kite可以提供非常详细的解读：如下图所示:<br><img src="https://i.imgur.com/UEg8VFs.jpg" alt=""></p>
 
-  </article>
-  <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
-  <div class="random-toc">
-    <h2>Table of Content</h2>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#why"><span class="toc-text">why?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初入门"><span class="toc-text">初入门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基本运算："><span class="toc-text">基本运算：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#普通加减乘法、次方运算直接在数组上的操作："><span class="toc-text">普通加减乘法、次方运算直接在数组上的操作：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#判断逻辑："><span class="toc-text">判断逻辑：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准矩阵乘法：dot"><span class="toc-text">标准矩阵乘法：dot()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三角函数等"><span class="toc-text">三角函数等:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#聚集函数"><span class="toc-text">聚集函数:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引："><span class="toc-text">索引：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平均值："><span class="toc-text">平均值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中位数："><span class="toc-text">中位数：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#累加函数："><span class="toc-text">累加函数：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#累差运算："><span class="toc-text">累差运算：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#转置："><span class="toc-text">转置：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#排序："><span class="toc-text">排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他："><span class="toc-text">其他：</span></a></li></ol></li></ol></li></ol>
-  </div>
-</div>
-
-  
-<nav id="pagination">
-  
-    <a href="/Python编程入门到实践(一)/" class="prev">&larr; Prev post </a>
-  
-
-  
-
-  
-    <a href="/RYU_Switching Hub/" class="next">Next post  &rarr;</a>
-  
-</nav>
-
-  <!-- JiaThis Button BEGIN -->
-
-<!-- JiaThis Button END -->
-
-
-      
-      
-    </div>
-  </div>
-
-  <div id="bottom-outer">
-    <div id="bottom-inner">
-      愿你是你所期待的样子
-      <br>
-      
-    </div>
-  </div>
-</div>
-
 </div>
 
 
-<div id="user-card">
-  <div class="center-field">
-    <img class="avatar" src="https://i.imgur.com/A1tEJh4.jpg">
-    <p id="description">愿你还是你所期待的样子</p>
-    <ul class="social-icon">
-  
-  
-    <li>
-      <a href="https://github.com/pandaeathzr">
-        
-          <i class="icon iconfont github">&#xe606;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-</ul>
+  <div class="book-comments">
+    
+
+
+  </div>
+
+
+<script src="/js/book-post.js"></script>
+        </div>
+      </div>
+
+      <div class="column col-2 hide-lg">
+        <div class="book-toc">
+  <div class="book-tocbot">
+  </div>
+  <div class="book-tocbot-menu">
+    <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+    <a onclick="go_top()">Back to top</a>
+    <a onclick="go_bottom()">Go to bottom</a>
   </div>
 </div>
-
-
-<div id="btn-view">Hide</div>
 
 <script>
-// is trigger analytics / tongji script
-var isIgnoreHost = false;
+tocbot.init({
+  tocSelector: '.book-tocbot',
+  contentSelector: '.book-post',
+  headingSelector: 'h1, h2, h3, h4, h5',
+  collapseDepth: 2,
+  orderedList: false,
+  scrollSmooth: false,
+});
 
-if(window && window.location && window.location.host) {
-  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
-    return 0 === window.location.host.indexOf(address);
+function expand_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 6,
+    orderedList: false,
+    scrollSmooth: false,
   });
+  b.setAttribute("onclick", "collapse_toc()");
+  b.innerHTML = "Collapse all"
 }
 
-var isTriggerAnalytics = !( true && isIgnoreHost );
-
-</script>
-
-
-
-
-  
-  
-    <script src="/js/jquery-2.2.3.min.js"></script>
-  
-    <script src="/js/vegas.min.js"></script>
-  
-    <script src="/js/random.js"></script>
-  
-    <script src="/js/highlight.pack.js"></script>
-  
-    <script src="/js/jquery.mousewheel.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox-thumbs.js"></script>
-  
-    <script src="/js/plyr.js"></script>
-  
-
-<script>
-
-  // fancybox
-  var backgroundImages = [];
-  
-  $('#post').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
-      var alt = this.alt || this.title;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'post' + i);
-    });
+function collapse_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 2,
+    orderedList: false,
+    scrollSmooth: false,
   });
-  $(".fancybox").fancybox();
+  b.setAttribute("onclick", "expand_toc()");
+  b.innerHTML = "Expand all"
+}
 
-var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
-var unsplashConfig = {"gravity":"north"};
-// is show background images
-var turnoffBackgroundImage = false;
+function go_top() {
+  window.scrollTo(0, 0);
+}
 
+function go_bottom() {
+  window.scrollTo(0, document.body.scrollHeight);
+}
 
-
-  turnoffBackgroundImage = true;
-
-
-var backgroundColor = "34495E";
-
-$(".fancybox-thumb").fancybox({
-  prevEffect: 'none',
-  nextEffect: 'none',
-  helpers: {
-    title: {
-      type: 'outside'
-    },
-    thumbs: {
-      width: 50,
-      height: 50
-    }
-  }
-});
-
-// show video with plyr
-$(".video-container iframe").each(function(i){
-  var url = $(this).attr('src');
-  var id = url.split('/').pop();
-  var plyrContainer = document.createElement('div');
-  plyrContainer.className = 'plyr';
-  var plyrElement = document.createElement('div');
-  plyrElement.dataset.videoId = id;
-  switch(true) {
-    case url.search('youtube.com') >= 0:
-      plyrElement.dataset.type = 'youtube';
-      break;
-    case url.search('vimeo.com') >= 0:
-      plyrElement.dataset.type = 'vimeo';
-      break;
-    default:
-      return;
-  };
-  plyrContainer.appendChild(plyrElement);
-  $(this).parent().html(plyrContainer);
-});
-plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
 </script>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
-

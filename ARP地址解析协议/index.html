@@ -1,146 +1,97 @@
-
-
-
-
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <meta name="author" content="Huzr">
-  
-  
-  
-  
-    <meta name="description" content="IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。
-地址解析是发现两个地址之间的映射关系的过程。地址解析协议ARP是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 
-直接交付和ARP下面给出IPv4直接交付的基本操作： 
+    
+      <link rel="icon" href="/favicon.ico" />
+    
 
-应用程序使用32位的IPv4地址10...">
-  
-  <title>地址解析协议 [ REMEMBER ]</title>
-  
-  
-    <link rel="shortcut icon" href="/panda.png">
-  
-  
-  <link rel="stylesheet" href="/css/random.css">
-<link rel="stylesheet" href="/css/vegas.min.css">
-<link rel="stylesheet" href="/css/highlight-railscasts.css">
-<link rel="stylesheet" href="/css/jquery.fancybox.css">
-<link rel="stylesheet" href="/css/iconfont/iconfont.css">
-<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
-  
+    <title>
+        
+          地址解析协议 - REMEMBER
+        
+    </title>
+
+    <!-- Spectre.css framework (v0.5.8) -->
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+
+    <!-- Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
+    <!-- Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC" rel="stylesheet">
+    <!-- Noto Sans -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+    <!-- theme css & js -->
+    <link rel="stylesheet" href="/css/spectre_custom.css">
+    <link rel="stylesheet" href="/css/book.css">
+    <script src="/js/book.js"></script>
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
 </head>
 
 <body>
-<div class="side-navigate hide-area">
-  
-    
-  
-  
-   
-  
-</div>
-<div id="outer-container" class="hide-area">
-<div id="container">
-  <div id="menu-outer" class="slide-down">
-    <div id="menu-inner">
-      <div id="brand">
-        
-        <a onClick="openUserCard()">
-          <img id="avatar" src="https://i.imgur.com/A1tEJh4.jpg"/>
-          <div id="homelink">REMEMBER</div>
-        </a>
-      </div>
-      <div id="menu-list">
-        <ul>
-        
-        
-          
-            <li>
-          
-            <a href="/index.html">Home</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/archives">Archives</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/tags">Tags</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/categories">Categories</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/about">About</a>
-            
-          </li>
-        
-        </ul>
-      </div>
-      <div id="show-menu">
-        <button>Menu</button>
-      </div>
-    </div>
-  </div>
 
-  <div id="content-outer">
-    <div id="content-inner">
-      
-      
-  <article id="post">
-    <h1>地址解析协议</h1>
-    <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2018-03-29</span>
-      
-        <span id = "post-title-updated">Updated at 2018-06-04</span>
-      
-      
-      <span id = "post-title-categories">Category
-      
-      
-        
-        
-        <a href="/categories/Study/">Study</a>
-      
-      </span>
-      
-      
-      <span id = "post-title-tags">
-      Tag
-      
-      
-        
-        
-        <a href="/tags/TCP-IP/">TCP/IP</a>
-      
-      </span>
-      
-    </p>
+<div class="container">
+  <div class="book-container">
+    <div class="columns">
+      <div class="column col-2 hide-lg">
+        <div class="book-sidebar">
+  <h4 class="site-meta">
+    <a href="/">REMEMBER</a>
+  </h4>
+  <div class="sidebar-content">
     
-    <p>IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。</p>
+  </div>
+</div>
+
+<script src="/js/book-sidebar.js"></script>
+      </div>
+
+      <div class="column col-8 col-lg-12">
+        <div class="book-content">
+          <div class="book-navbar">
+  <header class="navbar">
+  <section class="navbar-section">
+    <img class="navbar-icon" src="/favicon.ico">
+  </section>
+  <section class="navbar-center">
+    REMEMBER
+  </section>
+  <section class="navbar-section">
+    <label class="accordion-header c-hand" for="accordion-sidebar">
+      <i class="icon icon-menu"></i>
+    </label>
+  </section>
+</header>
+
+<div class="accordion">
+  <input type="checkbox" id="accordion-sidebar" name="accordion-checkbox" hidden>
+  <div class="accordion-body">
+    
+  </div>
+</div>
+</div>
+
+<div class="book-post">
+  <p>IP协议的设计目标是为了跨越不同类型的物理网络的分组交换提供互操作，这需要网络层软件使用的地址和底层网络硬件使用的地址之间进行转换。</p>
 <p>地址解析是发现两个地址之间的映射关系的过程。<strong>地址解析协议ARP</strong>是一个通用的协议，他被设计为支持多种地址之间的映射。ARP提供从网络层地址到相关硬件地址的动态映射。</p>
 <hr>
 <h2 id="直接交付和ARP"><a href="#直接交付和ARP" class="headerlink" title="直接交付和ARP"></a>直接交付和ARP</h2><p>下面给出IPv4直接交付的基本操作： </p>
@@ -162,184 +113,82 @@
 <hr>
 <h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>ARP的另一个功能被称为免费ARP，它发生在一台主机发送的ARP请求以寻找自己的地址。</p>
 
-  </article>
-  <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
-  <div class="random-toc">
-    <h2>Table of Content</h2>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#直接交付和ARP"><span class="toc-text">直接交付和ARP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP缓存"><span class="toc-text">ARP缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ARP缓存超时"><span class="toc-text">ARP缓存超时</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#免费ARP"><span class="toc-text">免费ARP</span></a></li></ol>
-  </div>
-</div>
-
-  
-<nav id="pagination">
-  
-    <a href="/防火墙和网络地址转换/" class="prev">&larr; Prev post </a>
-  
-
-  
-
-  
-    <a href="/链路层/" class="next">Next post  &rarr;</a>
-  
-</nav>
-
-  <!-- JiaThis Button BEGIN -->
-
-<!-- JiaThis Button END -->
-
-
-      
-      
-    </div>
-  </div>
-
-  <div id="bottom-outer">
-    <div id="bottom-inner">
-      愿你是你所期待的样子
-      <br>
-      
-    </div>
-  </div>
-</div>
-
 </div>
 
 
-<div id="user-card">
-  <div class="center-field">
-    <img class="avatar" src="https://i.imgur.com/A1tEJh4.jpg">
-    <p id="description">愿你还是你所期待的样子</p>
-    <ul class="social-icon">
-  
-  
-    <li>
-      <a href="https://github.com/pandaeathzr">
-        
-          <i class="icon iconfont github">&#xe606;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://weibo.com/6054524844/profile?rightmod=1&wvr=6&mod=personinfo">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-</ul>
+  <div class="book-comments">
+    
+
+
+  </div>
+
+
+<script src="/js/book-post.js"></script>
+        </div>
+      </div>
+
+      <div class="column col-2 hide-lg">
+        <div class="book-toc">
+  <div class="book-tocbot">
+  </div>
+  <div class="book-tocbot-menu">
+    <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+    <a onclick="go_top()">Back to top</a>
+    <a onclick="go_bottom()">Go to bottom</a>
   </div>
 </div>
-
-
-<div id="btn-view">Hide</div>
 
 <script>
-// is trigger analytics / tongji script
-var isIgnoreHost = false;
+tocbot.init({
+  tocSelector: '.book-tocbot',
+  contentSelector: '.book-post',
+  headingSelector: 'h1, h2, h3, h4, h5',
+  collapseDepth: 2,
+  orderedList: false,
+  scrollSmooth: false,
+});
 
-if(window && window.location && window.location.host) {
-  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
-    return 0 === window.location.host.indexOf(address);
+function expand_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 6,
+    orderedList: false,
+    scrollSmooth: false,
   });
+  b.setAttribute("onclick", "collapse_toc()");
+  b.innerHTML = "Collapse all"
 }
 
-var isTriggerAnalytics = !( true && isIgnoreHost );
-
-</script>
-
-
-
-
-  
-  
-    <script src="/js/jquery-2.2.3.min.js"></script>
-  
-    <script src="/js/vegas.min.js"></script>
-  
-    <script src="/js/random.js"></script>
-  
-    <script src="/js/highlight.pack.js"></script>
-  
-    <script src="/js/jquery.mousewheel.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox-thumbs.js"></script>
-  
-    <script src="/js/plyr.js"></script>
-  
-
-<script>
-
-  // fancybox
-  var backgroundImages = [];
-  
-  $('#post').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
-      var alt = this.alt || this.title;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'post' + i);
-    });
+function collapse_toc(){
+  var b = document.querySelector(".book-toc-expand");
+  tocbot.init({
+    tocSelector: '.book-tocbot',
+    contentSelector: '.book-post',
+    headingSelector: 'h1, h2, h3, h4, h5',
+    collapseDepth: 2,
+    orderedList: false,
+    scrollSmooth: false,
   });
-  $(".fancybox").fancybox();
+  b.setAttribute("onclick", "expand_toc()");
+  b.innerHTML = "Expand all"
+}
 
-var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
-var unsplashConfig = {"gravity":"north"};
-// is show background images
-var turnoffBackgroundImage = false;
+function go_top() {
+  window.scrollTo(0, 0);
+}
 
+function go_bottom() {
+  window.scrollTo(0, document.body.scrollHeight);
+}
 
-
-  turnoffBackgroundImage = true;
-
-
-var backgroundColor = "34495E";
-
-$(".fancybox-thumb").fancybox({
-  prevEffect: 'none',
-  nextEffect: 'none',
-  helpers: {
-    title: {
-      type: 'outside'
-    },
-    thumbs: {
-      width: 50,
-      height: 50
-    }
-  }
-});
-
-// show video with plyr
-$(".video-container iframe").each(function(i){
-  var url = $(this).attr('src');
-  var id = url.split('/').pop();
-  var plyrContainer = document.createElement('div');
-  plyrContainer.className = 'plyr';
-  var plyrElement = document.createElement('div');
-  plyrElement.dataset.videoId = id;
-  switch(true) {
-    case url.search('youtube.com') >= 0:
-      plyrElement.dataset.type = 'youtube';
-      break;
-    case url.search('vimeo.com') >= 0:
-      plyrElement.dataset.type = 'vimeo';
-      break;
-    default:
-      return;
-  };
-  plyrContainer.appendChild(plyrElement);
-  $(this).parent().html(plyrContainer);
-});
-plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
 </script>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
-
