@@ -5,18 +5,18 @@
   
   <title>python中文编码问题 | Hello</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： 1234try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as">
+  <meta name="description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as e:">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python中文编码问题">
 <meta property="og:url" content="http://yoursite.com/2018/05/23/中文编码问题/index.html">
 <meta property="og:site_name" content="Hello">
-<meta property="og:description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： 1234try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as">
+<meta property="og:description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as e:">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2018-06-04T03:04:00.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python中文编码问题">
-<meta name="twitter:description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： 1234try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as">
+<meta name="twitter:description" content="首先第一行肯定要写： /# -- coding: UTF-8 -- 或者 /#coding:uft8 然后在输出的汉字字符前加个u  printf u’你好’   遇到的问题： 在做数据库调试报错的时候，存在以下代码： try:       tr_money.transfer(sourse_acctid,target_acctid,money)   except Exception as e:">
   
     <link rel="alternate" href="/atom.xml" title="Hello" type="application/atom+xml">
   
@@ -120,7 +120,7 @@
 <hr>
 <p>遇到的问题：</p>
 <p>在做数据库调试报错的时候，存在以下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
 <p>其中e 为raise返回的报错字符</p>
 <p>然后执行会报错：</p>
 <blockquote>
@@ -128,7 +128,7 @@
 </blockquote>
 <p>原因大概是对utf-8的字段不能够str</p>
 <p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -138,7 +138,7 @@
     
 
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/23/中文编码问题/" data-id="ck0hrxuvp00166kwixyici37y" class="article-share-link">
+      <a data-url="http://yoursite.com/2018/05/23/中文编码问题/" data-id="ck0hs68f30016v0wigzhdodba" class="article-share-link">
         <i class="fa fa-share"></i> Share
       </a>
       
