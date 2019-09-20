@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[一题_JS_2]]></title>
     <url>%2F2019%2F09%2F20%2F%E4%B8%80%E9%A2%98_JS_2%2F</url>
-    <content type="text"><![CDATA[['1', '2', '3'].map(parseInt) 返回值： [ 1, NaN, NaN ] 解析： 关于parseIntparseInt(string, radix) 函数解析一个字符串参数，并返回一个指定基数的整数当radix = undefined || 0 时,采用默认的行为： 如果字符串 string 以”0x”或者”0X”开头, 则基数是16 (16进制). 如果字符串 string 以”0”开头, 基数是8（八进制）或者10（十进制），那么具体是哪个基数由实现环境决定。Node使用的基数是10。因此，永远都要明确给出radix参数的值。 如果字符串 string 以其它任何值开头，则基数是10 (十进制)。 当 radix = 1 时，似乎输出的都是 NaN。console.log(parseInt('1', 1)) // NaN 当 传进来的参数 不是radix进制时，返回的也是 NaN 关于map map(function(currentValue,index,arr), thisValue)``` 方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果---当我们如最开始的那样写法时，map其实传给了parseInt三个参数，第三个参数被parseInt忽略即：```js ['1', '2', '3'].map((currentValue, index, arr) =&gt; parseInt(currentValue, index, arr)) 参照资料木易杨前端进阶]]></content>
+    <content type="text"><![CDATA[['1', '2', '3'].map(parseInt) 返回值： [ 1, NaN, NaN ] 解析： 关于parseInt parseInt(string, radix) 函数解析一个字符串参数，并返回一个指定基数的整数 当radix = undefined || 0 时,采用默认的行为： 如果字符串 string 以&quot;0x&quot;或者&quot;0X&quot;开头, 则基数是16 (16进制). 如果字符串 string 以&quot;0&quot;开头, 基数是8（八进制）或者10（十进制），那么具体是哪个基数由实现环境决定。Node使用的基数是10。因此，永远都要明确给出radix参数的值。 如果字符串 string 以其它任何值开头，则基数是10 (十进制)。 当 radix = 1 时，似乎输出的都是 NaN。 console.log(parseInt('1', 1)) // NaN 当 传进来的参数 不是radix进制时，返回的也是 NaN 关于map map(function(currentValue,index,arr), thisValue)方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果 当我们如最开始的那样写法时，map其实传给了parseInt三个参数，第三个参数被parseInt忽略 即： ['1', '2', '3'].map((currentValue, index, arr) =&gt; parseInt(currentValue, index, arr)) 参照资料 木易杨前端进阶]]></content>
       <tags>
         <tag>JaveScript</tag>
       </tags>
