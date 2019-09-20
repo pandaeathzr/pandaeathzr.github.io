@@ -80,6 +80,72 @@
         <div class="col-sm-8 blog-main">
           
   
+    <article id="post-一题_JS_2" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/20/一题_JS_2/">一题_JS_2</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2019/09/20/一题_JS_2/" class="article-date"><time datetime="2019-09-19T16:00:00.000Z" itemprop="datePublished">2019-09-20</time></a>
+</div>
+
+    
+    
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>].map(<span class="built_in">parseInt</span>)</span><br></pre></td></tr></table></figure>
+<p>返回值： <code>[ 1, NaN, NaN ]</code></p>
+<p>解析： </p>
+<h3 id="关于parseInt"><a href="#关于parseInt" class="headerlink" title="关于parseInt"></a>关于parseInt</h3><p>parseInt(string, radix) 函数解析一个字符串参数，并返回一个指定基数的整数<br>当<code>radix = undefined || 0</code> 时,采用默认的行为：</p>
+<ul>
+<li>如果字符串 string 以”0x”或者”0X”开头, 则基数是16 (16进制).</li>
+<li>如果字符串 string 以”0”开头, 基数是8（八进制）或者10（十进制），那么具体是哪个基数由实现环境决定。Node使用的基数是10。因此，永远都要明确给出radix参数的值。</li>
+<li>如果字符串 string 以其它任何值开头，则基数是10 (十进制)。</li>
+</ul>
+<p>当 <code>radix = 1</code> 时，似乎输出的都是 <code>NaN</code>。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">parseInt</span>(<span class="string">'1'</span>, <span class="number">1</span>)) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></p>
+<p>当 传进来的参数 不是<code>radix</code>进制时，返回的也是 <code>NaN</code></p>
+<h3 id="关于map"><a href="#关于map" class="headerlink" title="关于map"></a>关于map</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"> map(<span class="function"><span class="keyword">function</span>(<span class="params">currentValue,index,arr</span>), <span class="title">thisValue</span>)</span></span><br><span class="line"><span class="function"> ``` </span></span><br><span class="line"><span class="function"> 方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">当我们如最开始的那样写法时，<span class="title">map</span>其实传给了<span class="title">parseInt</span>三个参数，第三个参数被<span class="title">parseInt</span>忽略</span></span><br><span class="line"><span class="function">即：</span></span><br><span class="line"><span class="function">```<span class="title">js</span></span></span><br><span class="line">  ['1', '2', '3'].map((currentValue, index, arr) =&gt; parseInt(currentValue, index, arr))</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="参照资料"><a href="#参照资料" class="headerlink" title="参照资料"></a>参照资料</h3><p><a href="https://muyiy.cn/question/js/2.html" title="木易杨前端进阶" target="_blank" rel="noopener">木易杨前端进阶</a></p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2019/09/20/一题_JS_2/" data-id="ck0rky24e0000eowinjfyy204" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JaveScript/">JaveScript</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-新起点" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -995,81 +1061,6 @@
 
 
   
-    <article id="post-中文编码问题" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/23/中文编码问题/">python中文编码问题</a>
-    </h1>
-  
-
-
-  </header>
-
-  <div class="article-meta">
-    <div class="article-datetime">
-  <a href="/2018/05/23/中文编码问题/" class="article-date"><time datetime="2018-05-23T12:46:25.000Z" itemprop="datePublished">2018-05-23</time></a>
-</div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Study/">Study</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先第一行肯定要写：</p>
-<p>/# -<em>- coding: UTF-8 -</em>-</p>
-<p>或者</p>
-<p>/#coding:uft8</p>
-<p>然后在输出的汉字字符前加个u</p>
-<blockquote>
-<p>printf u’你好’</p>
-</blockquote>
-<hr>
-<p>遇到的问题：</p>
-<p>在做数据库调试报错的时候，存在以下代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
-<p>其中e 为raise返回的报错字符</p>
-<p>然后执行会报错：</p>
-<blockquote>
-<p>‘ascii’ codec can’t encode characters in position 0-1: ordinal not in range(128)</p>
-</blockquote>
-<p>原因大概是对utf-8的字段不能够str</p>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="https://pandaeathzr.github.io/2018/05/23/中文编码问题/" data-id="ck0hwnpxw0017qwwip9fzw6i1" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <div id="page-nav">
@@ -1091,7 +1082,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
   </div>
 
 
@@ -1099,7 +1090,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
   </div>
 
 
@@ -1108,6 +1099,10 @@
   <div class="sidebar-module">
     <h4>Recents</h4>
     <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/09/20/一题_JS_2/">一题_JS_2</a>
+        </li>
       
         <li>
           <a href="/2019/09/13/新起点/">新的起点</a>
@@ -1123,10 +1118,6 @@
       
         <li>
           <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
-        </li>
-      
-        <li>
-          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
         </li>
       
     </ul>

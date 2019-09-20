@@ -80,6 +80,81 @@
         <div class="col-sm-8 blog-main">
           
   
+    <article id="post-中文编码问题" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/23/中文编码问题/">python中文编码问题</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/05/23/中文编码问题/" class="article-date"><time datetime="2018-05-23T12:46:25.000Z" itemprop="datePublished">2018-05-23</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先第一行肯定要写：</p>
+<p>/# -<em>- coding: UTF-8 -</em>-</p>
+<p>或者</p>
+<p>/#coding:uft8</p>
+<p>然后在输出的汉字字符前加个u</p>
+<blockquote>
+<p>printf u’你好’</p>
+</blockquote>
+<hr>
+<p>遇到的问题：</p>
+<p>在做数据库调试报错的时候，存在以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :&apos; +str(e)</span><br></pre></td></tr></table></figure>
+<p>其中e 为raise返回的报错字符</p>
+<p>然后执行会报错：</p>
+<blockquote>
+<p>‘ascii’ codec can’t encode characters in position 0-1: ordinal not in range(128)</p>
+</blockquote>
+<p>原因大概是对utf-8的字段不能够str</p>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try:</span><br><span class="line">       tr_money.transfer(sourse_acctid,target_acctid,money)</span><br><span class="line">   except Exception as e:</span><br><span class="line">       print u&apos;出现问题 :%s&apos; %e</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2018/05/23/中文编码问题/" data-id="ck0hwnpxw0017qwwip9fzw6i1" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-MySQLbd" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -877,142 +952,6 @@
 
 
   
-    <article id="post-Internet协议" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/07/Internet协议/">Internet协议</a>
-    </h1>
-  
-
-
-  </header>
-
-  <div class="article-meta">
-    <div class="article-datetime">
-  <a href="/2018/04/07/Internet协议/" class="article-date"><time datetime="2018-04-07T02:47:47.000Z" itemprop="datePublished">2018-04-07</time></a>
-</div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Study/">Study</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写在开头：</p>
-<p>埋头学习也差不多半个月了，达到了这半个月每天都会去图书馆的目标。确实挺忙的，不管在学习上，部门社团上，党建上。有时候为了多学一些总是会挤掉了其他事情的一些时间。但是自己时刻提醒着自己不要太过激进了，做好自己的本职工作，生活还是要继续的，协调好彼此之间的关系。希望自己还是像以前那样开心就好了。</p>
-<p>加油!</p>
-<h1 id="Internet协议"><a href="#Internet协议" class="headerlink" title="Internet协议"></a>Internet协议</h1><p>IP是TCP/IP协议族中的核心协议。IP提供了一种<strong>尽力而为</strong>，<strong>无连接</strong>的数据报交付服务。</p>
-<p><strong>尽力而为</strong>的含义是不保证IP数据报能成功到达目的地。任何的可靠性必须靠上层（例如TCP）提供</p>
-<p><strong>无连接</strong>意味着IP不维护网络单元（即路由器）中数据报相关的任何链接状态，这也就意味着IP数据报可不按照顺序交付，每个数据报可以独立路由，通过不同的路径，并且有可能较靠后发送的数据报提前到达</p>
-<hr>
-<h2 id="网络字节序"><a href="#网络字节序" class="headerlink" title="网络字节序"></a>网络字节序</h2><p>一个32位值的4字节按以下顺序传输：首先是 0 ~ 7 位，然后8~15位，16~23，23~31位。这就是所谓的高位有限字节序，又称网络字节序。它是TCP/IP头部中所有二进制整数在网络中传输时所使用的字节顺序。</p>
-<hr>
-<p>下面给出IPv4头部细节</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>版本</td>
-<td>包含IP数据报的版本字段</td>
-</tr>
-<tr>
-<td>IHL</td>
-<td>长4位，表示IPv4头部中32位的数量，即IHL值为x，头部长度就为32*x</td>
-</tr>
-<tr>
-<td>DS</td>
-<td>区分服务字段</td>
-</tr>
-<tr>
-<td>ECN</td>
-<td>显式拥塞通知</td>
-</tr>
-<tr>
-<td>总长度字段</td>
-<td>表示IPv4数据报的总长度，通过它和IHL就可以知道数据报的数据部分的位置</td>
-</tr>
-<tr>
-<td>标识</td>
-<td>表示IPv4主机发送的数据报，能够避免数据报分片混淆</td>
-</tr>
-<tr>
-<td>生存期TTL</td>
-<td>用于设定一个数据报可经过的路由器的数量上限</td>
-</tr>
-<tr>
-<td>协议</td>
-<td>表示数据报有效载荷部分的数据类型。，常见的有17（UDP)\6(TCP)</td>
-</tr>
-<tr>
-<td>头部校验和</td>
-<td>注意它仅计算IPv4的头部</td>
-</tr>
-<tr>
-<td>源IP地址和目的IP地址</td>
-<td>通常标识一台计算机的一个接口</td>
-</tr>
-</tbody>
-</table>
-<p><strong>TTL</strong>：生存期，发送方发送时会将它设位一个值，每次经过一台路由器就会减一，显然当这个值等于0的时候，数据报就会被丢弃。这样就可以避免了数据报有可能在路由器的环路中无限循环下去的问题。</p>
-<hr>
-<h2 id="Internet校验和"><a href="#Internet校验和" class="headerlink" title="Internet校验和"></a>Internet校验和</h2><p>Internet校验和是一个16位的数字和。</p>
-<hr>
-<h2 id="IP转发"><a href="#IP转发" class="headerlink" title="IP转发"></a>IP转发</h2><p>我们知道，IP协议可以接收到一个来自自己主机或者网络接口的数据报。IP层包括了一些位于内存中的信息，通常称为路由表或者<strong>转发表</strong></p>
-<p>转发数据的时候，IP模块会先检查数据报的地址是不是自己的IP地址（这个地址可以很多，比如组播，广播地址），是的话就给上头（数据报头部指定的协议模块），不是的话：</p>
-<ul>
-<li>如果IP层被设置成路由器，就查找转发表，转发到下一跳</li>
-<li>否侧就扔了</li>
-</ul>
-<p>转发表里有下面几样东西：</p>
-<ul>
-<li>目的地</li>
-<li>掩码</li>
-<li>下一跳：下一个IP的地址~</li>
-<li>接口：即下一跳的网络接口</li>
-</ul>
-<p>IP转发只是提供数据报发送的下一跳实体的IP地址，它假设下一跳比执行转发的系统更接近目的地。</p>
-<hr>
-<p>附上<a href="http://www.cnblogs.com/ZCplayground/p/8424916.html" target="_blank" rel="noopener">畅畅酱关于这个章节的地址</a></p>
-
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="https://pandaeathzr.github.io/2018/04/07/Internet协议/" data-id="ck0hwnpx40007qwwi9xcywhxt" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <div id="page-nav">
@@ -1034,7 +973,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
   </div>
 
 
@@ -1042,7 +981,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
   </div>
 
 
@@ -1051,6 +990,10 @@
   <div class="sidebar-module">
     <h4>Recents</h4>
     <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/09/20/一题_JS_2/">一题_JS_2</a>
+        </li>
       
         <li>
           <a href="/2019/09/13/新起点/">新的起点</a>
@@ -1066,10 +1009,6 @@
       
         <li>
           <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
-        </li>
-      
-        <li>
-          <a href="/2018/07/16/Python编程入门到实践(一)/">Python编程：从入门到实践(一)---变量\简单数据类型\列表</a>
         </li>
       
     </ul>
