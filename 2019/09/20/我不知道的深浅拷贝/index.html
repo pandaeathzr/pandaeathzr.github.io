@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>我不知道的深浅拷贝 | 熊猫吃展瑞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是深拷贝，什么是浅拷贝在这里就不谈了，因为我已经知道了！ 浅拷贝的实现方式： Object.assign() 展开符运算 ... Array.prototype.slice()  Object.assign(target, ...sources)方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象 继承属性和不可枚举属性是不能拷贝的/** * @param &amp;#123">
+<meta name="keywords" content="JaveScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我不知道的深浅拷贝">
+<meta property="og:url" content="https://pandaeathzr.github.io/2019/09/20/我不知道的深浅拷贝/index.html">
+<meta property="og:site_name" content="熊猫吃展瑞">
+<meta property="og:description" content="什么是深拷贝，什么是浅拷贝在这里就不谈了，因为我已经知道了！ 浅拷贝的实现方式： Object.assign() 展开符运算 ... Array.prototype.slice()  Object.assign(target, ...sources)方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象 继承属性和不可枚举属性是不能拷贝的/** * @param &amp;#123">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-21T05:13:23.502Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我不知道的深浅拷贝">
+<meta name="twitter:description" content="什么是深拷贝，什么是浅拷贝在这里就不谈了，因为我已经知道了！ 浅拷贝的实现方式： Object.assign() 展开符运算 ... Array.prototype.slice()  Object.assign(target, ...sources)方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象 继承属性和不可枚举属性是不能拷贝的/** * @param &amp;#123">
+  
+    <link rel="alternate" href="/atom.xml" title="熊猫吃展瑞" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/fancybox/panda.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">熊猫吃展瑞</h1>
+  
+    <p class="lead blog-description">愿你是所期待的样子</p>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-我不知道的深浅拷贝" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      我不知道的深浅拷贝
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2019/09/20/我不知道的深浅拷贝/" class="article-date"><time datetime="2019-09-19T16:00:00.000Z" itemprop="datePublished">2019-09-20</time></a>
+</div>
+
+    
+    
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>什么是深拷贝，什么是浅拷贝在这里就不谈了，因为我已经知道了！</strong></p>
+<h3 id="浅拷贝的实现方式："><a href="#浅拷贝的实现方式：" class="headerlink" title="浅拷贝的实现方式："></a>浅拷贝的实现方式：</h3><ul>
+<li><code>Object.assign()</code></li>
+<li>展开符运算 <code>...</code></li>
+<li><code>Array.prototype.slice()</code></li>
+</ul>
+<h4 id="Object-assign-target-sources"><a href="#Object-assign-target-sources" class="headerlink" title="Object.assign(target, ...sources)"></a><code>Object.assign(target, ...sources)</code></h4><p>方法用于将所有可枚举属性的值从<strong>一个或多个</strong>源对象复制到目标对象。它<strong>将返回目标对象</strong></p>
+<h5 id="继承属性和不可枚举属性是不能拷贝的"><a href="#继承属性和不可枚举属性是不能拷贝的" class="headerlink" title="继承属性和不可枚举属性是不能拷贝的"></a>继承属性和不可枚举属性是不能拷贝的</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;...sources&#123;&#125;&#125; nextSource</span></span><br><span class="line"><span class="comment"> * @return &#123;to &#123;&#125;&#125; </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> nextKey <span class="keyword">in</span> nextSource) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.hasOwnProperty.call(nextSource, nextKey)) &#123;</span><br><span class="line">    to[nextKey] = nextSource[nextKey];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="原始类型会被包装为对象"><a href="#原始类型会被包装为对象" class="headerlink" title="原始类型会被包装为对象"></a>原始类型会被包装为对象</h4><p>这是在原始类型有默认迭代器的情况下，例如 <code>String</code><br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> v1 = <span class="string">"abc"</span>;</span><br><span class="line"><span class="keyword">const</span> v2 = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">const</span> v3 = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> v4 = <span class="built_in">Symbol</span>(<span class="string">"foo"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = <span class="built_in">Object</span>.assign(&#123;&#125;, v1, <span class="literal">null</span>, v2, <span class="literal">undefined</span>, v3, v4); </span><br><span class="line"><span class="comment">// 原始类型会被包装，null 和 undefined 会被忽略。</span></span><br><span class="line"><span class="comment">// 注意，只有字符串的包装对象才可能有自身可枚举属性。</span></span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; "0": "a", "1": "b", "2": "c" &#125;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="深拷贝的实现方式："><a href="#深拷贝的实现方式：" class="headerlink" title="深拷贝的实现方式："></a>深拷贝的实现方式：</h3><ul>
+<li><code>JSON.parse(JSON.stringify(Object))</code></li>
+<li><code>JQuery.extend()</code></li>
+<li><code>lodash.cloneDeep</code></li>
+</ul>
+<h4 id="JSON-parse-JSON-stringify-Object-缺陷"><a href="#JSON-parse-JSON-stringify-Object-缺陷" class="headerlink" title="JSON.parse(JSON.stringify(Object))缺陷"></a>JSON.parse(JSON.stringify(Object))缺陷</h4><ul>
+<li>会忽略 undefined</li>
+<li>会忽略 symbol</li>
+<li>不能序列化函数</li>
+<li>不能解决循环引用的对象</li>
+<li>不能处理正则</li>
+</ul>
+<p>博文中介绍说处理Date()时会转换错误，但是经过我的测试是不会的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"><span class="built_in">console</span>.log(date)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(date))</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(date)))</span><br><span class="line"></span><br><span class="line"><span class="comment">//2019-09-21T05:11:31.743Z</span></span><br><span class="line"><span class="comment">// "2019-09-21T05:11:31.743Z"</span></span><br><span class="line"><span class="comment">// 2019-09-21T05:11:31.743Z</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="参照资料"><a href="#参照资料" class="headerlink" title="参照资料"></a>参照资料</h3><p><a href="https://muyiy.cn/blog/4/4.1.html" title="木易杨前端进阶" target="_blank" rel="noopener">木易杨前端进阶</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank" rel="noopener">MDN-展开语法(Spread syntax)</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">MDN-Array.prototype.slice()</a></p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2019/09/20/我不知道的深浅拷贝/" data-id="ck1gh04i80001p4wia5e6exwk" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JaveScript/">JaveScript</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2019/09/13/掘金_前端程序员必须掌握之三角函数在前端动画中的应用/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">新的起点</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/2019/09/20/一题_JS_2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">一题_JS_2</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p><b>New Life!</b></p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/09/20/一题_JS_2/">一题_JS_2</a>
+        </li>
+      
+        <li>
+          <a href="/2019/09/20/我不知道的深浅拷贝/">我不知道的深浅拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2019/09/13/掘金_前端程序员必须掌握之三角函数在前端动画中的应用/">新的起点</a>
+        </li>
+      
+        <li>
+          <a href="/2019/09/13/新起点/">新的起点</a>
+        </li>
+      
+        <li>
+          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

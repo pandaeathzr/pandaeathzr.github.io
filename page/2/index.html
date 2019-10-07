@@ -80,6 +80,191 @@
         <div class="col-sm-8 blog-main">
           
   
+    <article id="post-atom插件" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/28/atom插件/">atom插件</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/05/28/atom插件/" class="article-date"><time datetime="2018-05-28T02:47:47.000Z" itemprop="datePublished">2018-05-28</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="atom下python必备的几个插件"><a href="#atom下python必备的几个插件" class="headerlink" title="atom下python必备的几个插件"></a>atom下python必备的几个插件</h1>
+        
+          <p class="article-more-link">
+            <a class="btn btn-primary" href="/2018/05/28/atom插件/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2018/05/28/atom插件/" data-id="ck0rl0gw5000wyswifow6r6dx" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据库实践作业二" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/25/数据库实践作业二/">数据库实践作业二资料整合</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/05/25/数据库实践作业二/" class="article-date"><time datetime="2018-05-25T02:49:51.000Z" itemprop="datePublished">2018-05-25</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>根据实验课的题目要求，共需要掌握以下部分：</p>
+<ul>
+<li>用户及用户权限管理</li>
+<li>存储及触发器使用</li>
+<li>数据库的备份与恢复</li>
+</ul>
+<p>以下部分将是很基础的数据库操作，存在许多不足需要改正。</p>
+<hr>
+<h2 id="用户及用户权限管理"><a href="#用户及用户权限管理" class="headerlink" title="用户及用户权限管理"></a>用户及用户权限管理</h2><p><strong>前提：熟悉课本第四章内容</strong></p>
+<p>我们在ROOT用户下<strong>创建普通用户</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER HUZR@localhost IDENTIFIED by &apos;123&apos;;</span><br><span class="line">CREATE USER pig@localhost IDENTIFIED by &apos;123&apos;;</span><br></pre></td></tr></table></figure>
+<p> 然后我们可以在Nvaicat for MySQL客户端用户界面看到我们所创建的用户：<br><img src="https://i.imgur.com/a0TJUwn.jpg" alt=""></p>
+<p>接着可以对<strong>用户授权</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GRANT SELECT</span><br><span class="line">ON TABLE student</span><br><span class="line">TO HUZR@localhost;</span><br><span class="line"></span><br><span class="line">GRANT SELECT</span><br><span class="line">ON TABLE course</span><br><span class="line">TO pig@localhost;</span><br></pre></td></tr></table></figure></p>
+<p>则我们刚才得到的用户分别有了对student、course表查询的权限</p>
+<p>那么我们如何登陆我们新建的用户呢？</p>
+<p>在Nvaicat for MySQL客户端新建一个连接：</p>
+<p><img src="https://i.imgur.com/1djcpPJ.jpg" alt=""></p>
+<p>其中用户名和密码为我们刚才设定的内容。</p>
+<p>由于Nvaicat for MySQL客户端密码编码版本与MySQL服务器不同的原因。我们还需要更新该用户在MySQL服务器下的密码及解锁该用户 <a href="https://www.cnblogs.com/Huzr/p/9005188.html" target="_blank" rel="noopener">详情见链接</a></p>
+<p>此后我们用新增用户登陆，可以发现里面存在被我们赋予查询权限的表</p>
+<p><img src="https://i.imgur.com/XlLXajM.jpg" alt=""></p>
+<p><strong>回收权限</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">REVOKE SELECT</span><br><span class="line">ON TABLE student</span><br><span class="line">FROM HUZR@localhost;</span><br></pre></td></tr></table></figure></p>
+<p>经过此操作后在新建用户的数据库中已经没有相应的表格存在</p>
+<p>至此第一部分的基础内容已经完成。</p>
+<hr>
+<h2 id="存储及触发器的使用"><a href="#存储及触发器的使用" class="headerlink" title="存储及触发器的使用"></a>存储及触发器的使用</h2><p>存储相当于对一个函数的封装，<strong>创建存储</strong>如下：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delimiter $  </span><br><span class="line">CREATE PROCEDURE select_row ()</span><br><span class="line">BEGIN</span><br><span class="line">	SELECT * FROM student WHERE sname = &apos;   &apos;;</span><br><span class="line">	SELECT * FROM course ;</span><br><span class="line">END $</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure></p>
+<p>对以上代码进行解析：</p>
+<ul>
+<li>MySQL默认以”;”为分隔符，如果没有声明分割符，则编译器会把存储过程当成SQL语句进行处理，因此编译过程会报错，所以要事先用“DELIMITER $”声明当前段分隔符，让编译器把两个”$”之间的内容当做存储过程的代码，不会执行这些代码；“DELIMITER ;”的意为把分隔符还原。</li>
+<li>CREATE PROCEDURE 后面接的是存储的name（可以理解为函数的名称,可带参数，此处不展开），例子中即为selcet_row()</li>
+<li>BEGIN 到 EDN 中间为存储的sql语句，可以花样百出</li>
+</ul>
+<p><strong>存储调用</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CALL select_row();</span><br></pre></td></tr></table></figure>
+<p>注意尽管没有参数，也需要带上括号</p>
+<p><strong>查看存储</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show PROCEDURE STATUS WHERE Db = &apos;031602215&apos;;</span><br></pre></td></tr></table></figure></p>
+<p><strong>删除存储</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DROP PROCEDURE select_row;</span><br></pre></td></tr></table></figure></p>
+<p>详尽资料链接见下：</p>
+<p><a href="https://www.cnblogs.com/mark-chan/p/5384139.html" target="_blank" rel="noopener">https://www.cnblogs.com/mark-chan/p/5384139.html</a></p>
+<p><a href="https://www.cnblogs.com/geaozhang/p/6797357.html" target="_blank" rel="noopener">https://www.cnblogs.com/geaozhang/p/6797357.html</a></p>
+<hr>
+<p>触发器顾名思义，<strong>创建触发器</strong>如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delimiter $</span><br><span class="line"></span><br><span class="line">CREATE TRIGGER inset_student</span><br><span class="line">AFTER UPDATE ON xuandao FOR EACH ROW</span><br><span class="line">BEGIN</span><br><span class="line">	INSERT INTO student VALUES(&apos;这里是触发器&apos;,NULL,NULL,NULL,NULL);</span><br><span class="line">END $</span><br><span class="line"></span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
+<p>对以上面代码解析：</p>
+<ul>
+<li>CREATE TRIGGER 后面接的的触发器名称</li>
+<li>AFTER UPDATE 表明在更新操作后触发，其中AFTER的另一个参数为BEFORE; UPDATE亦可改成 INSERT,DELETE</li>
+<li>ON 后面接表的名称，说明在哪张表建立触发器</li>
+<li>FOR EACH ROW 说明是行级触发器，似乎没啥作用</li>
+<li>BEGIN END 里面为触发执行的语句</li>
+</ul>
+<p><strong>注意，不能对同一张表同时触发又执行</strong> ,否则会报错</p>
+<p><strong>查看触发器</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW TRIGGERS;</span><br></pre></td></tr></table></figure></p>
+<p><strong>查看触发器效果</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">UPDATE xuandao</span><br><span class="line">SET tc = &apos;   &apos;</span><br><span class="line">WHERE sname = &apos;   &apos;;</span><br><span class="line"></span><br><span class="line">SELECT * FROM student;</span><br></pre></td></tr></table></figure></p>
+<p>通过对xuandao表格的更新，然后通过select查看效果</p>
+<p><strong>删除触发器</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DROP TRIGGER inset_student;</span><br></pre></td></tr></table></figure>
+<p>详尽资料链接见下：</p>
+<p><a href="https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html" target="_blank" rel="noopener">https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html</a></p>
+<hr>
+<h2 id="数据库的备份与恢复"><a href="#数据库的备份与恢复" class="headerlink" title="数据库的备份与恢复"></a>数据库的备份与恢复</h2><p><strong>完整备份：</strong></p>
+<p>mysqldump -u root -p database_name &gt; 路径及备份文件名.sql</p>
+<p><strong>差异备份：</strong></p>
+<p>在windows下我还不会。。。。</p>
+<p>日志备份：</p>
+<p>同上。。。</p>
+<p><strong>备份恢复：</strong></p>
+<p><code>source yourbf.sql</code></p>
+<hr>
+<p>前面所讲的内容都只是一个框架，可以精致的展开。</p>
+<p>在windows下的MySQL真是难受，找了两天的教程还是没解决，各种教程都是Linux情况的。</p>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2018/05/25/数据库实践作业二/" data-id="ck0rl0gws001lyswi29t4onuc" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-中文编码问题" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -712,246 +897,6 @@
 
 
   
-    <article id="post-广播和本地组播（IGMP和MLD）" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/12/广播和本地组播（IGMP和MLD）/">广播和本地组播（IGMP和MLD）</a>
-    </h1>
-  
-
-
-  </header>
-
-  <div class="article-meta">
-    <div class="article-datetime">
-  <a href="/2018/04/12/广播和本地组播（IGMP和MLD）/" class="article-date"><time datetime="2018-04-12T12:46:25.000Z" itemprop="datePublished">2018-04-12</time></a>
-</div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Study/">Study</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>距离项目开启已经过去了一段时间，这段时间内自己学习的内容也算挺多的，但是也较容易遗忘，之后应该在空余的时间内多翻翻博客，更加清楚传统计算机网络的运作。</p>
-<p>由于51要出去玩，更要好好利用好最近的时间。完成自己的每周规划。</p>
-<p>并且考虑到最近身体比较虚弱…，应该更加早睡早起!</p>
-<p>加油！</p>
-<h1 id="广播和本地组播（IGMP和MLD）"><a href="#广播和本地组播（IGMP和MLD）" class="headerlink" title="广播和本地组播（IGMP和MLD）"></a>广播和本地组播（IGMP和MLD）</h1><p>在引言中有下面一些比较重要的概念：</p>
-<p>广播和组播为应用程序提供了两种服务</p>
-<ul>
-<li>数据分组交付至多个目的地 //顾名思义</li>
-<li>通过客户端请求/发现服务器  //类似于DHCP</li>
-</ul>
-<p>一个广播请求会影响在广播范围内所有可以到达的主机，而组播只影响那些可能对该请求有<strong>兴趣</strong>的主机</p>
-<p>注意，在广播的更高开销和简单性以及组播的效率改善和更多的复杂性之间存在一种平衡。</p>
-<hr>
-<h2 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h2><p>广播是指将报文发送到网络中的所有可能的接收者。很容易的能够理解广播的概念，就像你拿着大喇叭对所有人喊话一样。所以它并不需要ARP请求来确定每个目的地的MAC地址。</p>
-<p>一般而言，使用广播的应用程序使用UDP协议，然后调用一组普通的API来发送流量。并且我们在打算发送广播数据报的时候，要加上一些特殊的标志，这样确认后可以防止误操作而产生大量的广播流量，造成网络拥塞。</p>
-<hr>
-<h2 id="组播"><a href="#组播" class="headerlink" title="组播"></a>组播</h2><p>组播的意思就是向一个组发送流量。</p>
-<p>组播状态必须由主机和路由器来保持，定期的进行更新和删除操作，这样就能够很好的维护一个组。那他是如何更新的呢？我们下面的协议会讲到~</p>
-<h2 id="主机地址过滤"><a href="#主机地址过滤" class="headerlink" title="主机地址过滤"></a>主机地址过滤</h2><p>过滤发生在每个主机的网络接口卡（NIC）上，</p>
-<p>NIC指接收目的地址是接口的硬件地址或者广播地址的那些帧，如果涉及到组播帧，情况会更复杂。它往往被分成两类：</p>
-<ul>
-<li>执行基于组播硬件地址的散列值的过滤 //存在散列冲突</li>
-<li>侦听组播地址的一张有限表 //超过表所能容纳的更多组播地址时，NIC进入“组播混杂”模式，即所有的流量都会交给主机软件。</li>
-</ul>
-<p>组播地址和48位的硬件地址的映射是不唯一的，所以进一步的过滤还是必须的。</p>
-<p>这两种类型说到底还是会有一些不必要的数据报被接受，所以还需要设备驱动程序或者高层软件执行检查。</p>
-<p>如下图所示：</p>
-<p><img src="https://i.imgur.com/Lvq25ku.jpg" alt=""></p>
-<p>当NIC接收到帧的时候，它首先会检查是否接收该帧（即检查CRC，MAC地址等)，然后交付给设备驱动程序,设备驱动程序查明该帧的类型，例如IP数据包，他就传递到IP层。IP层过滤完成后，便传到TCP或UDP等。然后就查询端口号。其实就是数据报在Internet主机上分解的过程， 如下图：</p>
-<p><img src="https://i.imgur.com/S2Bb36o.jpg" alt=""></p>
-<hr>
-<h2 id="互联网组管理协议和组播侦听发现协议"><a href="#互联网组管理协议和组播侦听发现协议" class="headerlink" title="互联网组管理协议和组播侦听发现协议"></a>互联网组管理协议和组播侦听发现协议</h2><p>两个协议都用于允许组播路由器了解附近主机感兴趣的组，区别在于IPv4使用的是互联网组管理协议（<strong>IGMP</strong>),而IPV6使用的是组播帧听发现协议（<strong>MLD</strong>）</p>
-<p><strong>如何运作</strong>：</p>
-<p>组播路由器定期向每个连接的子网发送IGMP(MLD)请求。主机则会响应这个请求，告诉路由器那些组和源是感兴趣的。如果成员资格变动，主机也可以发送主动提供的报告。</p>
-<p><img src="https://i.imgur.com/61zmHsM.jpg" alt=""></p>
-
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="https://pandaeathzr.github.io/2018/04/12/广播和本地组播（IGMP和MLD）/" data-id="ck0rl0gwo001iyswi515r5e57" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Internet控制报文协议" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/10/Internet控制报文协议/">Internet控制报文协议</a>
-    </h1>
-  
-
-
-  </header>
-
-  <div class="article-meta">
-    <div class="article-datetime">
-  <a href="/2018/04/10/Internet控制报文协议/" class="article-date"><time datetime="2018-04-10T12:46:25.000Z" itemprop="datePublished">2018-04-10</time></a>
-</div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Study/">Study</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先，我们必须先清楚，IP协议本身没有为终端系统提供直接的方法来发现那些<strong>发往目的地址失败的IP数据包</strong>，并且IP没有提供<strong>直接</strong>的方式来获取诊断信息，那么我们的故事来了。</p>
-<p>Internet控制报文协议（ICMP）腾空而出，与IP结合使用，提供了与IP协议层配置和IP数据包处置相关的诊断和控制信息，即<strong>它负责传递可能需要注意的差错和控制报文</strong>。ICMP表明了某些类别的故障和配置信息，但是并不为IP网络提供可靠性。</p>
-<p>注意：我们常见的丢包（<strong>路由器缓冲区溢出</strong>）并不会触发任何的ICMP信息。</p>
-<hr>
-<h2 id="在IPv4和IPv6中的封装"><a href="#在IPv4和IPv6中的封装" class="headerlink" title="在IPv4和IPv6中的封装"></a>在IPv4和IPv6中的封装</h2><p><strong>ICMP报文是在IP数据包内被封装传输的。</strong></p>
-<p>如图所示：</p>
-<p><img src="https://i.imgur.com/e7WLHxu.jpg" alt=""></p>
-<p>ICMP报文封装在IPv4和IPv6的内部，即在其头部后面。ICMP头部包含了<strong>整个</strong>ICMP数据段的校验和。</p>
-<p>下图表示了报文的格式</p>
-<p><img src="https://i.imgur.com/fgyoLuM.jpg" alt=""></p>
-<p>我们可以了解到：</p>
-<ul>
-<li>类型字段长8位，ICMPv4为其保留42个值，但是只有8个常用，下文会提到。</li>
-<li>代码字段长8位，每个类型有不同的代码，代表不同的含义</li>
-<li>校验和长16位，涵盖了整个报文</li>
-</ul>
-<p>如果一个ICMP报文校验和错误，显然是要被丢弃的；</p>
-<p>同时<strong>这边给出中文版一个蹩脚的翻译</strong> ：没有ICMP报文可以表示收到的ICMP报文中的校验和是错误的。 原版本的翻译是： <strong>there is no ICMP message to indicate a bad checksum in a received ICMP message</strong>，较为顺口的翻译应该是，在收到的ICMP报文中没有指示校验和错误的ICMP报文，即ICMP的报文不会去指错另一个ICMP的报文。</p>
-<h2 id="ICMP报文"><a href="#ICMP报文" class="headerlink" title="ICMP报文"></a>ICMP报文</h2><p>ICMP报文可以分为两大类：</p>
-<ul>
-<li>有关IP数据包传递的ICMP报文（<strong>差错报文</strong>）</li>
-<li>有关信息采集和配置的ICMP报文（<strong>查询或信息类报文</strong>）</li>
-</ul>
-<p>信息类报文包括回显请求和回显应答，以及路由器通告和路由器请求。</p>
-<p>最常见的差错报文类型包括目的不可达，重定向，超时，和参数问题。</p>
-<p> <strong>关于类型字段以及类型所使用的代码号表格在书本250页均有，这边不再强调</strong></p>
-<p>下面进一步讨论差错报文常用的类型：</p>
-<h3 id="目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）"><a href="#目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）" class="headerlink" title="目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）"></a>目的不可达（ICMPv4类型3，ICMPv6类型1）和数据包太大（ICMPv6类型2）</h3><p>目的不可这种类型的报文用来<strong>表示数据包无法送达目的地</strong>，其<em>主要</em>可细分成：</p>
-<ul>
-<li>主机不可达（ICMPv4代码1）和地址不可达（ICMPv6代码3）<ul>
-<li>由路由器或主机产生，直接交付的时候由于某种原因无法到达目的地，例如主机关闭</li>
-</ul>
-</li>
-<li>目的无路由（ICMPv6代码0）<ul>
-<li>出现在到达数据包不必采用直接交付的方式来转发，但没有路由条目指定下一跳路由地址</li>
-</ul>
-</li>
-<li>管理禁止通信（ICMPv4代码3）和目的管理禁止通信（ICMPv6代码1）<ul>
-<li>通常是防火墙故意丢弃流量导致</li>
-</ul>
-</li>
-<li>端口不可达（ICMPv4代码3）和端口不可达（ICMPv6代码4）<ul>
-<li>当传入数据报的目的应用程序还没有准备好接收，就生成端口不可达报文</li>
-</ul>
-</li>
-</ul>
-<p>数据包太大（<strong>PTB</strong>）：</p>
-<p>如果一个IPv4路由器收到一个数据报大于选定的传出网络接口的<strong>MTU</strong>， 则其需要分片，但如果IP头部设置了不分片位字段，则其被丢弃。同时，产生<strong>ICMPv4目的不可达（PTB）报文</strong>，该报文能将下一跳的MTU包含在其中。</p>
-<p><img src="https://i.imgur.com/FfssSrL.jpg" alt=""></p>
-<p>而在ICMPv6中，因为IPv6只有数据包的发送者才能执行数据包分片，所以只产生<strong>ICMPv6目的不可达（PTB）报文</strong>，该报文能将下一跳的MTU包含在其中。</p>
-<hr>
-<h3 id="重定向（ICMPv4类型5，ICMPv6类型137）"><a href="#重定向（ICMPv4类型5，ICMPv6类型137）" class="headerlink" title="重定向（ICMPv4类型5，ICMPv6类型137）"></a>重定向（ICMPv4类型5，ICMPv6类型137）</h3><p>当路由器收到一个来自主机的不是给自己的数据报时，转发数据报到下一跳更好的路由，同时，<strong>路由器发送一个重定位报文到主机</strong>，使其更新路由表，这样下一次数据报直接就会到新定义的节点上。如图所示：</p>
-<p><img src="https://i.imgur.com/AYg2S5j.jpg" alt=""></p>
-<p>重定向报文包含了数据报下一跳正确路由器的IPv4地址。如图</p>
-<p><img src="https://i.imgur.com/lMhBvzi.jpg" alt=""></p>
-<h3 id="超时（ICMPv4类型11，ICMPv6类型3）"><a href="#超时（ICMPv4类型11，ICMPv6类型3）" class="headerlink" title="超时（ICMPv4类型11，ICMPv6类型3）"></a>超时（ICMPv4类型11，ICMPv6类型3）</h3><p>当由于TTL或跳数限制字段值调小致使路由器丢弃报文时，产生ICMP超时报文</p>
-<p><strong>一个工具</strong>：traceroute工具，被用于确定发送者到目的地路径上的路由器。</p>
-<p>工作方式：</p>
-<ol>
-<li>TTL置1</li>
-<li>发送数据报，接收路由器的ICMP超时报文，如果该路由为最终路由则停止。</li>
-<li>TTL+=1</li>
-<li>转回第二步</li>
-</ol>
-<h3 id="参数问题（ICMPv4类型12，ICMPv6类型4）"><a href="#参数问题（ICMPv4类型12，ICMPv6类型4）" class="headerlink" title="参数问题（ICMPv4类型12，ICMPv6类型4）"></a>参数问题（ICMPv4类型12，ICMPv6类型4）</h3><p>当一个主机或者路由器接收到一个IP数据报，其IP头部存在不可修复的问题时就会产生一个ICMP参数问题报文。一个特殊的参数报文<strong>指针</strong>字段只是了错误字段相对于出错的IP头部的偏移值。</p>
-<hr>
-<p>下面进一步讨论信息类报文常用的类型：</p>
-<h3 id="回显请求-应答（ping）（ICMPv4类型0-8，ICMPv6类型129-128）"><a href="#回显请求-应答（ping）（ICMPv4类型0-8，ICMPv6类型129-128）" class="headerlink" title="回显请求/应答（ping）（ICMPv4类型0/8，ICMPv6类型129/128）"></a>回显请求/应答（<strong>ping</strong>）（ICMPv4类型0/8，ICMPv6类型129/128）</h3><p>原理，收到ICMP回显请求报文后，ICMP要求将任何接收到的数据返回给发送方。报文格式如下</p>
-<p><img src="https://i.imgur.com/VVAfnaA.jpg" alt=""></p>
-<p>其中，<strong>标识符字段</strong>可以让发送主机利用，借此分离返回的应答。</p>
-<p>当一个ping实例运行的时候，序列号从0开始，每发送一个回显请求报文便加1.<br>ping打印出每个返回的数据报的序列号，方便用户查看数据报是否丢失等。</p>
-<h3 id="路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）"><a href="#路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）" class="headerlink" title="路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）"></a>路由器发现：路由器请求RS和通告RA（ICMPv4类型9，10）</h3><p>首先<strong>定期</strong>使用TTL=1，对本地网络的所有主机组播（224.0.0.1）。使用RS报文发送到所有路由器组播地址（224.0.0.2），路由器发现的主要目的是让一台主机学习到它所在本地子网中的所有路由器，这样让他选好出一个默认的路由。</p>
-<hr>
-<h2 id="处理ICMP报文"><a href="#处理ICMP报文" class="headerlink" title="处理ICMP报文"></a>处理ICMP报文</h2><p>传入的信息类请求将被<strong>操作系统自动处理</strong>，而差错类报文<strong>传递给用户进程或传输层协议</strong>。</p>
-<p>特例：重定向报文将导致主机路由表中的自动更新，目的不可达报文用于路径MTU发现机制（PMTUD）。这一般由传输层协议来实现。</p>
-<h2 id="ICMP差错报文"><a href="#ICMP差错报文" class="headerlink" title="ICMP差错报文"></a>ICMP差错报文</h2><p>限制生成的ICMP差错报文的元婴是限制生成所谓的广播风暴，ICMPv4有以下情况：</p>
-<ul>
-<li>ICMPv4差错报文</li>
-<li>目的地址是IPv4广播或组播地址</li>
-<li>作为链路层的广播数据报</li>
-<li>不是第一个分片的其他分片</li>
-<li>源地址为环回地址，广播或组播地址，零地址。</li>
-</ul>
-<p>ICMPv6有以下情况：</p>
-<ul>
-<li>ICMPv6差错报文</li>
-<li>ICMPv6重定向报文</li>
-<li>目的地址是IPv6的组播地址数据报（除PTB和参数问题报文）</li>
-<li>链路层广播组播的数据包</li>
-<li>源地址为未指定或组播地址，<em>或者任意为发送者所致的选播地址</em>。</li>
-</ul>
-<p><strong>限制ICMP报文数据的方法是使用令牌桶</strong><br>每个桶保留最大数量的令牌，每个令牌允许一定数量的报文被发送。<strong>桶定期被新的令牌填充</strong>。每发送一个报文就减一，</p>
-<p>一个概念：<strong>当发送一个ICMP差错报文的时候，它包含了一个完整的源自“违规”或者“原始”数据包的IP头部副本，再加上原始数据报的IP有效载荷区中的任何其他数据。</strong></p>
-
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="https://pandaeathzr.github.io/2018/04/10/Internet控制报文协议/" data-id="ck0rl0gvh000ayswircqgusaw" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <div id="page-nav">
@@ -973,7 +918,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
   </div>
 
 
@@ -981,7 +926,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
   </div>
 
 
@@ -996,19 +941,19 @@
         </li>
       
         <li>
+          <a href="/2019/09/20/我不知道的深浅拷贝/">我不知道的深浅拷贝</a>
+        </li>
+      
+        <li>
+          <a href="/2019/09/13/掘金_前端程序员必须掌握之三角函数在前端动画中的应用/">新的起点</a>
+        </li>
+      
+        <li>
           <a href="/2019/09/13/新起点/">新的起点</a>
         </li>
       
         <li>
           <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
-        </li>
-      
-        <li>
-          <a href="/2018/07/17/Python编程入门到实践（二）/">Python编程：从入门到实践(二)</a>
-        </li>
-      
-        <li>
-          <a href="/2018/07/16/RYU_Traffic Monitor/">RYU，Chapter 2. 流量监控（Traffic Monitor)</a>
         </li>
       
     </ul>
