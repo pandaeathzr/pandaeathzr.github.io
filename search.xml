@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[掘金学习_前端程序员必须掌握之三角函数在前端动画中的应用]]></title>
+    <url>%2F2019%2F10%2F07%2F%E6%8E%98%E9%87%91_%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E9%A1%BB%E6%8E%8C%E6%8F%A1%E4%B9%8B%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E5%9C%A8%E5%89%8D%E7%AB%AF%E5%8A%A8%E7%94%BB%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[本篇博客是对前端程序员必须掌握之三角函数在前端动画中的应用的学习 我要知道的知识点window.requestAnimationFrame(callback)告诉浏览器我希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。当然这仅仅只是画一帧，若我想在浏览器下次重绘之前继续更新下一帧动画，那么回调函数自身必须再次调用window.requestAnimationFrame() requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。 而相比较，setTimeout()可能会由于不同的屏幕刷新率导致掉帧。 可以用下面的代码实现：run (callback) &#123; requestAnimationFrame(() =&gt; &#123; run(callback) &#125;) callback(this.ctx)&#125; ctx.clearRect(x, y, width, height)以点(x, y)为起点范围是(width, height)所有像素变成透明，并擦除之前绘制的所有内容的方法 CanvasRenderingContext2D.save()/.restore()将当前状态放入栈中，保存 canvas 全部状态的方法/在绘图状态栈中弹出顶端的状态，将 canvas 恢复到最近的保存状态的方法 放一段绘制身体的代码就可以知道如何操作了 drawBody (t) &#123; ctx.save() ctx.beginPath() ctx.rotate(Math.sin(t) * Math.PI / 180 * -1) ctx.translate(0, Math.sin(t) * 4) ctx.scale(0.5, 0.5) const body = new Path2D('M125,284 L1,284 C0.33333333,94.6666667 35,0 105,0 C115.666667,4 122.333333,20.6666667 125,50 L125,284 Z') ctx.fill(body) ctx.closePath() ctx.restore()&#125; 参考资料 window.requestAnimationFrame requestAnimationFrame 知多少？]]></content>
+      <tags>
+        <tag>JaveScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[一题_JS_2]]></title>
     <url>%2F2019%2F09%2F20%2F%E4%B8%80%E9%A2%98_JS_2%2F</url>
     <content type="text"><![CDATA[['1', '2', '3'].map(parseInt) 返回值： [ 1, NaN, NaN ] 解析： 关于parseInt parseInt(string, radix) 函数解析一个字符串参数，并返回一个指定基数的整数 当radix = undefined || 0 时,采用默认的行为： 如果字符串 string 以&quot;0x&quot;或者&quot;0X&quot;开头, 则基数是16 (16进制). 如果字符串 string 以&quot;0&quot;开头, 基数是8（八进制）或者10（十进制），那么具体是哪个基数由实现环境决定。Node使用的基数是10。因此，永远都要明确给出radix参数的值。 如果字符串 string 以其它任何值开头，则基数是10 (十进制)。 当 radix = 1 时，似乎输出的都是 NaN。 console.log(parseInt('1', 1)) // NaN 当 传进来的参数 不是radix进制时，返回的也是 NaN 关于map map(function(currentValue,index,arr), thisValue)方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果 当我们如最开始的那样写法时，map其实传给了parseInt三个参数，第三个参数被parseInt忽略 即： ['1', '2', '3'].map((currentValue, index, arr) =&gt; parseInt(currentValue, index, arr)) 参照资料 木易杨前端进阶]]></content>
@@ -15,11 +23,6 @@
       <tags>
         <tag>JaveScript</tag>
       </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[新的起点]]></title>
-    <url>%2F2019%2F09%2F13%2F%E6%8E%98%E9%87%91_%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E9%A1%BB%E6%8E%8C%E6%8F%A1%E4%B9%8B%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E5%9C%A8%E5%89%8D%E7%AB%AF%E5%8A%A8%E7%94%BB%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[哈哈哈哈就在刚刚，有人因为信息错误喊我去推免面试。我看下了，啊，原来自己查了一名就能够到推免面试的答辩现场体验了。发现自己没能够保研，内心还是有一些遗憾的。记录一下，用来继续勉励自己。 接下来的时间，继续在前端方向上前进。每天希望能够用博客复习巩固一下每日所学的内容。]]></content>
   </entry>
   <entry>
     <title><![CDATA[新的起点]]></title>
