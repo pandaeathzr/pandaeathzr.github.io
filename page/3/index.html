@@ -80,6 +80,113 @@
         <div class="col-sm-8 blog-main">
           
   
+    <article id="post-用户数据报和IP分片" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/13/用户数据报和IP分片/">用户数据报协议和IP分片</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/04/13/用户数据报和IP分片/" class="article-date"><time datetime="2018-04-13T12:46:25.000Z" itemprop="datePublished">2018-04-13</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>UDP是一种保留消息边界的简单的面向数据报的传输层协议。它仅提供差错检测。只是检测，而不是纠正，它只是把应用程序传给IP层的数据发送出去，但是并不会保证数据能够完好无损的到达目的地。</p>
+<p>下图是UDP数据报的封装。</p>
+<p><img src="https://i.imgur.com/jjSjtna.jpg" alt=""></p>
+<hr>
+<h2 id="UDP头部"><a href="#UDP头部" class="headerlink" title="UDP头部"></a>UDP头部</h2><p>端口号就如同邮箱一样，用来辨别发送和接受进程。端口号长16比特。</p>
+<p>UDP头部如图所示：</p>
+<p><img src="https://i.imgur.com/y5t8QUT.jpg" alt=""></p>
+<ul>
+<li>源端口号（可选），如果发送方并不要求回复，则置0</li>
+<li>目的端口号，帮助分离IP层进入的数据</li>
+<li>长度，UDP数据报的长度（包过头部和数据）</li>
+<li>校验和</li>
+</ul>
+<p>IP层根据协议头部可以将IP数据报分离到特定的传输协议。正因为如此，不同传输协议是独立的，即可以使用相同的端口号而不会引起冲突。</p>
+<p><strong>校验和字段是端到端的，是对包含了IP头部中的源和目的IP地址字段的UDP伪头部计算得到的</strong>，伪头部的目的是用于校验和的计算，他不会被发送出去。</p>
+<p>UDP伪头部和头部的格式如图：</p>
+<p><img src="https://i.imgur.com/IVtmWq9.jpg" alt=""></p>
+<p>伪头部包含了IP头部的源和目的地址，以及协议或下一个头部字段。<strong>目的是让UDP层验证数据是不是到达真正的目的地</strong>，由于有了这样的结构，当该数据报经过一个NAT时候，不仅仅IP层头部的校验和要被修改，并且UDP伪头部的校验和也要被修改。</p>
+<hr>
+<h3 id="UDP-Lite"><a href="#UDP-Lite" class="headerlink" title="UDP-Lite"></a>UDP-Lite</h3><p>背景：有些应用程序可以容忍在发送和接收的数据里引入的比的差错。</p>
+<p>为了避免建议连接的开销，或者为了使用广播或组播地址，这类程序会选择使用UDP。而UDP-Lit提供了<strong>部分校验和</strong>来解决这个问题。</p>
+<p>其头部如下表示：</p>
+<p><img src="https://i.imgur.com/ZuxP9x8.jpg" alt=""></p>
+<p>校验和覆盖范围字段表示被校验和覆盖的字节数。<strong>值为0表示整个数据包都被覆盖</strong>。由于整个头部总是要被覆盖的，所以值位1~7是无效的！</p>
+<hr>
+<h2 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h2><p>为了保持IP数据报抽象与链路层细节的一致和分离，IP引入了分片和重组。</p>
+<ul>
+<li>IPv4的分片可以在发送主机和端到端路径上的路由器进行</li>
+<li>IPv6只允许源主机进行分片</li>
+</ul>
+<p>重组只能发生在IP数据报到达最终目的地的时候。原因很显然，不同分片可能会经过不同的路径到达目的地，在路径上的路由器只能看到分片的一个子集，显然无法重组。</p>
+<hr>
+<p>分片由IPV4头部中的标识，分片偏移，和更多分片字段控制。</p>
+<ul>
+<li>标识，由原始发送方设置，在目的地依据标识区分组</li>
+<li>分片偏移，表示分片中数据的第一个字节在原数据报的偏移量（<strong>8个字节为单位</strong>）</li>
+<li>更多分片（MF），0表示最后一个分片，否则为1。</li>
+</ul>
+<p>偏移的具体内容如下图所示：</p>
+<p><img src="https://i.imgur.com/PHFhggZ.jpg" alt=""></p>
+<p>第二个数据报偏移为185*8=1480=第一个分片负载，即在第一个分片零偏移的基础上偏移了185个单位。</p>
+<p>当TCP报文段的一个分片丢失了，TCP会重传整个报文段，而重传一个分片是不可能的，因为在路径路由器可以分片数据报，源主机是不清楚数据报如何被分片的。</p>
+<ul>
+<li>具有更大偏移量的分片要比第一个分片更优先投递，这样有利于接收主机确定所需的缓存空间最大值</li>
+<li>收到任何一个分片，IP层就启动计时器，超时即丢弃数据报。</li>
+<li>UDP数据报长度有限，满额数据报并不能很好的被投递<ul>
+<li>本地协议实现的限制</li>
+<li>接受应用程序并没有做好准备接收处理这么大的数据报</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2018/04/13/用户数据报和IP分片/" data-id="ck0rl0gx2001syswiquqsijf0" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-广播和本地组播（IGMP和MLD）" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -1108,7 +1215,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
   </div>
 
 
@@ -1116,7 +1223,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/10/">October 2019</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/10/">October 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
   </div>
 
 
@@ -1125,6 +1232,10 @@
   <div class="sidebar-module">
     <h4>Recents</h4>
     <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/10/08/掘金_水波图实现原理/">掘金学习_水波图实现原理</a>
+        </li>
       
         <li>
           <a href="/2019/10/07/掘金_前端程序员必须掌握之三角函数在前端动画中的应用/">掘金学习_前端程序员必须掌握之三角函数在前端动画中的应用</a>
@@ -1140,10 +1251,6 @@
       
         <li>
           <a href="/2019/09/13/新起点/">新的起点</a>
-        </li>
-      
-        <li>
-          <a href="/2018/07/18/numpy_1/">numpy入门_索引、合并、分割、拷贝</a>
         </li>
       
     </ul>
