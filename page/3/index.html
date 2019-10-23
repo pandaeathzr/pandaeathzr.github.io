@@ -80,6 +80,64 @@
         <div class="col-sm-8 blog-main">
           
   
+    <article id="post-名称解析和域名系统" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/15/名称解析和域名系统/">名称解析和域名系统</a>
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2018/04/15/名称解析和域名系统/" class="article-date"><time datetime="2018-04-15T02:49:51.000Z" itemprop="datePublished">2018-04-15</time></a>
+</div>
+
+    
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Study/">Study</a>
+  </div>
+
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>DNS是一个分布式的客户机/服务器网络数据库，TCP/IP应用程序使用它来完成主机名称和IP地址之间的映射。
+        
+          <p class="article-more-link">
+            <a class="btn btn-primary" href="/2018/04/15/名称解析和域名系统/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2018/04/15/名称解析和域名系统/" data-id="ck0rl0gwm001eyswiql4d5t5z" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-用户数据报和IP分片" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -1002,101 +1060,6 @@
 
 
   
-    <article id="post-链路层" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/链路层/">链路层</a>
-    </h1>
-  
-
-
-  </header>
-
-  <div class="article-meta">
-    <div class="article-datetime">
-  <a href="/2018/03/28/链路层/" class="article-date"><time datetime="2018-03-28T02:47:47.000Z" itemprop="datePublished">2018-03-28</time></a>
-</div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Study/">Study</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>设计链路层的目的是为了IP模板发送和接收IP数据报</p>
-<p>大多数链路层技术都有一个相关的协议，描述由网络硬件传输的相应PDU（Protocol Data Unit，协议数据单元） 格式。我们通常称链路层的PDU为<strong>帧</strong></p>
-<hr>
-<h2 id="以太网和IEEE-802局域网-城域网标准"><a href="#以太网和IEEE-802局域网-城域网标准" class="headerlink" title="以太网和IEEE 802局域网/城域网标准"></a>以太网和IEEE 802局域网/城域网标准</h2><p>以太网这个术语通常指一套标准，由DIX(DEC，Inter公司，Xerox公司)在1980年首次发布。</p>
-<p>基本的共享以太网包含一个或多个站（例如工作站，超级计算机），他们被连接到一个共享的电缆上。当介质被确认为空闲状态的时候，链路层的PDU就可以从一个站发送到另一个站。<br><img src="https://i.imgur.com/ShvulDH.jpg" alt=""><br>当因为信号传播延迟造成碰撞时，可被检测到。其导致了发送站等到一个随机事件，然后重新发送数据。这种方法被叫做带冲突检测的载波侦听多路访问（CSMA/CD），但是其更正式的名称是<strong>介质访问控制协议（MAC）</strong></p>
-<p>MAC协议有很多类型，有些基于每个站尝试独立使用网络（例如CSMA/CD的基于竞争协议），有些预先安排的协调（例如依据为每个站分配的时段发送）</p>
-<p>岁月匆匆，随着以太网的发展，基于竞争的MAC协议已经变得不流行。相反，局域网中每个站之间的线路通常不共享，而是提供了一个专用的星型拓扑结构。这可以通过以太网<strong>交换机</strong>来实现</p>
-<p>交换机为以太网中的每个站提供同时发送和接收数据的能力（<strong>全双工以太网</strong>）</p>
-<hr>
-<h3 id="以太网的帧格式"><a href="#以太网的帧格式" class="headerlink" title="以太网的帧格式"></a>以太网的帧格式</h3><p>（<img src="https://i.imgur.com/rRGpzWJ.jpg" alt=""></p>
-<p>以太网帧开始是一个前导字段，接收器电路用它确定一个帧的到达时间。</p>
-<p>帧格式包过48位的目的地址（DST）和源地址（SRC）。这些地址又称<strong>MAC地址</strong></p>
-<hr>
-<h3 id="帧校验序列-循环冗余校验"><a href="#帧校验序列-循环冗余校验" class="headerlink" title="帧校验序列/循环冗余校验"></a>帧校验序列/循环冗余校验</h3><p>循环冗余校验CRC：<br>被检查的消息首先需要追加n位0形成一个扩展消息，然后除以一个约定的n+1位的值，得到一个余数。将该余数的反码（放置在帧校验序列FCS）追加在被检查的消息后面。</p>
-<p>在接受到数据后，接受方执行相同的除法计算余数，并判断该值与FCS是否匹配</p>
-<hr>
-<h3 id="网桥和交换机"><a href="#网桥和交换机" class="headerlink" title="网桥和交换机"></a>网桥和交换机</h3><p>网桥或交换机用于链接多个物理的链路层网络，或成组的站</p>
-<p>交换机的本质是高性能的网桥</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://i.imgur.com/NnvJXvA.jpg" alt=""></h2><h3 id="无线局域网——IEEE-802-11（Wi-Fi）"><a href="#无线局域网——IEEE-802-11（Wi-Fi）" class="headerlink" title="无线局域网——IEEE 802.11（Wi-Fi）"></a>无线局域网——IEEE 802.11（Wi-Fi）</h3><p>无线保真（Wi-Fi）是访问Internet的最流行技术之一</p>
-<p>下面了解几个概念 </p>
-<ul>
-<li>站（STA）  </li>
-<li>接入点（AP）  </li>
-<li>一个AP和相关的STA被称为一个基本服务集（BSS）  </li>
-<li>AP之间通常使用一种有线的分布式服务（DS）连接，形成一个扩展服务集（ESS）即基础设施模式。</li>
-</ul>
-<h4 id="RTS-CTS和ACK"><a href="#RTS-CTS和ACK" class="headerlink" title="RTS/CTS和ACK"></a>RTS/CTS和ACK</h4><p>802.11网络支持可选的请求发送/明确发送（RTS/CTS），通过放缓传输来进行流量控制：当RST/CTS启用时，一个站在发送数据帧之前，会发送一个RTS帧，当接收方愿意接收额外的流量时，他会响应一个CTS帧。在RTS/CTS交换后，这个站开启一个时间窗口，用于向确认接收的站发送数据帧。</p>
-<p>在有限的以太网中，冲突较少意味着正确接收帧的概率较高。在无线网络中更多的因素导致帧交付可能出错，例如信号不够强或受到干扰。为此，802.11采用一种重传/确认（ACK）方法。</p>
-<p>确认是对预期在一定时间内接收的一个单播帧或一组帧的响应。在指定时间内没有接收到对应的ACK会导致帧的重传</p>
-<hr>
-<h2 id="点到点协议"><a href="#点到点协议" class="headerlink" title="点到点协议"></a>点到点协议</h2><p>PPP表示点到点协议，这是一种在串行链路上传输IP数据报的</p>
-<p>PPP实际上是一个协议集合，而不是一个单一的协议。它支持建立链接的基本方法，称之为链路控制协议（LCP）以及一系列网络控制协议（NCP）。</p>
-<h3 id="链路控制协议"><a href="#链路控制协议" class="headerlink" title="链路控制协议"></a>链路控制协议</h3><p>LCP用于在<strong>点到点链路</strong>上建立和维护底层的双方通讯路径。因此，PPP操作只需关注一条链路的两端。不需要像以太网和WiFi的MAC层协议那样处理共享资源访问的问题</p>
-<hr>
-<h2 id="MTU和路径MTU"><a href="#MTU和路径MTU" class="headerlink" title="MTU和路径MTU"></a>MTU和路径MTU</h2><p>很多链路层网络中，携带高层协议PDU的帧大小是有限制的，以太网有效载荷的字节数通常被限制为1500，PPP通常采用相同大小以保持与以太网兼容，这种特征被称为<strong>最大传输单元（MTU）</strong></p>
-<p>在包含所有链路的整个网络路径上，最小的MTU称为路径MTU。注意，路径通常不对称，路径MTU不需要在两个方向上相同</p>
-<hr>
-<h2 id="隧道基础"><a href="#隧道基础" class="headerlink" title="隧道基础"></a>隧道基础</h2><p>在某些情况下，两台计算机通过Internet或其他网络建立一条虚拟链路是有用的。虚拟专用网络（VPN）提供这样的服务。实现这类服务的最常用方法称为隧道。</p>
-<p>隧道是在高层或同层分组中携带底层数据，其转变了在头部中严格分层的思想，允许形成覆盖网络。</p>
-
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="https://pandaeathzr.github.io/2018/03/28/链路层/" data-id="ck0rl0gxa0022yswird9h120w" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-Internet地址结构" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
@@ -1197,7 +1160,7 @@
 
 
   <div id="page-nav">
-    <nav><ul class="pagination"><li><a class="page-prev" rel="prev" href="/page/2/"><i class="fa fa-chevron-left"></i> Prev</a></li><li><a class="page-number" href="/">1</a></li><li><a class="page-number" href="/page/2/">2</a></li><li class="active"><span class="page-number">3</span></li><li class="disabled"><span class="page-next">Next <i class="fa fa-chevron-right"></i></a></li></ul></nav>
+    <nav><ul class="pagination"><li><a class="page-prev" rel="prev" href="/page/2/"><i class="fa fa-chevron-left"></i> Prev</a></li><li><a class="page-number" href="/">1</a></li><li><a class="page-number" href="/page/2/">2</a></li><li class="active"><span class="page-number">3</span></li><li><a class="page-number" href="/page/4/">4</a></li><li><a class="page-next" rel="next" href="/page/4/">Next <i class="fa fa-chevron-right"></i></a></li></ul></nav>
   </div>
 
 
@@ -1215,7 +1178,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/我不知道系列/">我不知道系列</a><span class="sidebar-module-list-count">1</span></li></ul>
   </div>
 
 
@@ -1223,7 +1186,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/10/">October 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/10/">October 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
   </div>
 
 
@@ -1232,6 +1195,10 @@
   <div class="sidebar-module">
     <h4>Recents</h4>
     <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/10/23/我不知道的Array/">我不知道的Array</a>
+        </li>
       
         <li>
           <a href="/2019/10/08/掘金_水波图实现原理/">掘金学习_水波图实现原理</a>
@@ -1247,10 +1214,6 @@
       
         <li>
           <a href="/2019/09/20/我不知道的深浅拷贝/">我不知道的深浅拷贝</a>
-        </li>
-      
-        <li>
-          <a href="/2019/09/13/新起点/">新的起点</a>
         </li>
       
     </ul>
