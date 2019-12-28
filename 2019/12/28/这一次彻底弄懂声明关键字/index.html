@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>这一次彻底弄懂声明关键字 | 熊猫吃展瑞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="varvar是ES6前的东西，教程网站称之为旧时的“var”，这样写道：“var 却是一头源自旧时代的怪兽。在现代脚本中一般不再使用，但它仍存在于陈旧的脚本里。”，因此，我基本上不会用到这个关键字。 但是心中仍存在着这样的疑问，它为何而淘汰？ 提升(Hoisting)var所声明变量的作用域要么是全局作用域，要么是函数作用域，这与我们之前所学的C或者C++里面的声明是有所区别的。无论在哪里被声明，">
+<meta name="keywords" content="JaveScript,彻底弄懂">
+<meta property="og:type" content="article">
+<meta property="og:title" content="这一次彻底弄懂声明关键字">
+<meta property="og:url" content="https://pandaeathzr.github.io/2019/12/28/这一次彻底弄懂声明关键字/index.html">
+<meta property="og:site_name" content="熊猫吃展瑞">
+<meta property="og:description" content="varvar是ES6前的东西，教程网站称之为旧时的“var”，这样写道：“var 却是一头源自旧时代的怪兽。在现代脚本中一般不再使用，但它仍存在于陈旧的脚本里。”，因此，我基本上不会用到这个关键字。 但是心中仍存在着这样的疑问，它为何而淘汰？ 提升(Hoisting)var所声明变量的作用域要么是全局作用域，要么是函数作用域，这与我们之前所学的C或者C++里面的声明是有所区别的。无论在哪里被声明，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-12-28T10:19:57.320Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="这一次彻底弄懂声明关键字">
+<meta name="twitter:description" content="varvar是ES6前的东西，教程网站称之为旧时的“var”，这样写道：“var 却是一头源自旧时代的怪兽。在现代脚本中一般不再使用，但它仍存在于陈旧的脚本里。”，因此，我基本上不会用到这个关键字。 但是心中仍存在着这样的疑问，它为何而淘汰？ 提升(Hoisting)var所声明变量的作用域要么是全局作用域，要么是函数作用域，这与我们之前所学的C或者C++里面的声明是有所区别的。无论在哪里被声明，">
+  
+    <link rel="alternate" href="/atom.xml" title="熊猫吃展瑞" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/fancybox/panda.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class=""
+                 href="/index.html">Home</a></li>
+        
+          <li><a class=""
+                 href="/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">熊猫吃展瑞</h1>
+  
+    <p class="lead blog-description">愿你是所期待的样子</p>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-这一次彻底弄懂声明关键字" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      这一次彻底弄懂声明关键字
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/2019/12/28/这一次彻底弄懂声明关键字/" class="article-date"><time datetime="2019-12-27T16:00:00.000Z" itemprop="datePublished">2019-12-28</time></a>
+</div>
+
+    
+    
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="var"><a href="#var" class="headerlink" title="var"></a>var</h2><p><code>var</code>是ES6前的东西，教程网站称之为<strong>旧时的“var”</strong>，这样写道：<em>“var 却是一头源自旧时代的怪兽。在现代脚本中一般不再使用，但它仍存在于陈旧的脚本里。”</em>，因此，我基本上不会用到这个关键字。</p>
+<p>但是心中仍存在着这样的疑问，它为何而淘汰？</p>
+<h3 id="提升-Hoisting"><a href="#提升-Hoisting" class="headerlink" title="提升(Hoisting)"></a>提升(Hoisting)</h3><p><code>var</code>所声明变量的作用域要么是全局作用域，要么是函数作用域，这与我们之前所学的C或者C++里面的声明是有所区别的。无论在哪里被声明，其都会被当成在<strong>当前作用域顶部声明</strong>的变量。我们看下面几组代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someting</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> inlineName = <span class="string">'Leibh'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(firstName);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(inlineName); <span class="comment">//报错</span></span><br></pre></td></tr></table></figure>
+<p><code>inlineName</code>变量在<code>something()</code>函数里面定义，显然在外面是无法访问得到的，所以报错<code>ReferenceError: inlineName is not defined</code><br><em>—ReferenceError（引用错误） 对象代表当一个不存在的变量被引用时发生的错误。</em></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params">flag</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">    <span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something(<span class="literal">true</span>);</span><br><span class="line">something(<span class="literal">false</span>); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<p>当<code>flag</code>为true时，执行if语句分支，其定义了一个变量<code>firstName</code>；当为flase时，其执行console语句，打印<code>firstName</code>。在此会存在这样的以为，<code>firstName</code>变量在该分支内未曾定义，一旦运行，肯定会报一个ReferenceError。但是实际上，它打印的是<code>undefined</code>。<br>这样归结于变量提升(Hoisting)。我们上面说到，<code>var</code>所声明变量实际上都会被当成在<strong>当前作用域顶部声明</strong>的变量。不论在<code>something()</code>函数中那个位置声明，它实际上都会被提升到函数顶部，如下所示：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params">flag</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> firstName;</span><br><span class="line">  <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">    firstName = <span class="string">'Huzr'</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something(<span class="literal">true</span>);</span><br><span class="line">something(<span class="literal">false</span>); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>赋值操作在原定位置不变，而声明语句却是被提升到了顶部，此时它的值为<code>undefined</code>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(firstName); <span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br></pre></td></tr></table></figure>
+<p>这导致了其作用域将覆盖整个函数，在一些情况下会存在出人意料的BUG。</p>
+<h3 id="作用域BUG"><a href="#作用域BUG" class="headerlink" title="作用域BUG"></a>作用域BUG</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(i))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something()</span><br></pre></td></tr></table></figure>
+<p>尽管我们在<code>for</code>循环中声明了<code>i</code>，但是可想而知，<code>i</code>的作用域是整个<code>something()</code>函数，因为，在<code>setTimeout()</code>回调函数执行时，所打印的<code>i</code>均是10，而不是我们所期待的由1递增到10。为此，ES6提出了新的声明关键字<code>let</code> &amp;&amp; <code>const</code>。</p>
+<h2 id="let"><a href="#let" class="headerlink" title="let"></a>let</h2><p><code>let</code>的作用域我们称之为<strong>块级作用域</strong>，或者是<strong>词法作用域</strong>。《深入理解ES6》指出，let声明不会被提升。<em>（此处尚存一些疑问，在我的印象中有本书的说法不同，但是我还没找到该说法）</em></p>
+<h3 id="块级作用域"><a href="#块级作用域" class="headerlink" title="块级作用域"></a>块级作用域</h3><p>如下代码：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params">flag</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">    <span class="keyword">let</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something(<span class="literal">true</span>);</span><br><span class="line">something(<span class="literal">false</span>); <span class="comment">// error</span></span><br></pre></td></tr></table></figure></p>
+<p>当使用<code>let</code>声明时，<code>firstName</code>只存在于为if分支。当在else分支访问其时，会抛出ReferenceError。</p>
+<h3 id="临时死区-Temporal-Dead-Zone"><a href="#临时死区-Temporal-Dead-Zone" class="headerlink" title="临时死区(Temporal Dead Zone)"></a>临时死区(Temporal Dead Zone)</h3><p>当JS引擎搜索到<code>let</code>声明的变量时，会将其放在TDZ中，如果在该作用域访问TDZ中的变量就会发生错误。如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> firstName); <span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span> firstName); <span class="comment">//error</span></span><br><span class="line">  <span class="keyword">let</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在if分支中，我们在声明前访问了TDZ中的<code>firstName</code>，因而抛出引用错误。而在作用域外部，<code>firstName</code>不在TDZ中，因而<code>typeof</code>操作返回<code>undefined</code>。所以我们一般会把<code>let</code>声明写在最顶部的位置。</p>
+<h3 id="不可重声明"><a href="#不可重声明" class="headerlink" title="不可重声明"></a>不可重声明</h3><p>在<code>var</code>时代，我们可以重复声明：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Boy'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(firstName); Boy</span><br></pre></td></tr></table></figure></p>
+<p>一旦我们在编码的时候出现一些失误，重复声明了某些变量，就会出现离奇的BUG。而<code>let</code>则不允许这样做。一旦在<strong>同一作用域</strong>下，用<code>let</code>声明某个已经存在的标识符（无论其是用何种形式声明的），它便会抛出语法错误：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line"><span class="keyword">let</span> firstName = <span class="string">'Boy'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(firstName);<span class="comment">//SyntaxError: Identifier 'firstName' has already been declared</span></span><br></pre></td></tr></table></figure></p>
+<p>然而，因为作用域的遮蔽作用（JS执行上下文和执行栈），内外作用域间可以存在重复的声明，例如：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Huzr'</span>;</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">let</span> firstName = <span class="string">'Boy'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(firstName); <span class="comment">//Boy</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们用<code>{}</code>强制划分了一个块，此时并非重复声明。</p>
+<p>我们回过来修改以下刚才的循环函数：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(i))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something()</span><br></pre></td></tr></table></figure></p>
+<p>此时，便达到我们所期许的由1递增到10的结果。按照我的理解，其实际上的代码形式是如下：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">something</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="keyword">let</span> i = 循环的那个i</span><br><span class="line">		setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(i))</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">something()</span><br></pre></td></tr></table></figure></p>
+<p>每次循环的i都存在不同的块中，因此<code>setTimeout()</code>的回调函数可以得到不同的<code>i</code>的副本。</p>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p><code>const</code>的特性与上面的<code>let</code>一样，但是它是一个常量。常量便是不可改变的，当我们用<code>const</code>声明并赋值基本类型（number,string,boolean,null,undefined,symbol）时，它们便不可再改变。一旦改变便会报类型错误：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> e = <span class="built_in">Symbol</span>(<span class="number">1</span>);</span><br><span class="line">e = <span class="number">2</span>; <span class="comment">// TypeError: Assignment to constant variable.</span></span><br></pre></td></tr></table></figure>
+<p>然而，当我们声明并赋值一个对象的时候，常量所存的为该对象的引用地址，常量的引用地址不可变，但是对象的值是可以改变的。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  firstName: <span class="string">'Huzr'</span></span><br><span class="line">&#125;;</span><br><span class="line">obj.firstName = <span class="string">'Leibo'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj.firstName); <span class="comment">//Leibo</span></span><br><span class="line">obj = &#123;&#125;; <span class="comment">// TypeError: Assignment to constant variable.</span></span><br></pre></td></tr></table></figure></p>
+<p>在使用<code>for-in</code>或者<code>for-of</code>的时候，使用<code>const</code>的行为与<code>let</code>一致，这是因为在迭代中，我们不是修改已有的绑定，而是创建一个新的绑定。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>当我们使用<code>var</code>在全局作用域声明变量时，它会再创建一个新的变量作为全局对象的属性（window对象），而<code>let</code>和<code>const</code>不会。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="string">'Hello'</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="string">'Goodbye'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.x); <span class="comment">//Hello</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.y); <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://zh.javascript.info/var" title="旧时的 &quot;var&quot;" target="_blank" rel="noopener">https://zh.javascript.info/var</a></li>
+<li><a href="https://blog.csdn.net/wlk2064819994/article/details/79772388" target="_blank" rel="noopener">https://blog.csdn.net/wlk2064819994/article/details/79772388</a></li>
+</ul>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://pandaeathzr.github.io/2019/12/28/这一次彻底弄懂声明关键字/" data-id="ck4pfpf0w0000fgwiw4p2z2qv" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JaveScript/">JaveScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/彻底弄懂/">彻底弄懂</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/2019/10/23/我不知道的Array/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">我不知道的Array</span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p><b>New Life!</b></p>
+
+</div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/JaveScript/">JaveScript</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/Linux/">Linux</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/MySQL/">MySQL</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/RYU/">RYU</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/SDN/">SDN</a><span class="sidebar-module-list-count">4</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/TCP-IP/">TCP/IP</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/numpy/">numpy</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/python/">python</a><span class="sidebar-module-list-count">7</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/彻底弄懂/">彻底弄懂</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/tags/我不知道系列/">我不知道系列</a><span class="sidebar-module-list-count">1</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/12/">December 2019</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/10/">October 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2019/09/">September 2019</a><span class="sidebar-module-list-count">3</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/07/">July 2018</a><span class="sidebar-module-list-count">5</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/06/">June 2018</a><span class="sidebar-module-list-count">1</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/05/">May 2018</a><span class="sidebar-module-list-count">6</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/04/">April 2018</a><span class="sidebar-module-list-count">10</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/archives/2018/03/">March 2018</a><span class="sidebar-module-list-count">3</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/2019/12/28/这一次彻底弄懂声明关键字/">这一次彻底弄懂声明关键字</a>
+        </li>
+      
+        <li>
+          <a href="/2019/10/23/我不知道的Array/">我不知道的Array</a>
+        </li>
+      
+        <li>
+          <a href="/2019/10/08/掘金_水波图实现原理/">掘金学习_水波图实现原理</a>
+        </li>
+      
+        <li>
+          <a href="/2019/10/07/掘金_前端程序员必须掌握之三角函数在前端动画中的应用/">掘金学习_前端程序员必须掌握之三角函数在前端动画中的应用</a>
+        </li>
+      
+        <li>
+          <a href="/2019/09/20/一题_JS_2/">一题_JS_2</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Huzr<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>
